@@ -2,7 +2,7 @@
     <v-layout align-start>
         <v-flex>
             <v-toolbar flat color="white">
-                <v-toolbar-title>Categorías</v-toolbar-title>
+                <v-toolbar-title>Tarjeta</v-toolbar-title>
                     <v-divider
                     class="mx-2"
                     inset
@@ -70,7 +70,7 @@
                 </v-toolbar>
             <v-data-table
                 :headers="headers"
-                :items="categorias"
+                :items="tarjetas"
                 :search="search"
                 class="elevation-1"
             >
@@ -83,7 +83,7 @@
                         >
                         edit
                         </v-icon>
-                        <template v-if="props.item.condicion">
+                        <template v-if="props.item.activo">
                             <v-icon
                             small
                             @click="activarDesactivarMostrar(2,props.item)"
@@ -103,7 +103,7 @@
                     <td>{{ props.item.nombre }}</td>
                     <td>{{ props.item.descripcion }}</td>
                     <td>
-                        <div v-if="props.item.condicion">
+                        <div v-if="props.item.activo">
                             <span class="blue--text">Activo</span>
                         </div>
                         <div v-else>
@@ -123,13 +123,13 @@
     export default {
         data(){
             return {
-                categorias:[],                
+                tarjetas:[],                
                 dialog: false,
                 headers: [
                     { text: 'Opciones', value: 'opciones', sortable: false },
                     { text: 'Nombre', value: 'nombre' },
                     { text: 'Descripción', value: 'descripcion', sortable: false  },
-                    { text: 'Estado', value: 'condicion', sortable: false  }                
+                    { text: 'Estado', value: 'activo', sortable: false  }                
                 ],
                 search: '',
                 editedIndex: -1,
@@ -146,7 +146,7 @@
         },
         computed: {
             formTitle () {
-                return this.editedIndex === -1 ? 'Nueva categoría' : 'Actualizar categoría'
+                return this.editedIndex === -1 ? 'Nueva anomalía' : 'Actualizar anomalía'
             }
         },
 
@@ -162,15 +162,15 @@
         methods:{
             listar(){
                 let me=this;
-                axios.get('api/Categorias/Listar').then(function(response){
+                axios.get('api/tarjetas/Listar').then(function(response){
                     //console.log(response);
-                    me.categorias=response.data;
+                    me.tarjetas=response.data;
                 }).catch(function(error){
                     console.log(error);
                 });
             },
             editItem (item) {
-                this.id=item.idcategoria;
+                this.id=item.id;
                 this.nombre=item.nombre;
                 this.descripcion=item.descripcion;
                 this.editedIndex=1;
@@ -200,8 +200,8 @@
                     //Código para editar
                     //Código para guardar
                     let me=this;
-                    axios.put('api/Categorias/Actualizar',{
-                        'idcategoria':me.id,
+                    axios.put('api/tarjetas/Actualizar',{
+                        'id':me.id,
                         'nombre': me.nombre,
                         'descripcion': me.descripcion
                     }).then(function(response){
@@ -214,7 +214,7 @@
                 } else {
                     //Código para guardar
                     let me=this;
-                    axios.post('api/Categorias/Crear',{
+                    axios.post('api/tarjetas/Crear',{
                         'nombre': me.nombre,
                         'descripcion': me.descripcion
                     }).then(function(response){
@@ -241,7 +241,7 @@
             activarDesactivarMostrar(accion,item){
                 this.adModal=1;
                 this.adNombre=item.nombre;
-                this.adId=item.idcategoria;                
+                this.adId=item.id;                
                 if (accion==1){
                     this.adAccion=1;
                 }
@@ -257,7 +257,7 @@
             },
             activar(){
                 let me=this;
-                axios.put('api/Categorias/Activar/'+this.adId,{}).then(function(response){
+                axios.put('api/tarjetas/Activar/'+this.adId,{}).then(function(response){
                     me.adModal=0;
                     me.adAccion=0;
                     me.adNombre="";
@@ -269,7 +269,7 @@
             },
             desactivar(){
                 let me=this;
-                axios.put('api/Categorias/Desactivar/'+this.adId,{}).then(function(response){
+                axios.put('api/tarjetas/Desactivar/'+this.adId,{}).then(function(response){
                     me.adModal=0;
                     me.adAccion=0;
                     me.adNombre="";
