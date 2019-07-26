@@ -17,6 +17,50 @@
             </v-list-tile-title>
           </v-list-tile>
         </template>
+       <!-- MODULO WCM MENU INICIO --> 
+       <template>
+          <v-list-group>
+            <v-list-tile slot="activator">
+              <v-list-tile-content>
+                <v-list-tile-title>
+                  WCM
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            <v-list-tile :to="{ name: 'categorias'}">
+              <v-list-tile-action>
+                <v-icon>table_chart</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>
+                  Tarjeta
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            <v-list-tile :to="{ name: 'articulos'}">
+              <v-list-tile-action>
+                <v-icon>table_chart</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>
+                  Anomalía
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+
+             <v-list-tile :to="{ name: 'articulos'}">
+              <v-list-tile-action>
+                <v-icon>table_chart</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>
+                  Área
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+
+          </v-list-group>
+        </template>
         <template>
           <v-list-group>
             <v-list-tile slot="activator">
