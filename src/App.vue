@@ -316,7 +316,11 @@ export default {
       admins: [
         ['Areas', 'place','areas'],
         ['Anomalias', 'power_off','anomalias'],
-         ['Tarjetas', 'credit_card','tarjetas']
+        ['Tarjetas', 'credit_card','tarjetas'],
+        ['Tipo de Falla', 'build','fallas'],
+        ['Condiciónes Inseguras', 'info','condicionesinseguras'],
+        ['Suceso Relacionado', 'error_outline','sucesos'],
+         
       ]
     }
   }

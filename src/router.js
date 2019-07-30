@@ -6,6 +6,10 @@ import Articulo from './components/Articulo.vue'
 import Anomalia from './components/wcm/Anomalia.vue'
 import Area from './components/wcm/Area.vue'
 import Tarjeta from './components/wcm/Tarjeta.vue'
+import Falla from './components/wcm/Falla.vue'
+import CondicionesInseguras from './components/wcm/CondicionInsegura.vue'
+import Suceso from './components/wcm/Suceso.vue'
+
 
 
 
@@ -46,6 +50,21 @@ export default new Router({
       path: '/anomalias',
       name: 'anomalias',
       component: Anomalia
+    },
+    {
+      path: '/fallas',
+      name: 'fallas',
+      component: Falla
+    },
+    {
+      path: '/condicionesinseguras',
+      name: 'condicionesinseguras',
+      component: CondicionesInseguras
+    },
+    {
+      path: '/sucesos',
+      name: 'sucesos',
+      component: Suceso
     }
     
   ]
