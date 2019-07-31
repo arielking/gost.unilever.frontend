@@ -27,7 +27,7 @@
                                     <v-text-field v-model="nombre" label="Nombre"></v-text-field>
                                 </v-flex>
                                 <v-flex xs6 sm6 md6>
-                                    <v-select v-model="idcategoria"
+                                    <v-select v-model="idarea"
                                     :items="areas" label="Areas">
                                     </v-select>
                                 </v-flex>
@@ -143,7 +143,7 @@
                 ],
                 search: '',
                 editedIndex: -1,
-                id: '',
+                idequipo: '',
                 idarea:'',
                 areas:[                   
                 ],
@@ -196,12 +196,9 @@
                 });
             },
             editItem (item) {
-                this.id=item.idarticulo;
-                this.idcategoria=item.idcategoria;
-                this.codigo=item.codigo;
+                this.idequipo=item.idequipo;
+                this.idcategoria=item.idarea;
                 this.nombre=item.nombre;
-                this.stock=item.stock;
-                this.precio_venta=item.precio_venta;
                 this.descripcion=item.descripcion;
                 this.editedIndex=1;
                 this.dialog = true
@@ -211,12 +208,9 @@
                 this.limpiar();
             },
             limpiar(){
-                this.id="";
-                this.idcategoria="";
-                this.codigo="";
+                this.idequipo="";
+                this.idarea="";
                 this.nombre="";
-                this.stock="";
-                this.precio_venta="";
                 this.descripcion="";
                 this.editedIndex=-1;
             },
@@ -229,12 +223,9 @@
                     //Código para guardar
                     let me=this;
                     axios.put('api/equipos/Actualizar',{
-                        'idarticulo':me.id,
-                        'idcategoria':me.idcategoria,
-                        'codigo':me.codigo,
+                        'idequipo':me.idequipo,
+                        'idarea':me.idarea,
                         'nombre': me.nombre,
-                        'stock':me.stock,
-                        'precio_venta':me.precio_venta,
                         'descripcion': me.descripcion
                     }).then(function(response){
                         me.close();
@@ -247,11 +238,8 @@
                     //Código para guardar
                     let me=this;
                     axios.post('api/equipos/Crear',{
-                        'idcategoria':me.idcategoria,
-                        'codigo':me.codigo,
+                        'idarea':me.idarea,
                         'nombre': me.nombre,
-                        'stock':me.stock,
-                        'precio_venta':me.precio_venta,
                         'descripcion': me.descripcion
                     }).then(function(response){
                         me.close();
@@ -269,15 +257,10 @@
                 if (this.nombre.length<3 || this.nombre.length>50){
                     this.validaMensaje.push("El nombre debe tener más de 3 caracteres y menos de 50 caracteres.");
                 }
-                if (!this.idcategoria){
-                    this.validaMensaje.push("Seleccione una categoría.");
+                if (!this.idarea){
+                    this.validaMensaje.push("Seleccione una area.");
                 }
-                if (!this.stock || this.stock==0){
-                    this.validaMensaje.push("Ingrese el stock inicial del artículo.");
-                }
-                if (!this.precio_venta || this.precio_venta==0){
-                    this.validaMensaje.push("Ingrese el precio de venta del artículo.");
-                }
+                
                 if (this.validaMensaje.length){
                     this.valida=1;
                 }
@@ -286,7 +269,7 @@
             activarDesactivarMostrar(accion,item){
                 this.adModal=1;
                 this.adNombre=item.nombre;
-                this.adId=item.idarticulo;                
+                this.adId=item.idequipo;                
                 if (accion==1){
                     this.adAccion=1;
                 }
