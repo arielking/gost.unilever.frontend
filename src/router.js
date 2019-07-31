@@ -9,6 +9,7 @@ import Tarjeta from './components/wcm/Tarjeta.vue'
 import Falla from './components/wcm/Falla.vue'
 import CondicionesInseguras from './components/wcm/CondicionInsegura.vue'
 import Suceso from './components/wcm/Suceso.vue'
+import Equipo from './components/wcm/1_N/Equipo.vue'
 
 
 
@@ -65,6 +66,11 @@ export default new Router({
       path: '/sucesos',
       name: 'sucesos',
       component: Suceso
+    },
+    {
+      path: '/equipos',
+      name: 'equipos',
+      component: Equipo
     }
     
   ]

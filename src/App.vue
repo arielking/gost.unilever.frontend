@@ -17,7 +17,7 @@
             </v-list-tile-title>
           </v-list-tile>
         </template>
-        
+      
        <!-- MODULO WCM MENU INICIO --> 
        <template>
           <v-list-group>
@@ -31,17 +31,21 @@
             <!--Menu configuracion-->          
 <template>
   
-  <v-list-group
-         action
-          sub-group
-        value="true"
-      >
+  <v-list-group action sub-group  value="true">
         
           <template v-slot:activator>
-            <v-list-item-content>
-              <v-list-item-title>Configuraciónes</v-list-item-title>
-            </v-list-item-content>
+           
+                Configuraciónes
+            
           </template>
+           <v-card
+      class="mx-auto"
+      max-width="300"
+      tile
+    >
+         <v-list disabled>
+        <v-subheader>Propiedades</v-subheader>
+        <v-list-item-group v-model="item" color="primary">
           <v-list-item
             v-for="(admin, i) in admins"
             :key="i"
@@ -49,7 +53,8 @@
           >
           <v-list-tile :to="{ name: admin[2]}">
               <v-list-tile-action>
-                <v-icon v-text="admin[1]" ></v-icon>
+                <v-icon v-text="admin[1]" >
+                </v-icon>
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title v-text="admin[0]">
@@ -58,6 +63,9 @@
               </v-list-tile-content>
             </v-list-tile>
             </v-list-item>
+        </v-list-item-group>
+      </v-list>
+      </v-card>
         </v-list-group>
 </template>
 <!-- Menu de accciones reportes, gestion tarjetas WCM-->
@@ -320,6 +328,7 @@ export default {
         ['Tipo de Falla', 'build','fallas'],
         ['Condiciónes Inseguras', 'info','condicionesinseguras'],
         ['Suceso Relacionado', 'error_outline','sucesos'],
+         ['Equipos', 'error_outline','equipos']
          
       ]
     }
