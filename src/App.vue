@@ -328,7 +328,8 @@ export default {
         ['Tipo de Falla', 'build','fallas'],
         ['Condiciónes Inseguras', 'info','condicionesinseguras'],
         ['Suceso Relacionado', 'error_outline','sucesos'],
-         ['Equipos', 'memory','equipos']
+        ['Equipos', 'memory','equipos'],
+        ['Maquinas', 'memory','maquinas']
          
       ]
     }

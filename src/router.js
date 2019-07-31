@@ -10,6 +10,7 @@ import Falla from './components/wcm/Falla.vue'
 import CondicionesInseguras from './components/wcm/CondicionInsegura.vue'
 import Suceso from './components/wcm/Suceso.vue'
 import Equipo from './components/wcm/1_N/Equipo.vue'
+import Maquina from './components/wcm/1_N/Maquina.vue'
 
 
 
@@ -71,6 +72,11 @@ export default new Router({
       path: '/equipos',
       name: 'equipos',
       component: Equipo
+    },
+    {
+      path: '/maquinas',
+      name: 'maquinas',
+      component: Maquina
     }
     
   ]
