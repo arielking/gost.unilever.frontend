@@ -752,7 +752,7 @@
                 
             
           </v-card-title>
-          <v-card-actions>
+          <v-card-actions v-if="thi.$store.roles.usuario='operador'">
             <v-btn  color="green"
             @click="editItemConfirmar(props.item)"
             >RESOLVER</v-btn>
