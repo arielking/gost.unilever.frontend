@@ -11,6 +11,9 @@ import CondicionesInseguras from './components/wcm/CondicionInsegura.vue'
 import Suceso from './components/wcm/Suceso.vue'
 import Equipo from './components/wcm/1_N/Equipo.vue'
 import Maquina from './components/wcm/1_N/Maquina.vue'
+import Rol from './components/GestionUsuarios/Rol.vue'
+import Usuario from './components/GestionUsuarios/Usuario.vue'
+
 
 
 
@@ -36,6 +39,16 @@ export default new Router({
       path: '/articulos',
       name: 'articulos',
       component: Articulo
+    },
+    {
+      path: '/roles',
+      name: 'roles',
+      component: Rol
+    },
+    {
+      path: '/usuarios',
+      name: 'usuarios',
+      component: Usuario
     },
     // CODIGO DE WCM -->
     {

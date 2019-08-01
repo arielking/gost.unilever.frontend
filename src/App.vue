@@ -34,9 +34,7 @@
   <v-list-group action sub-group  value="true">
         
           <template v-slot:activator>
-           
-                Configuraciónes
-            
+                Configuraciónes areas y equipos
           </template>
            <v-card
       class="mx-auto"
@@ -68,6 +66,46 @@
       </v-card>
         </v-list-group>
 </template>
+<!-- Congiguracion de sucesos-->
+<template>
+  
+  <v-list-group action sub-group  value="true">
+        
+          <template v-slot:activator>
+                Configuraciónes Incidentes
+          </template>
+           <v-card
+      class="mx-auto"
+      max-width="300"
+      tile
+    >
+         <v-list disabled>
+        <v-subheader>Propiedades</v-subheader>
+        <v-list-item-group v-model="item" color="primary">
+          <v-list-item
+            v-for="(conf, i) in configuracion"
+            :key="i"
+            link
+          >
+          <v-list-tile :to="{ name: conf[2]}">
+              <v-list-tile-action>
+                <v-icon v-text="conf[1]" >
+                </v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title v-text="conf[0]">
+                  
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            </v-list-item>
+        </v-list-item-group>
+      </v-list>
+      </v-card>
+        </v-list-group>
+</template>
+
+
 <!-- Menu de accciones reportes, gestion tarjetas WCM-->
             
             <v-list-tile :to="{ name: 'tarjetas'}">
@@ -209,7 +247,7 @@
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
-            <v-list-tile :to="{ name: ''}">
+            <v-list-tile :to="{ name: 'roles'}">
               <v-list-tile-action>
                 <v-icon>table_chart</v-icon>
               </v-list-tile-action>
@@ -219,7 +257,7 @@
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
-            <v-list-tile :to="{ name: ''}">
+            <v-list-tile :to="{ name: 'usuarios'}">
               <v-list-tile-action>
                 <v-icon>table_chart</v-icon>
               </v-list-tile-action>
@@ -323,13 +361,19 @@ export default {
       title: 'Vuetify.js',
       admins: [
         ['Areas', 'place','areas'],
-        ['Anomalias', 'power_off','anomalias'],
+        ['Equipos', 'memory','equipos'],
+        ['Maquinas', 'dns','maquinas']
+        
+         
+      ],
+      configuracion: [
         ['Tarjetas', 'credit_card','tarjetas'],
+        ['Anomalias', 'power_off','anomalias'],
         ['Tipo de Falla', 'build','fallas'],
         ['Condiciónes Inseguras', 'info','condicionesinseguras'],
-        ['Suceso Relacionado', 'error_outline','sucesos'],
-        ['Equipos', 'memory','equipos'],
-        ['Maquinas', 'memory','maquinas']
+        ['Suceso Relacionado', 'error_outline','sucesos']
+      
+        
          
       ]
     }
