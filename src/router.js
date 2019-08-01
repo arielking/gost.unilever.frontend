@@ -12,6 +12,7 @@ import Ingreso from './components/Ingreso.vue'
 
 import RegistroAnomalia from './components/wcm/1_N/RegistroAnomalia.vue'
 import Tecnico from './components/wcm/1_N/RegistrosAnomalias/Tecnico.vue'
+import TecnicoLista from './components/wcm/1_N/RegistrosAnomalias/TecnicoLista.vue'
 
 
 import store from './store'
@@ -109,6 +110,16 @@ var router = new Router({
       path: '/tecnico',
       name: 'tecnico',
       component: Tecnico,
+      meta :{
+        administrador :true,
+        almacenero: true,
+        mantenimiento:true
+      }
+    },
+    {
+      path: '/tecnicoLista',
+      name: 'tecnicoLista',
+      component: TecnicoLista,
       meta :{
         administrador :true,
         almacenero: true,

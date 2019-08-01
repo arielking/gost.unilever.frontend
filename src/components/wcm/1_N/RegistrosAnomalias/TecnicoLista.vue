@@ -123,15 +123,7 @@
             md4
             lg3
           >
-           <v-hover>
-              <v-card
-              slot-scope="{ hover }"
-            :class="`elevation-${hover ? 12 : 2}`"
-            class="mx-auto"
-            
-              
-              
-              >
+              <v-card>
           <v-img
             class="white--text"
             height="200px"
@@ -172,6 +164,7 @@
               </v-list-tile>
               <v-divider ></v-divider>
                    <div text-truncate >Fecha emision: {{props.item.emision_ts}}</div>
+                    <div text-truncate >Tecnico : {{props.item.usuariotecnico}}</div>
             </template>
           </v-list>
           </v-flex >
@@ -188,8 +181,6 @@
             >Detalles</v-btn>
           </v-card-actions>
         </v-card>
-      </v-hover>
-
           </v-flex>
         </template>
       </v-data-iterator>
@@ -310,7 +301,7 @@ import { all } from 'q';
             },
                 listar(){
                     let me=this;
-                    axios.get('api/RegistrosAnomalias/ListarTecnico').then(function(response){
+                    axios.get('api/RegistrosAnomalias/SelectListaTecnico/'+me.$store.state.usuario.idusuario).then(function(response){
                         //console.log(response);
                         me.itemsdata=response.data;
                     }).catch(function(error){

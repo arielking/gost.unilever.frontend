@@ -35,7 +35,7 @@
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title>
-                  Tarjetas 
+                  Tarjetas Reportadas
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -45,7 +45,18 @@
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title>
-                  Lista Espera
+                  Lista Espera WCM
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+
+             <v-list-tile v-if=" esAdministrador ||esTecnico" :to="{ name: 'tecnicoLista'}">
+              <v-list-tile-action>
+                <v-icon>table_chart</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>
+                  Mis tarjetas WCM
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
