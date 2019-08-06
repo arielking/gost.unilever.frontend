@@ -3,94 +3,112 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import Categoria from './components/Categoria.vue'
 import Articulo from './components/Articulo.vue'
-import Anomalia from './components/wcm/Anomalia.vue'
-import Area from './components/wcm/Area.vue'
-import Tarjeta from './components/wcm/Tarjeta.vue'
-import Falla from './components/wcm/Falla.vue'
-import CondicionesInseguras from './components/wcm/CondicionInsegura.vue'
-import Suceso from './components/wcm/Suceso.vue'
-import Equipo from './components/wcm/1_N/Equipo.vue'
-import Maquina from './components/wcm/1_N/Maquina.vue'
 import Rol from './components/GestionUsuarios/Rol.vue'
 import Usuario from './components/GestionUsuarios/Usuario.vue'
-
-
-
-
-
+import Cliente from './components/Cliente.vue'
+import Proveedor from './components/Proveedor.vue'
+import Login from './components/Login.vue'
+import store from './store'
 
 Vue.use(Router)
 
-export default new Router({
+var router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: Home,
+      meta :{
+        administrador :true,
+        almacenero: true,
+        vendedor: true
+      }
     },
     {
       path: '/categorias',
       name: 'categorias',
-      component: Categoria
+      component: Categoria,
+      meta :{
+        administrador :true,
+        almacenero: true
+      }
     },
     {
       path: '/articulos',
       name: 'articulos',
-      component: Articulo
+      component: Articulo,
+      meta :{
+        administrador :true,
+        almacenero: true
+      }
     },
     {
       path: '/roles',
       name: 'roles',
-      component: Rol
+      component: Rol,
+      meta :{
+        administrador :true
+      }
     },
     {
       path: '/usuarios',
       name: 'usuarios',
-      component: Usuario
-    },
-    // CODIGO DE WCM -->
-    {
-      path: '/areas',
-      name: 'areas',
-      component: Area
+      component: Usuario,
+      meta :{
+        administrador :true
+      }
     },
     {
-      path: '/tarjetas',
-      name: 'tarjetas',
-      component: Tarjeta
+      path: '/clientes',
+      name: 'clientes',
+      component: Cliente,
+      meta :{
+        administrador :true,
+        vendedor: true
+      }
     },
     {
-      path: '/anomalias',
-      name: 'anomalias',
-      component: Anomalia
+      path: '/proveedores',
+      name: 'proveedores',
+      component: Proveedor,
+      meta :{
+        administrador :true,
+        almacenero: true
+      }
     },
     {
-      path: '/fallas',
-      name: 'fallas',
-      component: Falla
-    },
-    {
-      path: '/condicionesinseguras',
-      name: 'condicionesinseguras',
-      component: CondicionesInseguras
-    },
-    {
-      path: '/sucesos',
-      name: 'sucesos',
-      component: Suceso
-    },
-    {
-      path: '/equipos',
-      name: 'equipos',
-      component: Equipo
-    },
-    {
-      path: '/maquinas',
-      name: 'maquinas',
-      component: Maquina
+      path: '/login',
+      name: 'login',
+      component: Login,
+      meta : {
+        libre: true
+      }
     }
-    
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.libre)){
+    next()
+  } else if (store.state.usuario && store.state.usuario.rol== 'Administrador'){
+    if (to.matched.some(record => record.meta.administrador)){
+      next()
+    }
+  }else if (store.state.usuario && store.state.usuario.rol== 'Almacenero'){
+    if (to.matched.some(record => record.meta.almacenero)){
+      next()
+    }
+  }else if (store.state.usuario && store.state.usuario.rol== 'Vendedor'){
+    if (to.matched.some(record => record.meta.vendedor)){
+      next()
+    }
+  } else{
+    next({
+      name: 'login'
+    })
+  }
+})
+
+export default router

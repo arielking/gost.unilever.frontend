@@ -5,9 +5,10 @@
       :clipped="$vuetify.breakpoint.mdAndUp"
       app
       v-model="drawer"
+      v-if="logueado"
     >
       <v-list dense>
-        <template>
+        <template v-if="esAdministrador || esAlmacenero || esVendedor">
           <v-list-tile :to="{name:'home'}">
             <v-list-tile-action>
               <v-icon>home</v-icon>
@@ -17,132 +18,7 @@
             </v-list-tile-title>
           </v-list-tile>
         </template>
-      
-       <!-- MODULO WCM MENU INICIO --> 
-       <template>
-          <v-list-group>
-            <v-list-tile slot="activator">
-              <v-list-tile-content>
-                <v-list-tile-title>
-                  WCM
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <!--Menu configuracion-->          
-<template>
-  
-  <v-list-group action sub-group  value="true">
-        
-          <template v-slot:activator>
-                Configuraciónes areas y equipos
-          </template>
-           <v-card
-      class="mx-auto"
-      max-width="300"
-      tile
-    >
-         <v-list disabled>
-        <v-subheader>Propiedades</v-subheader>
-        <v-list-item-group v-model="item" color="primary">
-          <v-list-item
-            v-for="(admin, i) in admins"
-            :key="i"
-            link
-          >
-          <v-list-tile :to="{ name: admin[2]}">
-              <v-list-tile-action>
-                <v-icon v-text="admin[1]" >
-                </v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title v-text="admin[0]">
-                  
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            </v-list-item>
-        </v-list-item-group>
-      </v-list>
-      </v-card>
-        </v-list-group>
-</template>
-<!-- Congiguracion de sucesos-->
-<template>
-  
-  <v-list-group action sub-group  value="true">
-        
-          <template v-slot:activator>
-                Configuraciónes Incidentes
-          </template>
-           <v-card
-      class="mx-auto"
-      max-width="300"
-      tile
-    >
-         <v-list disabled>
-        <v-subheader>Propiedades</v-subheader>
-        <v-list-item-group v-model="item" color="primary">
-          <v-list-item
-            v-for="(conf, i) in configuracion"
-            :key="i"
-            link
-          >
-          <v-list-tile :to="{ name: conf[2]}">
-              <v-list-tile-action>
-                <v-icon v-text="conf[1]" >
-                </v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title v-text="conf[0]">
-                  
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            </v-list-item>
-        </v-list-item-group>
-      </v-list>
-      </v-card>
-        </v-list-group>
-</template>
-
-
-<!-- Menu de accciones reportes, gestion tarjetas WCM-->
-            
-            <v-list-tile :to="{ name: 'tarjetas'}">
-              <v-list-tile-action>
-                <v-icon>attachment</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title>
-                  Crear
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile :to="{ name: 'anomalias'}">
-              <v-list-tile-action>
-                <v-icon>table_chart</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title>
-                  Modificar
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-
-             <v-list-tile :to="{ name: 'areas'}">
-              <v-list-tile-action>
-                <v-icon>table_chart</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title>
-                  Área
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-
-          </v-list-group>
-        </template>
-        <template>
+        <template v-if="esAdministrador || esAlmacenero">
           <v-list-group>
             <v-list-tile slot="activator">
               <v-list-tile-content>
@@ -174,7 +50,7 @@
 
           </v-list-group>
         </template>
-        <template>
+        <template v-if="esAdministrador || esAlmacenero">
           <v-list-group>
             <v-list-tile slot="activator">
               <v-list-tile-content>
@@ -193,7 +69,7 @@
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
-            <v-list-tile :to="{ name: ''}">
+            <v-list-tile :to="{ name: 'proveedores'}">
               <v-list-tile-action>
                 <v-icon>table_chart</v-icon>
               </v-list-tile-action>
@@ -206,7 +82,7 @@
 
           </v-list-group>
         </template>
-        <template>
+        <template v-if="esAdministrador|| esVendedor">
           <v-list-group>
             <v-list-tile slot="activator">
               <v-list-tile-content>
@@ -225,7 +101,7 @@
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
-            <v-list-tile :to="{ name: ''}">
+            <v-list-tile :to="{ name: 'clientes'}">
               <v-list-tile-action>
                 <v-icon>table_chart</v-icon>
               </v-list-tile-action>
@@ -238,7 +114,7 @@
 
           </v-list-group>
         </template>
-        <template>
+        <template v-if="esAdministrador">
           <v-list-group>
             <v-list-tile slot="activator">
               <v-list-tile-content>
@@ -270,7 +146,7 @@
 
           </v-list-group>
         </template>
-        <template>
+        <template v-if="esAdministrador">
           <v-list-group>
             <v-list-tile slot="activator">
               <v-list-tile-content>
@@ -310,14 +186,20 @@
       app
       :clipped-left="$vuetify.breakpoint.mdAndUp"
       fixed
+      
+      v-model="drawer"
+      v-if="logueado"
     >
       <v-toolbar-title style="width: 300px" class="ml-0 pl-3">
         <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-        <span class="hidden-sm-and-down">Ghost System</span>
+        <span class="hidden-sm-and-down">Sistema</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn icon>
-        <v-icon>apps</v-icon>
+      <v-btn @click="salir" v-if="logueado" icon>
+        <v-icon>logout</v-icon> Salir
+      </v-btn>
+      <v-btn :to="{name: 'login'}" v-else>
+        <v-icon>apps</v-icon> Login
       </v-btn>
     </v-toolbar>
     <v-content>
@@ -327,17 +209,17 @@
         </v-slide-y-transition>
       </v-container>
     </v-content>
-   <!-- <v-footer dark height="auto"> 
+   <!-- <v-footer dark height="auto">
       <v-layout justify-center>
         <v-flex text-xs-center>
           <v-card flat tile color="primary" class="white--text">
             <v-card-text class="white--text pt-0">
-              Unilever  &copy;2019
+              IncanatoIT &copy;2018
             </v-card-text>
           </v-card>
         </v-flex>
       </v-layout>
-    </v-footer> -->
+    </v-footer>-->
 
   </v-app>
 </template>
@@ -358,26 +240,30 @@ export default {
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: 'Vuetify.js',
-      admins: [
-        ['Areas', 'place','areas'],
-        ['Equipos', 'memory','equipos'],
-        ['Maquinas', 'dns','maquinas']
-        
-         
-      ],
-      configuracion: [
-        ['Tarjetas', 'credit_card','tarjetas'],
-        ['Anomalias', 'power_off','anomalias'],
-        ['Tipo de Falla', 'build','fallas'],
-        ['Condiciónes Inseguras', 'info','condicionesinseguras'],
-        ['Suceso Relacionado', 'error_outline','sucesos']
-      
-        
-         
-      ]
+      title: 'Vuetify.js'
+    }
+  },
+  computed: {
+    logueado(){
+      return this.$store.state.usuario;
+    },
+    esAdministrador(){
+      return this.$store.state.usuario && this.$store.state.usuario.rol =='Administrador';
+    },
+    esAlmacenero(){
+      return this.$store.state.usuario && this.$store.state.usuario.rol =='Almacenero';
+    },
+    esVendedor(){
+      return this.$store.state.usuario && this.$store.state.usuario.rol =='Vendedor';
+    }
+  },
+  created(){
+    this.$store.dispatch("autoLogin");
+  },
+  methods:{
+    salir(){
+      this.$store.dispatch("salir");
     }
   }
 }
 </script>
-
