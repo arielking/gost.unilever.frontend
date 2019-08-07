@@ -2,18 +2,31 @@
     <v-layout align-center justify-center>
       
         <v-flex xs12 sm8 md6 lg5 xl4>
-        
-            <v-card>
-                
-                <v-toolbar dark color="blue darken-3">
-                    <v-toolbar-title>
+            <v-card >
+                <v-toolbar dark color="blue darken-3"  height="40" >
+                    <v-toolbar-title >
                         Acceso al Sistema
                     </v-toolbar-title>
+                    
                 </v-toolbar>
+                     <v-img
+                    :src="require('../assets/maquina.gif')"
+                    
+                    aspect-ratio="4"
+                    class="grey lighten-5"
+                    max-width="640"
+                    max-height="294"
+                    
+                    >   </v-img>
+                
+         
+            
                 <v-card-text>
                     <v-text-field v-model="email" autofocus color="accent" label="Email" required>
+                        <v-icon dark right>check_circle</v-icon>
                     </v-text-field>
                     <v-text-field v-model="password" type="password" color="accent" label="Password" required>
+                        <v-icon dark right>check_circle</v-icon>
                     </v-text-field>
                     <v-flex class="red--text" v-if="error">
                         {{error}}
@@ -21,8 +34,11 @@
                 </v-card-text>
                 <v-card-actions class="px-3 pb-3">
                     <v-flex text-xs-right>
-                        <v-btn @click="ingresar" color="primary">Ingresar</v-btn>
+                        
+                        <v-btn @click="ingresar" color="primary">Ingresar <v-icon dark right>check_circle</v-icon></v-btn>
                     </v-flex>
+                   
+                    
                 </v-card-actions>
             </v-card>
         </v-flex>
@@ -60,7 +76,10 @@ export default {
                 }
                 //console.log(err)
             })
+       
         }
+
+        
     }
     
 }

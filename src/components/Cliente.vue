@@ -146,7 +146,9 @@
         methods:{
             listar(){
                 let me=this;
-                axios.get('api/Personas/ListarClientes').then(function(response){
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+                axios.get('api/Personas/ListarClientes',configuracion).then(function(response){
                     //console.log(response);
                     me.clientes=response.data;
                 }).catch(function(error){
@@ -185,6 +187,8 @@
                 if (this.editedIndex > -1) {
                     //Código para editar
                     let me=this;
+                    let header={"Authorization" : "Bearer " + this.$store.state.token};
+                    let configuracion= {headers : header};
                     axios.put('api/Personas/Actualizar',{
                         'idpersona':me.id,
                         'tipo_persona':'Cliente',
@@ -194,7 +198,7 @@
                         'direccion':me.direccion,
                         'telefono': me.telefono,
                         'email':me.email                       
-                    }).then(function(response){
+                    },configuracion).then(function(response){
                         me.close();
                         me.listar();
                         me.limpiar();                        
@@ -204,6 +208,8 @@
                 } else {
                     //Código para guardar
                     let me=this;
+                    let header={"Authorization" : "Bearer " + this.$store.state.token};
+                    let configuracion= {headers : header};
                     axios.post('api/Personas/Crear',{
                         'tipo_persona':'Cliente',
                         'nombre':me.nombre,
@@ -212,7 +218,7 @@
                         'direccion':me.direccion,
                         'telefono': me.telefono,
                         'email':me.email
-                    }).then(function(response){
+                    },configuracion).then(function(response){
                         me.close();
                         me.listar();
                         me.limpiar();                        

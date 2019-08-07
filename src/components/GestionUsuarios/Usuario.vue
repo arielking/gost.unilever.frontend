@@ -210,7 +210,9 @@
         methods:{
             listar(){
                 let me=this;
-                axios.get('api/usuarios/Listar').then(function(response){
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+                axios.get('api/usuarios/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.usuarios=response.data;
                 }).catch(function(error){
@@ -220,7 +222,9 @@
             select(){
                 let me=this;
                 var rolesArray=[];
-                axios.get('api/roles/Select').then(function(response){
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+                axios.get('api/roles/Select',configuracion).then(function(response){
                     rolesArray=response.data;
                     rolesArray.map(function(x){
                         me.roles.push({text: x.nombre,value:x.idrol});
@@ -272,6 +276,8 @@
                      if (me.password!=me.passwordAnt){
                         me.actPassword=true;
                     }
+                    let header={"Authorization" : "Bearer " + this.$store.state.token};
+                    let configuracion= {headers : header};
                     axios.put('api/usuarios/Actualizar',{
                         'idusuario':me.id,
                         'idrol':me.idrol,
@@ -283,7 +289,7 @@
                         'email':me.email,
                         'password':me.password,
                         'act_password':me.actPassword
-                    }).then(function(response){
+                    },configuracion).then(function(response){
                         me.close();
                         me.listar();
                         me.limpiar();                        
@@ -293,6 +299,8 @@
                 } else {
                     //Código para guardar
                     let me=this;
+                    let header={"Authorization" : "Bearer " + this.$store.state.token};
+                    let configuracion= {headers : header};
                     axios.post('api/usuarios/Crear',{
                         'idrol':me.idrol,
                         'nombre':me.nombre,
@@ -303,7 +311,7 @@
                         'email':me.email,
                         'password':me.password
                         
-                    }).then(function(response){
+                    },configuracion).then(function(response){
                         me.close();
                         me.listar();
                         me.limpiar();                        
@@ -339,7 +347,7 @@
             activarDesactivarMostrar(accion,item){
                 this.adModal=1;
                 this.adNombre=item.nombre;
-                this.adId=item.idarticulo;                
+                this.adId=item.idusuario;                
                 if (accion==1){
                     this.adAccion=1;
                 }
@@ -355,7 +363,9 @@
             },
             activar(){
                 let me=this;
-                axios.put('api/usuarios/Activar/'+this.adId,{}).then(function(response){
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+                axios.put('api/usuarios/Activar/'+this.adId,{},configuracion).then(function(response){
                     me.adModal=0;
                     me.adAccion=0;
                     me.adNombre="";
@@ -367,7 +377,9 @@
             },
             desactivar(){
                 let me=this;
-                axios.put('api/usuarios/Desactivar/'+this.adId,{}).then(function(response){
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+                axios.put('api/usuarios/Desactivar/'+this.adId,{},configuracion).then(function(response){
                     me.adModal=0;
                     me.adAccion=0;
                     me.adNombre="";
