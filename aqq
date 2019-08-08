@@ -1,0 +1,109 @@
+[33mcommit 5537c2479302bc423a080eabc24e85a57a6cf285[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Author: ariel.fernandez <ariel.fernandez@tiemsolutions.com>
+Date:   Wed Aug 7 10:09:14 2019 -0400
+
+    modulo ingreso
+
+[33mcommit b04cdfb67c9065175edc83acf695991e4c5b7406[m
+Author: ariel.fernandez <ariel.fernandez@tiemsolutions.com>
+Date:   Wed Aug 7 10:06:17 2019 -0400
+
+    ingrso 2
+
+[33mcommit 067e848e5c8df4ac3f22de25b48c131b05cf9ce3[m
+Author: ariel.fernandez <ariel.fernandez@tiemsolutions.com>
+Date:   Tue Aug 6 23:54:47 2019 -0400
+
+    modulo listar ingresos
+
+[33mcommit f3ca07c9e91fc0066a15623c0ba595effe35b610[m
+Author: ariel.fernandez <ariel.fernandez@tiemsolutions.com>
+Date:   Tue Aug 6 10:31:40 2019 -0400
+
+    login terminado completo 6-8-19
+
+[33mcommit 964aabb382940140b44f101e0a5f080076aef629[m
+Author: ariel.fernandez <ariel.fernandez@tiemsolutions.com>
+Date:   Thu Aug 1 15:37:54 2019 -0400
+
+    version fallada de usuarios
+
+[33mcommit 39db8a702153771f25e1cbb9d798e52d9bfc4bd4[m
+Author: Ariel Fernandez <arielunix@gmail.com>
+Date:   Wed Jul 31 19:52:26 2019 -0400
+
+    Delete Program.cs
+
+[33mcommit 2cd97fa31625de585d3dd6e783e782230d5b24b3[m
+Author: Ariel Fernandez <arielunix@gmail.com>
+Date:   Wed Jul 31 19:43:12 2019 -0400
+
+    Update Program.cs
+
+[33mcommit e3c1a91f41367a20ce92e41c7b971ff53d396d7f[m
+Author: Ariel Fernandez <arielunix@gmail.com>
+Date:   Wed Jul 31 19:41:29 2019 -0400
+
+    commis
+    
+    add status
+
+[33mcommit 6c6b9026f0fc3b0094657024bffa9aa6bc71e596[m
+Author: ariel.fernandez <ariel.fernandez@tiemsolutions.com>
+Date:   Wed Jul 31 19:40:20 2019 -0400
+
+    modulo maquina terminado
+
+[33mcommit 97f9db24331c3ec1e7e718afcdab147a3f1602ef[m
+Author: ariel.fernandez <ariel.fernandez@tiemsolutions.com>
+Date:   Wed Jul 31 17:21:43 2019 -0400
+
+    temrinado modulo equipos
+
+[33mcommit d3cf8221fdfcec45a77337fcfca0a14ae95f8a82[m
+Author: ariel.fernandez <ariel.fernandez@tiemsolutions.com>
+Date:   Wed Jul 31 16:06:59 2019 -0400
+
+    modulos de cequipos
+
+[33mcommit b49ed76ff6d2a67b589a1f82bb2ebd393ba1eb2c[m
+Author: ariel.fernandez <ariel.fernandez@tiemsolutions.com>
+Date:   Tue Jul 30 16:10:10 2019 -0400
+
+    modulos de condiciones fallas , sucesos
+
+[33mcommit fd611ea1d2724bb881dfb8cbb8d2dbab045ccf19[m
+Author: ariel.fernandez <ariel.fernandez@tiemsolutions.com>
+Date:   Fri Jul 26 18:21:15 2019 -0400
+
+    Creacion de submenu de WCM
+
+[33mcommit f075231cba717148bf227c80b218474dbc7f2e2a[m
+Author: ariel.fernandez <ariel.fernandez@tiemsolutions.com>
+Date:   Fri Jul 26 15:07:11 2019 -0400
+
+    actualizacion del menu v1
+
+[33mcommit 7679a19d74e7b148eb1c46e21048e1b90ee7a1e4[m
+Author: ariel.fernandez <ariel.fernandez@tiemsolutions.com>
+Date:   Fri Jul 26 14:48:15 2019 -0400
+
+    se agrego menu de wcm
+
+[33mcommit da843c14fc2d5b85911a3c270440cc16a4443d8a[m
+Author: ariel.fernandez <ariel.fernandez@tiemsolutions.com>
+Date:   Fri Jul 26 10:16:34 2019 -0400
+
+    Sistema unilever inicial frontEnd
+
+[33mcommit e1c499b004114fa346ec80d8e959d074f1bb44de[m
+Author: dev <dev@DESKTOP-V4993JR>
+Date:   Mon Jul 22 15:59:02 2019 -0400
+
+    init
+
+[33mcommit d493b349933b4ea948cb8054ec6aa31d51a0291a[m
+Author: Ariel Fernandez <arielunix@gmail.com>
+Date:   Fri Jul 26 10:17:15 2019 -0400
+
+    Initial commit

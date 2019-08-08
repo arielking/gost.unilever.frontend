@@ -10,6 +10,8 @@ import Proveedor from './components/Proveedor.vue'
 import Login from './components/Login.vue'
 import Ingreso from './components/Ingreso.vue'
 
+import RegistroAnomalia from './components/wcm/1_N/RegistroAnomalia.vue'
+
 import store from './store'
 
 
@@ -86,6 +88,15 @@ var router = new Router({
       path: '/proveedores',
       name: 'proveedores',
       component: Proveedor,
+      meta :{
+        administrador :true,
+        almacenero: true
+      }
+    },
+    {
+      path: '/registroanomalia',
+      name: 'registroanomalia',
+      component: RegistroAnomalia,
       meta :{
         administrador :true,
         almacenero: true

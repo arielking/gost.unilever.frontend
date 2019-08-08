@@ -2,7 +2,7 @@
     <v-layout align-start>
         <v-flex>
             <v-toolbar flat color="white">
-                <v-toolbar-title>Ingresos</v-toolbar-title>
+                <v-toolbar-title>Tarjetas</v-toolbar-title>
                     <v-divider
                     class="mx-2"
                     inset
@@ -12,10 +12,10 @@
                     <v-text-field v-if="verNuevo==0" class="text-xs-center" v-model="search" append-icon="search" label="Búsqueda" single-line hide-details></v-text-field>
                     <v-spacer></v-spacer>
                     <v-btn v-if="verNuevo==0" @click="mostrarNuevo" color="primary" dark class="mb-2">Nuevo</v-btn>
-                    <v-dialog v-model="verArticulos" max-width="1000px">
+                    <v-dialog v-model="verArticulos" max-width="500">
                         <v-card>
                             <v-card-title>
-                                <span class="headline">Seleccione un artículo</span>
+                                <span class="headline">Seleccione una Area</span>
                             </v-card-title>
                             <v-card-text>
                                 <v-container grid-list-md>
@@ -23,7 +23,7 @@
                                         <v-flex xs12 sm12 md12 lg12 xl12>
                                             <v-text-field append-icon="search" 
                                             class="text-xs-center" v-model="texto"
-                                            label="Ingrese artículo a buscar" @keyup.enter="listarArticulo()">
+                                            label="Ingrese e area a buscar" @keyup.enter="listarArticulo()">
 
                                             </v-text-field>
                                             <template>
@@ -44,9 +44,7 @@
                                                         </td>
                                                         <td>{{ props.item.nombre }}</td>
                                                         <td>{{props.item.categoria}}</td>
-                                                        <td>{{props.item.descripcion}}</td>
-                                                        <td>{{props.item.stock}}</td>
-                                                        <td>{{props.item.precio_venta}}</td>
+                                                        
                                                     </template>
                                                     <template slot="no-data">
                                                         <h3>No hay artículos para mostrar.</h3>
@@ -93,7 +91,7 @@
                 </v-toolbar>
             <v-data-table
                 :headers="headers"
-                :items="ingresos"
+                :items="anomalias"
                 :search="search"
                 class="elevation-1"
                 v-if="verNuevo==0"
@@ -124,14 +122,13 @@
                             </v-icon>
                         </template>
                     </td>
+                    <td>{{ props.item.codigo }}</td>
+                    <td>{{ props.item.emision_ts}}</td>
                     <td>{{ props.item.usuario }}</td>
-                    <td>{{ props.item.proveedor}}</td>
-                    <td>{{ props.item.tipo_comprobante }}</td>
-                    <td>{{ props.item.serie_comprobante }}</td>
-                    <td>{{ props.item.num_comprobante }}</td>
-                    <td>{{ props.item.fecha_hora }}</td>
-                    <td>{{ props.item.impuesto }}</td>
-                    <td>{{ props.item.total }}</td>
+                    <td>{{ props.item.area }}</td>
+                    <td>{{ props.item.maquina }}</td>
+                    <td>{{ props.item.tarjeta }}</td>
+                  
                     <td>
                         <div v-if="props.item.estado=='Aceptado'">
                             <span class="blue--text">Aceptado</span>
@@ -147,22 +144,96 @@
             </v-data-table>
             <v-container grid-list-sm class="pa-4 white" v-if="verNuevo">
                 <v-layout row wrap>
-                    <v-flex xs12 sm4 md4 lg4 xl4>
-                        <v-select v-model="tipo_comprobante" 
-                        :items="comprobantes" label="Tipo Comprobante">
+                     <v-flex xs12 sm3 md3 lg3 xl4>
+                        <v-text-field v-model="num_comprobante" label="Nombre">
+                        </v-text-field>
+                    </v-flex>
+                    <v-flex  xs12 sm2 md2 lg2 xl2>
+                            <v-menu
+                                v-model="menu2"
+                                :close-on-content-click="false"
+                                :nudge-right="40"
+                                transition="scale-transition"
+                                offset-y
+                                full-width
+                                min-width="290px"
+                            >
+                                <template v-slot:activator="{ on }">
+                                <v-text-field
+                                    v-model="date"
+                                    label="Fecha"
+                                    prepend-icon="event"
+                                    readonly
+                                    v-on="on"
+                                ></v-text-field>
+                                </template>
+                                <v-date-picker v-model="date" @input="menu2 = false"></v-date-picker>
+                            </v-menu>
+                    </v-flex>
+                     <v-flex xs12 sm1 md1 lg1 xl2>
+                        <v-select v-model="paso_ma"
+                        :items="pasoma" label="Paso MA" >
                         </v-select>
                     </v-flex>
-                    <v-flex xs12 sm4 md4 lg4 xl4>
-                        <v-text-field v-model="serie_comprobante" label="Serie Comprobante">
+                    <v-flex xs12 sm3 md3 lg3 xl4>
+                       <v-flex xs12 sm3 md3 lg3 xl4>
+                        <v-header-text>Criticidad</v-header-text>
+                        </v-flex >
+                       <v-radio-group v-model="criticidad" row   :mandatory="false">
+                        <v-radio label="A" value="A"></v-radio>
+                        <v-radio label="B" value="B"></v-radio>
+                        <v-radio label="C" value="C"></v-radio>
+                        </v-radio-group>
+                        
+                    </v-flex>
+                   
+                    <v-flex xs12 sm3 md3 lg3 xl4>
+                        <v-flex xs12 sm3 md3 lg3 xl4>
+                        <v-header-text>Turno</v-header-text>
+                        </v-flex >
+                        <v-radio-group v-model="turno" row  :mandatory="false">
+                        <v-radio label="T1" value="T1"></v-radio>
+                        <v-radio label="T2" value="T2"></v-radio>
+                        <v-radio label="T3" value="T3"></v-radio>
+                        </v-radio-group>
+                    </v-flex>
+                   
+                    <v-flex xs12 sm3 md3 lg3 xl2>
+                       <v-select v-model="idproveedor"
+                        :items="areas" label="Area">
+                        </v-select>
+                    </v-flex>
+                     
+                     <v-flex xs12 sm2 md2 lg2 xl2>
+                        <v-text-field @keyup.enter="buscarCodigo()" v-model="codigo" label="Maquina">
                         </v-text-field>
                     </v-flex>
-                    <v-flex xs12 sm4 md4 lg4 xl4>
-                        <v-text-field v-model="num_comprobante" label="Número Comprobante">
+                     <v-flex xs12 sm1 md1 lg1 xl2>
+                        <v-btn @click="mostrarArticulos()" small fab dark color="teal">
+                            <v-icon dark>list</v-icon>
+                        </v-btn>
+                    </v-flex>
+                     <v-flex xs12 sm2 md2 lg2 xl2>
+                        <v-text-field @keyup.enter="buscarCodigo()" v-model="codigo" label="Anomaila">
                         </v-text-field>
                     </v-flex>
-                    <v-flex xs12 sm8 md8 lg8 xl8>
+                     <v-flex xs12 sm1 md1 lg1 xl2>
+                        <v-btn @click="mostrarArticulos()" small fab dark color="teal">
+                            <v-icon dark>list</v-icon>
+                        </v-btn>
+                    </v-flex>
+                    <v-flex xs12 sm2 md2 lg2 xl2>
+                        <v-text-field @keyup.enter="buscarCodigo()" v-model="codigo" label="Relacionada con:">
+                        </v-text-field>
+                    </v-flex>
+                     <v-flex xs12 sm1 md1 lg1 xl2>
+                        <v-btn @click="mostrarArticulos()" small fab dark color="teal">
+                            <v-icon dark>list</v-icon>
+                        </v-btn>
+                    </v-flex>
+                     <v-flex xs12 sm6 md6 lg6 xl2>
                         <v-select v-model="idproveedor"
-                        :items="proveedores" label="Proveedor">
+                        :items="areas" label="Proveedor">
                         </v-select>
                     </v-flex>
                     <v-flex xs12 sm4 md4 lg4 xl4>
@@ -236,19 +307,28 @@
     export default {
         data(){
             return {
-                ingresos:[],                
+                //MODULOS EXTRAS VARIBALES DECLARADAS
+                criticidad:"",
+                turno:"",
+                min: -1,
+                max: 7,
+                paso_ma: 0,
+                pasoma:[0,1,2,3,4,5,6,7],
+                range: [0, 7],
+                date: new Date().toISOString().substr(0, 10),
+                menu2: false,
+                //MODULOS EXTRAS VARIBALES DECLARADAS
+                anomalias:[],                
                 dialog: false,
                 headers: [
-                    { text: 'Opciones', value: 'opciones', sortable: false },
+                     { text: 'Opciones', value: 'opciones', sortable: false },
+                    { text: 'Codigo', value: 'codigo' },
+                    { text: 'Fecha emision', value: 'emision_ts' },
                     { text: 'Usuario', value: 'usuario' },
-                    { text: 'Proveedor', value: 'proveedor' },
-                    { text: 'Tipo Comprobante', value: 'tipo_comprobante' },
-                    { text: 'Serie Comprobante', value: 'serie_comprobante', sortable: false  },
-                    { text: 'Número Comprobante', value: 'num_comprobante', sortable: false  },
-                    { text: 'Fecha', value: 'fecha_hora', sortable: false  },
-                    { text: 'Impuesto', value: 'impuesto', sortable: false  },
-                    { text: 'Total', value: 'total', sortable: false  },
-                    { text: 'Estado', value: 'estado', sortable: false  }                
+                    { text: 'Area', value: 'area', sortable: false  },
+                    { text: 'Maquina ', value: 'maquina', sortable: false  },
+                    { text: 'Tarjeta', value: 'tarjeta', sortable: false  },
+           
                 ],
                 cabeceraDetalles: [
                     { text: 'Borrar', value: 'borrar', sortable: false },
@@ -262,7 +342,7 @@
                 search: '',
                 id: '',
                 idproveedor:'',
-                proveedores:[                   
+                areas:[                   
                 ],
                 tipo_comprobante: '',
                 comprobantes: ['FACTURA','BOLETA','TICKET','GUIA'],
@@ -279,9 +359,7 @@
                     {text: 'Seleccionar', value: 'seleccionar', sortable: false },
                     { text: 'Artículo', value: 'articulo'},
                     { text: 'Categoría', value: 'categoria' },
-                    { text: 'Descripción', value: 'descripcion', sortable: false },
-                    { text: 'Stock', value: 'stock', sortable: false  },
-                    { text: 'Precio Venta', value: 'precio_venta', sortable: false  }            
+                            
                 ],
                 articulos:[],
                 texto:'',
@@ -384,25 +462,26 @@
                 }
             },
             listar(){
+                
                 let me=this;
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Ingresos/Listar',configuracion).then(function(response){
+                axios.get('api/RegistrosAnomalias/Listar',configuracion).then(function(response){
                     //console.log(response);
-                    me.ingresos=response.data;
+                    me.anomalias=response.data;
                 }).catch(function(error){
                     console.log(error);
                 });
             },
             select(){
                 let me=this;
-                var proveedoresArray=[];
+                var areasArray=[];
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Personas/SelectProveedores',configuracion).then(function(response){
-                    proveedoresArray=response.data;
-                    proveedoresArray.map(function(x){
-                        me.proveedores.push({text: x.nombre,value:x.idpersona});
+                axios.get('api/Areas/SelectAreas',configuracion).then(function(response){
+                    areasArray=response.data;
+                    areasArray.map(function(x){
+                        me.areas.push({text: x.nombre,value:x.idarea});
                     });
                 }).catch(function(error){
                     console.log(error);
@@ -428,7 +507,7 @@
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};                
                 let me=this;
-                axios.post('api/Ingresos/Crear',{
+                axios.post('api/anomalias/Crear',{
                     'idproveedor':me.idproveedor,
                     'idusuario':me.$store.state.usuario.idusuario,
                     'tipo_comprobante': me.tipo_comprobante,
