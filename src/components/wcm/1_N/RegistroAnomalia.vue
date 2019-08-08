@@ -1,5 +1,6 @@
 <template>
     <v-layout align-start>
+       
         <v-flex>
             <v-toolbar flat color="white">
                 <v-toolbar-title>Tarjetas</v-toolbar-title>
@@ -11,45 +12,67 @@
                     <v-spacer></v-spacer>
                     <v-text-field v-if="verNuevo==0" class="text-xs-center" v-model="search" append-icon="search" label="Búsqueda" single-line hide-details></v-text-field>
                     <v-spacer></v-spacer>
-                    <v-btn v-if="verNuevo==0" @click="mostrarNuevo" color="primary" dark class="mb-2">Nuevo</v-btn>
-                    <v-dialog v-model="verArticulos" max-width="500">
+                    <v-btn v-if="verNuevo==0" @click="mostrarNuevo"   color="primary" dark class="mb-2">Nuevo</v-btn>
+                   
+                   <!-- DIALOG BUSCAR MAQUINA-->
+                    <v-dialog v-model="verMaquinas" max-width="500">
                         <v-card>
                             <v-card-title>
-                                <span class="headline">Seleccione una Area</span>
+                                <span class="headline">Seleccione una Maquina</span>
+                                <v-flex xs12 sm1 md1 lg1 xl2>
+                                    <v-tooltip top>
+                                    <template v-slot:activator="{ on }">
+                                     <v-btn @click="listarMaquinas()" small fab dark color="teal" v-on="on">
+                                        <v-icon dark>cached</v-icon>
+                                    </v-btn>
+                                    </template>
+                                    <span>Actualizar lista maquinas</span>
+
+                                    
+                                    </v-tooltip>
+                                </v-flex>
                             </v-card-title>
                             <v-card-text>
                                 <v-container grid-list-md>
                                     <v-layout wrap>
                                         <v-flex xs12 sm12 md12 lg12 xl12>
-                                            <v-text-field append-icon="search" 
-                                            class="text-xs-center" v-model="texto"
-                                            label="Ingrese e area a buscar" @keyup.enter="listarArticulo()">
-
-                                            </v-text-field>
-                                            <template>
-                                               <v-data-table
-                                                    :headers="cabeceraArticulos"
-                                                    :items="articulos"
-                                                    class="elevation-1"
+                                           <template>
+                                          
+                                                <v-spacer></v-spacer>
+                                                <v-text-field
+                                                    v-model="buscarmaquina"
+                                                    append-icon="search"
+                                                    label="Search"
+                                                    single-line
+                                                    hide-details
+                                                ></v-text-field>
+                                                <v-data-table
+                                                :headers="cabeceraMaquinas"
+                                                :items="maquinas"
+                                                :search="buscarmaquina"
                                                 >
-                                                    <template slot="items" slot-scope="props">
+                                                <template slot="items" slot-scope="props">
                                                         <td class="justify-center layout px-0">
                                                             <v-icon
-                                                            small
+                                                            medium
                                                             class="mr-2"
-                                                            @click="agregarDetalle(props.item)"
+                                                            @click="agregarMaquina(props.item) "
                                                             >
-                                                            add
+                                                            add_circle
                                                             </v-icon>
+                                                           
                                                         </td>
                                                         <td>{{ props.item.nombre }}</td>
-                                                        <td>{{props.item.categoria}}</td>
+                                                        <td>{{props.item.area}}</td>
                                                         
                                                     </template>
+                                                    
                                                     <template slot="no-data">
-                                                        <h3>No hay artículos para mostrar.</h3>
+                                                        <h3>No hay maquinas para mostrar.</h3>
                                                     </template>
-                                                </v-data-table> 
+                                                
+                                                </v-data-table>
+                                            
                                             </template>
                                         </v-flex>
                                     </v-layout>
@@ -57,7 +80,81 @@
                             </v-card-text>
                             <v-card-actions>
                                 <v-spacer></v-spacer>
-                                <v-btn @click="ocultarArticulos()" color="blue darken" flat>
+                                <v-btn @click="ocultarMaquinas()" color="blue darken" flat>
+                                    Cancelar
+                                </v-btn>
+                            </v-card-actions>
+                        </v-card>
+                    </v-dialog>
+
+                    <!-- DIALOG ANOMALIAS-->
+
+                      <v-dialog v-model="verAnomalias" max-width="500">
+                        <v-card>
+                            <v-card-title>
+                                <span class="headline">Seleccione una Anomalia</span>
+
+                                <v-flex xs12 sm1 md1 lg1 xl2>
+                                    <v-tooltip top>
+                                    <template v-slot:activator="{ on }">
+                                     <v-btn @click="listarAnomalia()" small fab dark color="teal" v-on="on">
+                                        <v-icon dark>cached</v-icon>
+                                    </v-btn>
+                                    </template>
+                                    <span>Actualizar lista anomalias</span>
+
+                                    
+                                    </v-tooltip>
+                                </v-flex>
+                            </v-card-title>
+                            <v-card-text>
+                                <v-container grid-list-md>
+                                    <v-layout wrap>
+                                        <v-flex xs12 sm12 md12 lg12 xl12>
+                                           <template>
+                                          
+                                                <v-spacer></v-spacer>
+                                                <v-text-field
+                                                    v-model="buscaranomalia"
+                                                    append-icon="search"
+                                                    label="Search"
+                                                    single-line
+                                                    hide-details
+                                                ></v-text-field>
+                                                <v-data-table
+                                                :headers="cabeceraAnomalias"
+                                                :items="anomaliasdata"
+                                                :search="buscaranomalia"
+                                                >
+                                                <template slot="items" slot-scope="props">
+                                                        <td class="justify-center layout px-0">
+                                                            <v-icon
+                                                            medium
+                                                            class="mr-2"
+                                                            @click="agregarAnomalia(props.item)"
+                                                            >
+                                                            add_circle
+                                                            </v-icon>
+                                                        </td>
+                                                        <td>{{ props.item.nombre }}</td>
+                                                         <td>{{ props.item.descripcion }}</td>
+                                                        
+                                                        
+                                                    </template>
+                                                    <template slot="no-data">
+                                                        <h3>No hay anomalias para mostrar.</h3>
+                                                    </template>
+                                                
+                                                </v-data-table>
+                                            
+                                            </template>
+                                        </v-flex>
+                                    </v-layout>
+                                </v-container>
+                            </v-card-text>
+                            <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn @click="ocultarAnomalia()" color="blue darken" flat>
                                     Cancelar
                                 </v-btn>
                             </v-card-actions>
@@ -148,7 +245,7 @@
                         <v-text-field v-model="num_comprobante" label="Nombre">
                         </v-text-field>
                     </v-flex>
-                    <v-flex  xs12 sm2 md2 lg2 xl2>
+                    <v-flex  xs12 sm3 md3 lg3 xl2>
                             <v-menu
                                 v-model="menu2"
                                 :close-on-content-click="false"
@@ -170,64 +267,64 @@
                                 <v-date-picker v-model="date" @input="menu2 = false"></v-date-picker>
                             </v-menu>
                     </v-flex>
-                     <v-flex xs12 sm1 md1 lg1 xl2>
-                        <v-select v-model="paso_ma"
-                        :items="pasoma" label="Paso MA" >
-                        </v-select>
+                     <v-flex xs12 sm3 md3 lg3 xl2>
+                        <v-overflow-btn
+                            class="my-0"
+                            :items="pasoma"
+                            label="Paso MA"
+                          
+                        ></v-overflow-btn>
+                      
                     </v-flex>
-                    <v-flex xs12 sm3 md3 lg3 xl4>
-                       <v-flex xs12 sm3 md3 lg3 xl4>
-                        <v-header-text>Criticidad</v-header-text>
-                        </v-flex >
-                       <v-radio-group v-model="criticidad" row   :mandatory="false">
+                    <v-flex xs12 sm3 md3 lg3 xl2>
+                       <v-select v-model="idarea"
+                       
+                        :items="areas" label="Area">
+                        </v-select>
+                    </v-flex>    
+                    <v-flex xs12 sm4 md4 lg4 xl4>
+                       <v-radio-group v-model="criticidad" row label ="Criticidad"  :mandatory="false">
                         <v-radio label="A" value="A"></v-radio>
                         <v-radio label="B" value="B"></v-radio>
                         <v-radio label="C" value="C"></v-radio>
-                        </v-radio-group>
-                        
+                        </v-radio-group>  
                     </v-flex>
+                  
                    
-                    <v-flex xs12 sm3 md3 lg3 xl4>
-                        <v-flex xs12 sm3 md3 lg3 xl4>
-                        <v-header-text>Turno</v-header-text>
-                        </v-flex >
-                        <v-radio-group v-model="turno" row  :mandatory="false">
+                    <v-flex xs12 sm4 md4 lg4 xl4>
+                        <v-radio-group v-model="turno" row label ="Turno"  :mandatory="false">
                         <v-radio label="T1" value="T1"></v-radio>
                         <v-radio label="T2" value="T2"></v-radio>
                         <v-radio label="T3" value="T3"></v-radio>
                         </v-radio-group>
                     </v-flex>
-                   
-                    <v-flex xs12 sm3 md3 lg3 xl2>
-                       <v-select v-model="idproveedor"
-                        :items="areas" label="Area">
-                        </v-select>
-                    </v-flex>
                      
-                     <v-flex xs12 sm2 md2 lg2 xl2>
-                        <v-text-field @keyup.enter="buscarCodigo()" v-model="codigo" label="Maquina">
+                     <v-flex xs12 sm3 md3 lg3 xl2>
+                    </v-flex>
+                     <v-flex xs12 sm3 md3 lg3 xl2>
+                        <v-text-field  v-model="nombremaquina" label="Maquina">
                         </v-text-field>
                     </v-flex>
                      <v-flex xs12 sm1 md1 lg1 xl2>
-                        <v-btn @click="mostrarArticulos()" small fab dark color="teal">
+                        <v-btn @click="mostrarMaquinas()" small fab dark color="teal">
                             <v-icon dark>list</v-icon>
                         </v-btn>
                     </v-flex>
-                     <v-flex xs12 sm2 md2 lg2 xl2>
-                        <v-text-field @keyup.enter="buscarCodigo()" v-model="codigo" label="Anomaila">
+                     <v-flex xs12 sm3 md3 lg3 xl2>
+                        <v-text-field  v-model="nombreanomalia" label="Anomaila">
                         </v-text-field>
                     </v-flex>
                      <v-flex xs12 sm1 md1 lg1 xl2>
-                        <v-btn @click="mostrarArticulos()" small fab dark color="teal">
+                        <v-btn @click="mostrarAnomalia()" small fab dark color="teal">
                             <v-icon dark>list</v-icon>
                         </v-btn>
                     </v-flex>
-                    <v-flex xs12 sm2 md2 lg2 xl2>
+                     <v-flex xs12 sm3 md3 lg3 xl2>
                         <v-text-field @keyup.enter="buscarCodigo()" v-model="codigo" label="Relacionada con:">
                         </v-text-field>
                     </v-flex>
                      <v-flex xs12 sm1 md1 lg1 xl2>
-                        <v-btn @click="mostrarArticulos()" small fab dark color="teal">
+                        <v-btn @click="mostrarMaquinas()" small fab dark color="teal">
                             <v-icon dark>list</v-icon>
                         </v-btn>
                     </v-flex>
@@ -245,7 +342,7 @@
                         </v-text-field>
                     </v-flex>
                     <v-flex xs12 sm2 md2 lg2 xl2>
-                        <v-btn @click="mostrarArticulos()" small fab dark color="teal">
+                        <v-btn @click="mostrarMaquinas()" small fab dark color="teal">
                             <v-icon dark>list</v-icon>
                         </v-btn>
                     </v-flex>
@@ -300,6 +397,26 @@
 		        </v-layout>
             </v-container>
         </v-flex>
+         <v-flex>
+            <v-snackbar
+                v-model="snackbar"
+                :timeout="timeout"
+                :color="color"
+                :top="y === y"
+                :right="x ===right"
+                >
+                <v-icon dark>check_circle </v-icon>
+                {{ mensajesnack }}
+                
+                <v-btn
+                color="blue"
+                text
+                @click="snackbar = false"
+                >
+                Cerrar
+                </v-btn>
+            </v-snackbar>
+        </v-flex>
     </v-layout>
 </template>
 <script>
@@ -317,6 +434,13 @@
                 range: [0, 7],
                 date: new Date().toISOString().substr(0, 10),
                 menu2: false,
+                // SNACKBAS NOTIFICACIONS
+                color:"",
+                snackbar: false,
+                mensajesnack: 'My timeout is set to 2000.',
+                timeout: 2000,
+                bold:'',
+
                 //MODULOS EXTRAS VARIBALES DECLARADAS
                 anomalias:[],                
                 dialog: false,
@@ -340,6 +464,24 @@
                 detalles:[                    
                 ],
                 search: '',
+                //variables de maquina
+                buscarmaquina:'',
+                idmaquina:'',
+                nombremaquina:'',
+                maquinas:[],
+                verMaquinas:0,
+                showbuscarmaquinatooltip:false,
+                //variables de areas
+                idarea:'',
+                nombrearea:'',
+                //variables de anomalias
+                buscaranomalia:'',
+                idanomalia:'',
+                nombreanomalia:'',
+                anomaliasdata:[],
+                verAnomalias:0,
+                //variables de registro anomalia
+                
                 id: '',
                 idproveedor:'',
                 areas:[                   
@@ -355,15 +497,19 @@
                 totalParcial:0,
                 totalImpuesto:0,
                 total:0,
-                cabeceraArticulos: [
+                cabeceraMaquinas: [
                     {text: 'Seleccionar', value: 'seleccionar', sortable: false },
-                    { text: 'Artículo', value: 'articulo'},
-                    { text: 'Categoría', value: 'categoria' },
+                    { text: 'Maquina', value: 'nombre', sortable: false },
+                    { text: 'Area', value: 'area' , sortable: false },
+                            
+                ],cabeceraAnomalias: [
+                    {text: 'Seleccionar', value: 'seleccionar', sortable: false },
+                    { text: 'Anomalia', value: 'nombre', sortable: false },
+                    { text: 'Descripcion', value: 'descripcion' , sortable: false },
                             
                 ],
                 articulos:[],
                 texto:'',
-                verArticulos:0,
                 valida: 0,
                 validaMensaje:[],
                 adModal: 0,
@@ -390,11 +536,14 @@
 
         created () {
             this.listar();
+            this.listarMaquina();
+            this.listarAnomalia();
             this.select();
         },
         methods:{
             mostrarNuevo(){
                 this.verNuevo=1;
+               
             },
             ocultarNuevo(){
                 this.verNuevo=0;
@@ -414,38 +563,67 @@
                     me.errorArticulo='No existe el artículo';
                 });
             },
-            listarArticulo(){
+           
+            listarMaquina(){
                 let me=this;
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Articulos/ListarIngreso/'+me.texto,configuracion).then(function(response){
+                axios.get('api/Maquinas/ListarMaquinas/',configuracion).then(function(response){
                     //console.log(response);
-                    me.articulos=response.data;
+                    me.maquinas=response.data;
+                    
+                    
                 }).catch(function(error){
                     console.log(error);
                 });
             },
-            mostrarArticulos(){
-                this.verArticulos=1;
-            },
-            ocultarArticulos(){
-                this.verArticulos=0;
-            },
-            agregarDetalle(data = []){
-                this.errorArticulo=null;
-                if (this.encuentra(data['idarticulo'])){
-                    this.errorArticulo="El artículo ya ha sido agregado."
-                }
-                else{
-                    this.detalles.push(
-                        {idarticulo:data['idarticulo'],
-                        articulo: data['nombre'],
-                        cantidad:1,
-                        precio:1}
-                    );
-                }
+            mostrarMaquinas(){
+                this.verMaquinas=1;
                 
             },
+            ocultarMaquinas(){
+                this.verMaquinas=0;
+            },
+            agregarMaquina(data = []){
+                this.idmaquina=data['idmaquina'];
+                this.nombremaquina= data['nombre'];
+                this.verMaquinas=0;
+                this.snackbar = true;
+                this.color="success";
+                
+                this.mensajesnack='Maquina seleccinada' +" "+ this.nombremaquina
+            },
+            //METODOS ANOMALIAS LISTAR 
+            listarAnomalia(){
+                let me=this;
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+                axios.get('api/Anomalias/ListarAnomalias/',configuracion).then(function(response){
+                    //console.log(response);
+                    me.anomaliasdata=response.data;
+                }).catch(function(error){
+                    console.log(error);
+                });
+            },
+            mostrarAnomalia(){
+                this.verAnomalias=1;
+                
+            },
+            ocultarAnomalia(){
+                this.verAnomalias=0;
+            },
+
+             agregarAnomalia(data = []){
+                this.idanomalia=data['idanomalia'];
+                this.nombreanomalia= data['nombre'];
+                this.verAnomalias=0;
+                this.verMaquinas=0;
+                this.snackbar = true;
+                this.color="success";
+                this.mensajesnack='Anomalia seleccinada' +" "+ this.nombreanomalia
+
+            },
+            
             encuentra(id){
                 var sw=0;
                 for(var i=0;i<this.detalles.length;i++){
@@ -565,34 +743,8 @@
             activarDesactivarCerrar(){
                 this.adModal=0;
             },
-            activar(){
-                let me=this;
-                let header={"Authorization" : "Bearer " + this.$store.state.token};
-                let configuracion= {headers : header};
-                axios.put('api/Usuarios/Activar/'+this.adId,{},configuracion).then(function(response){
-                    me.adModal=0;
-                    me.adAccion=0;
-                    me.adNombre="";
-                    me.adId="";
-                    me.listar();                       
-                }).catch(function(error){
-                    console.log(error);
-                });
-            },
-            desactivar(){
-                let me=this;
-                let header={"Authorization" : "Bearer " + this.$store.state.token};
-                let configuracion= {headers : header};
-                axios.put('api/Usuarios/Desactivar/'+this.adId,{},configuracion).then(function(response){
-                    me.adModal=0;
-                    me.adAccion=0;
-                    me.adNombre="";
-                    me.adId="";
-                    me.listar();                       
-                }).catch(function(error){
-                    console.log(error);
-                });
+           
             }
-        }        
+            
     }
 </script>
