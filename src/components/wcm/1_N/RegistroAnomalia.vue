@@ -289,6 +289,7 @@
                         </template>
                     </td>
                     <td>{{ props.item.codigo }}</td>
+                    <td>{{ props.item.nombre }}</td>
                     <td>{{ props.item.emision_ts}}</td>
                     <td>{{ props.item.usuario }}</td>
                     <td>{{ props.item.area }}</td>
@@ -401,16 +402,13 @@
                         </v-btn>
                     </v-flex>
                      <v-flex xs12 sm6 md6 lg6 xl2>
-                        <v-select v-model="idproveedor"
-                        :items="areas" label="Proveedor">
-                        </v-select>
-                    </v-flex>
-                   
-                   
-                    <v-flex xs12 sm2 md2 lg2 xl2>
-                        <v-btn @click="mostrarMaquinas()" small fab dark color="teal">
-                            <v-icon dark>list</v-icon>
-                        </v-btn>
+                         <v-textarea
+                            clearable
+                            clear-icon="cancel"
+                            label="Descripción detallada de la anomalía:"
+                            value=""
+                            v-model="tarjetadescripcion"
+                        ></v-textarea>
                     </v-flex>
                     <v-flex xs12 sm2 md2 lg2 xl2 v-if="errorArticulo">
                         <div class="red--text" v-text="errorArticulo">
@@ -481,6 +479,7 @@
                 headers: [
                     { text: 'Opciones', value: 'opciones', sortable: false },
                     { text: 'Codigo', value: 'codigo' },
+                    { text: 'Nombre', value: 'nombre' },
                     { text: 'Fecha emision', value: 'emision_ts' },
                     { text: 'Usuario', value: 'usuario' },
                     { text: 'Area', value: 'area', sortable: false  },
@@ -516,11 +515,27 @@
                 idproveedor:'',
                 areas:[                   
                 ],
+                
+                idusuariotarjeta:'',
                 tarjetanombre:'',
                 tarjetafecha:'',
                 tarjetapasoma:'',
                 tarjetacriticidad:'',
                 tarjetaturno:'',
+                tarjtadecripcion:'',
+                tarjetasol_implementada:'',
+                tarjetaidtecnico:2,
+                tarjetaconfirmacion_tec:false,
+                tarjetaidsupervisor:2,
+                tarjetaconfirmacion_super:false,
+                tarjetaobservaciones:'',
+                tarjetaprog:false,
+                tarjetaeliminado:false,
+                tarjetadescripcion:'',
+                tarjetaidtarjeta:1,
+                //auxiliadres
+             
+                    
                 verNuevo:0,
                 errorArticulo:null,
                 
@@ -571,6 +586,8 @@
             this.listarMaquina();
             this.listarAnomalia();
             this.listarSuceso();
+            //let me=this;
+            //this.idusuariotarjeta=this.$store.state.usuario.idusuario;
             this.select();
         },
         methods:{
@@ -610,7 +627,7 @@
                 this.snackbar = true;
                 this.color="success";
                 
-                this.mensajesnack='Maquina seleccinada' +" "+ this.nombremaquina
+                this.mensajesnack='Maquina seleccionada' +" "+ this.nombremaquina
             },
             //METODOS ANOMALIAS LISTAR 
             listarAnomalia(){
@@ -639,7 +656,7 @@
                 this.verMaquinas=0;
                 this.snackbar = true;
                 this.color="success";
-                this.mensajesnack='Anomalia seleccinada' +" "+ this.nombreanomalia
+                this.mensajesnack='Anomalia seleccionada' +" "+ this.nombreanomalia
 
             },
         // METODOS DE SUCESOS RELACIONADO 
@@ -668,10 +685,19 @@
                 this.verSucesos=0;
                 this.snackbar = true;
                 this.color="success";
-                this.mensajesnack='Relacionado con seleccinada' +" "+ this.nombresuceso
+                this.mensajesnack='Relacionado con ' +" "+ this.nombresuceso
 
             },
             ///  FIN DE METODOS SUCESOS
+
+            /// METODO SNACBAR
+            mostrarSnacbar(){
+                this.verSucesos=0;
+                this.snackbar = true;
+                this.color="success";
+                this.mensajesnack='Tarjeta creada exitosa'
+                    
+            },
             
             encuentra(id){
                 var sw=0;
@@ -722,25 +748,41 @@
               
             },
             guardar () {
-                if (this.validar()){
-                    return;
-                }
+                //if (this.validar()){
+                  //  return;
+                //}
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};                
                 let me=this;
-                axios.post('api/anomalias/Crear',{
-                    'idproveedor':me.idproveedor,
-                    'idusuario':me.$store.state.usuario.idusuario,
-                    'tipo_comprobante': me.tipo_comprobante,
-                    'serie_comprobante': me.serie_comprobante,
-                    'num_comprobante':me.num_comprobante,
-                   
-                    'total':me.total,
-                    'detalles':me.detalles
+                axios.post('api/RegistrosAnomalias/CrearAnomalias',{
+                    'nombre':me.tarjetanombre,
+                    'emision_ts':me.tarjetafecha,
+                    'idusuario': this.$store.state.usuario.idusuario,
+                    'paso_ma': me.tarjetapasoma,
+                    'criticidad':me.tarjetacriticidad,
+                    'turno':me.tarjetaturno,
+                    'idarea':me.idarea,
+                    'idmaquina':me.idmaquina,
+                    'idanomalia':me.idanomalia,
+                    'idsuceso':me.idsuceso,
+                    'idtarjeta':me.tarjetaidtarjeta,
+                    'descripcion':me.tarjetadescripcion,
+                    'sol_implementada':me.tarjetasol_implementada,
+                    'idtecnico':me.tarjetaidtecnico,
+                    'confirmacion_tec':me.tarjetaconfirmacion_tec,
+                    'idsupervisor':me.tarjetaidsupervisor,
+                    'confirmacion_super':me.tarjetaconfirmacion_super,
+                    'observaciones':me.tarjetaobservaciones,
+                    'prog':me.tarjetaprog,
+                    'eliminado':me.tarjetaeliminado
+
+                    
                 },configuracion).then(function(response){
                     me.ocultarNuevo();
                     me.listar();
-                    me.limpiar();                        
+                   // me.limpiar(); 
+                   me.mostrarSnacbar(); 
+                    
                 }).catch(function(error){
                     console.log(error);
                 });

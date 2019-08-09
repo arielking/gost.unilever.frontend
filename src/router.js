@@ -11,6 +11,8 @@ import Login from './components/Login.vue'
 import Ingreso from './components/Ingreso.vue'
 
 import RegistroAnomalia from './components/wcm/1_N/RegistroAnomalia.vue'
+import Tecnico from './components/wcm/1_N/RegistrosAnomalias/Tecnico.vue'
+
 
 import store from './store'
 
@@ -28,7 +30,8 @@ var router = new Router({
       meta :{
         administrador :true,
         almacenero: true,
-        vendedor: true
+        vendedor: true,
+        mantenimiento:true
       }
     },
     {
@@ -103,6 +106,16 @@ var router = new Router({
       }
     },
     {
+      path: '/tecnico',
+      name: 'tecnico',
+      component: Tecnico,
+      meta :{
+        administrador :true,
+        almacenero: true,
+        mantenimiento:true
+      }
+    },
+    {
       path: '/login',
       name: 'login',
       component: Login,
@@ -128,6 +141,12 @@ router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.vendedor)){
       next()
     }
+  }else if (store.state.usuario && store.state.usuario.rol== 'Mantenimiento'){
+    if (to.matched.some(record => record.meta.mantenimiento)){
+      next()
+    }
+    
+    
   } else{
     next({
       name: 'login'

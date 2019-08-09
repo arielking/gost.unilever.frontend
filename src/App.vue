@@ -5,6 +5,7 @@
       :clipped="$vuetify.breakpoint.mdAndUp"
       app
       v-model="drawer"
+      :width="width"
       v-if="logueado"
     >
       <v-list dense>
@@ -19,7 +20,7 @@
           </v-list-tile>
         </template>
         <!--MODULO WCM -->
-         <template v-if="esAdministrador || esAlmacenero">
+         <template v-if="esAdministrador || esAlmacenero|| esTecnico">
           <v-list-group>
             <v-list-tile slot="activator">
               <v-list-tile-content>
@@ -27,8 +28,8 @@
                   WCM
                 </v-list-tile-title>
               </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile :to="{ name: 'registroanomalia'}">
+            </v-list-tile >
+            <v-list-tile v-if="esAdministrador " :to="{ name: 'registroanomalia'}">
               <v-list-tile-action>
                 <v-icon>table_chart</v-icon>
               </v-list-tile-action>
@@ -38,13 +39,13 @@
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
-            <v-list-tile :to="{ name: 'articulos'}">
+            <v-list-tile v-if=" esAdministrador ||esTecnico" :to="{ name: 'tecnico'}">
               <v-list-tile-action>
                 <v-icon>table_chart</v-icon>
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title>
-                  Artículos
+                  Lista Espera
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -264,7 +265,8 @@ export default {
   data () {
     return {
       clipped: false,
-      drawer: true,
+      drawer: null,
+      width:'200',
       fixed: false,
       items: [{
         icon: 'bubble_chart',
@@ -277,8 +279,11 @@ export default {
     }
   },
   computed: {
+
+    
     logueado(){
       return this.$store.state.usuario;
+      
     },
     esAdministrador(){
       return this.$store.state.usuario && this.$store.state.usuario.rol =='Administrador';
@@ -288,9 +293,14 @@ export default {
     },
     esVendedor(){
       return this.$store.state.usuario && this.$store.state.usuario.rol =='Vendedor';
+    },
+    esTecnico(){
+      return this.$store.state.usuario && this.$store.state.usuario.rol =='Mantenimiento';
     }
+    
   },
   created(){
+    
     this.$store.dispatch("autoLogin");
   },
   methods:{
