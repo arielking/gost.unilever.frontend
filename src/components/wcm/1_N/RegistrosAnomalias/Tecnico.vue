@@ -60,7 +60,6 @@
         </v-card>
       </v-dialog>
     </template>
-     <template> 
        <v-toolbar flat color="white">
                 <v-toolbar-title>Reportes</v-toolbar-title>
                     <v-divider
@@ -76,15 +75,13 @@
                 </v-toolbar>
       <v-data-iterator
         :items="itemsdata"
+        :search="search"
         :rows-per-page-items="rowsPerPageItems"
         :pagination.sync="pagination"
-        :search="search"
         content-tag="v-layout"
-        hide-actions
         row
         wrap
       >
-        
         <template v-slot:item="props">
           <v-flex
             xs12
@@ -93,8 +90,8 @@
             lg3
           >
             <v-card>
-              <v-card-title class="subheading font-weight-bold">{{ props.item.codigo }}</v-card-title>
-                 <v-btn
+              <v-card-title><h4>{{ props.item.codigo }}</h4></v-card-title>
+               <v-btn
                       text
                       color="blue"
                       class="mr-2"
@@ -102,40 +99,32 @@
                     >
                       Detalles
                     </v-btn>
-                  
               <v-divider></v-divider>
-  
               <v-list dense>
                 <v-list-tile>
                   <v-list-tile-content>Calories:</v-list-tile-content>
                   <v-list-tile-content class="align-end">{{ props.item.calories }}</v-list-tile-content>
                 </v-list-tile>
-  
                 <v-list-tile>
                   <v-list-tile-content>Fat:</v-list-tile-content>
                   <v-list-tile-content class="align-end">{{ props.item.fat }}</v-list-tile-content>
                 </v-list-tile>
-  
                 <v-list-tile>
                   <v-list-tile-content>Carbs:</v-list-tile-content>
                   <v-list-tile-content class="align-end">{{ props.item.carbs }}</v-list-tile-content>
                 </v-list-tile>
-  
                 <v-list-tile>
                   <v-list-tile-content>Protein:</v-list-tile-content>
                   <v-list-tile-content class="align-end">{{ props.item.protein }}</v-list-tile-content>
                 </v-list-tile>
-  
                 <v-list-tile>
                   <v-list-tile-content>Sodium:</v-list-tile-content>
                   <v-list-tile-content class="align-end">{{ props.item.sodium }}</v-list-tile-content>
                 </v-list-tile>
-  
                 <v-list-tile>
                   <v-list-tile-content>Calcium:</v-list-tile-content>
                   <v-list-tile-content class="align-end">{{ props.item.calcium }}</v-list-tile-content>
                 </v-list-tile>
-  
                 <v-list-tile>
                   <v-list-tile-content>Iron:</v-list-tile-content>
                   <v-list-tile-content class="align-end">{{ props.item.iron }}</v-list-tile-content>
@@ -144,19 +133,7 @@
             </v-card>
           </v-flex>
         </template>
-       <!-- <template v-slot:footer>
-          <v-toolbar
-            class="mt-2"
-            color="indigo"
-            dark
-            dense
-            flat
-          >
-            <v-toolbar-title class="subheading">This is a footer</v-toolbar-title>
-          </v-toolbar>
-        </template>-->
       </v-data-iterator>
-      </template> 
     </v-container>
  
 </template>
@@ -175,6 +152,7 @@
         pagination: {
         rowsPerPage: 4
         },
+        
         itemsdata:[],
         // variables
         codigo:'',
