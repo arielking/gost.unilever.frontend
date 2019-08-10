@@ -1,9 +1,67 @@
 <template>
-   <v-layout align-start>
+
       
-      <v-flex  xs12 sm12 md12 lg12 xl12>
+    <v-container fluid grid-list-md>
+        <!--VENTANA DETALLES -->
+    <template>
+        <v-dialog v-model="dialog" persistent max-width="600px">
+       
         <v-card>
-           <v-toolbar flat color="white">
+          <v-card-title>
+            <span class="headline">User Profile</span>
+          </v-card-title>
+          <v-card-text>
+            <v-container grid-list-md>
+              <v-layout wrap>
+                <v-flex xs12 sm6 md4>
+                  <v-text-field label="Legal first name*" required></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6 md4>
+                  <v-text-field label="Legal middle name" hint="example of helper text only on focus"></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6 md4>
+                  <v-text-field
+                  v-model="this.codigo"
+                    label="Legal last name*"
+                    hint="example of persistent helper text"
+                    persistent-hint
+                    required
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs12>
+                  <v-text-field label="Email*" required></v-text-field>
+                </v-flex>
+                <v-flex xs12>
+                  <v-text-field label="Password*" type="password" required></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6>
+                  <v-select
+                    :items="['0-17', '18-29', '30-54', '54+']"
+                    label="Age*"
+                    required
+                  ></v-select>
+                </v-flex>
+                <v-flex xs12 sm6>
+                  <v-autocomplete
+                    :items="['Skiing', 'Ice hockey', 'Soccer', 'Basketball', 'Hockey', 'Reading', 'Writing', 'Coding', 'Basejump']"
+                    label="Interests"
+                    multiple
+                  ></v-autocomplete>
+                </v-flex>
+              </v-layout>
+            </v-container>
+            <small>*indicates required field</small>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" flat @click="dialog = false">Close</v-btn>
+            <v-btn color="blue darken-1" flat @click="dialog = false">Save</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </template>
+     <template> 
+       <v-toolbar flat color="white">
                 <v-toolbar-title>Reportes</v-toolbar-title>
                     <v-divider
                     class="mx-2"
@@ -11,82 +69,96 @@
                     vertical
                     ></v-divider>
                     <v-spacer></v-spacer>
-                    <v-text-field class="text-xs-center"  append-icon="search" label="Búsqueda" single-line hide-details></v-text-field>
+                    <v-text-field class="text-xs-center"  v-model="search" append-icon="search" label="Búsqueda" single-line hide-details></v-text-field>
                     <v-spacer></v-spacer>
                    
                    
                 </v-toolbar>
-          <v-container v-bind="{ [`grid-list-sm`]: true }" fluid>
-            <v-layout wrap>
-
-            <v-data-iterator
-                    :items="itemsdata"
-                    :rows-per-page-items="rowsPerPageItems"
-                    :pagination.sync="pagination"
-                    :search="search"
-                    content-tag="v-layout"
-                    hide-actions
-                    row
-                    wrap
-                >
-             <template v-slot:item="props">
-              <v-flex  xs12 sm4 md4 lg4 xl12
-               >
-               
-                <v-card
-                  class="mx-auto"
-                  max-width="344"
-                >
-                  <v-img
-                    src="https://www.lostiempos.com/sites/default/files/media_imagen/2019/4/5/756785e2-6ea8-430e-a479-24a7d6d74b74.jpg"
-                    height="200px"
-                  ></v-img>
-              
-                  <v-card-title  >
-                    <div class="subheading font-weight-bold" >{{props.item.codigo}}</div>
-                  </v-card-title>
-                  <v-card-text>
-                    <span class="grey--text subtitle-1" >{{props.item.nombre}}</span>
-
-                  </v-card-text>
-              
-                  <v-card-actions>
-                    <v-btn text>Asignarme</v-btn>
-              
-                    <v-btn
+      <v-data-iterator
+        :items="itemsdata"
+        :rows-per-page-items="rowsPerPageItems"
+        :pagination.sync="pagination"
+        :search="search"
+        content-tag="v-layout"
+        hide-actions
+        row
+        wrap
+      >
+        
+        <template v-slot:item="props">
+          <v-flex
+            xs12
+            sm6
+            md4
+            lg3
+          >
+            <v-card>
+              <v-card-title class="subheading font-weight-bold">{{ props.item.codigo }}</v-card-title>
+                 <v-btn
                       text
                       color="blue"
+                      class="mr-2"
+                    @click="editItem(props.item)"
                     >
                       Detalles
                     </v-btn>
-              
-                    <v-spacer></v-spacer>
-              
-                    <v-btn
-                      icon
-                      @click="show = !show"
-                    >
-                      <v-icon>{{ show ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
-                    </v-btn>
-                  </v-card-actions>
+                  
+              <v-divider></v-divider>
   
-                <v-expand-transition>
-                    <div v-show="show">
-                    <v-card-text>{{props.item.descripcion}}
-                        I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for sleeping, soldier, not with all the bed making you'll be doing. Then we'll go with that data file! Hey, you add a one and two zeros to that or we walk! You're going to do his laundry? I've got to find a way to escape.
-                    </v-card-text>
-                    </div>
-                </v-expand-transition>
-                            </v-card>
-              </v-flex>
-                </template>
-                 </v-data-iterator>
-            </v-layout>
-          </v-container>
-        </v-card>
-      </v-flex>
-      </v-layout>
-     
+              <v-list dense>
+                <v-list-tile>
+                  <v-list-tile-content>Calories:</v-list-tile-content>
+                  <v-list-tile-content class="align-end">{{ props.item.calories }}</v-list-tile-content>
+                </v-list-tile>
+  
+                <v-list-tile>
+                  <v-list-tile-content>Fat:</v-list-tile-content>
+                  <v-list-tile-content class="align-end">{{ props.item.fat }}</v-list-tile-content>
+                </v-list-tile>
+  
+                <v-list-tile>
+                  <v-list-tile-content>Carbs:</v-list-tile-content>
+                  <v-list-tile-content class="align-end">{{ props.item.carbs }}</v-list-tile-content>
+                </v-list-tile>
+  
+                <v-list-tile>
+                  <v-list-tile-content>Protein:</v-list-tile-content>
+                  <v-list-tile-content class="align-end">{{ props.item.protein }}</v-list-tile-content>
+                </v-list-tile>
+  
+                <v-list-tile>
+                  <v-list-tile-content>Sodium:</v-list-tile-content>
+                  <v-list-tile-content class="align-end">{{ props.item.sodium }}</v-list-tile-content>
+                </v-list-tile>
+  
+                <v-list-tile>
+                  <v-list-tile-content>Calcium:</v-list-tile-content>
+                  <v-list-tile-content class="align-end">{{ props.item.calcium }}</v-list-tile-content>
+                </v-list-tile>
+  
+                <v-list-tile>
+                  <v-list-tile-content>Iron:</v-list-tile-content>
+                  <v-list-tile-content class="align-end">{{ props.item.iron }}</v-list-tile-content>
+                </v-list-tile>
+              </v-list>
+            </v-card>
+          </v-flex>
+        </template>
+       <!-- <template v-slot:footer>
+          <v-toolbar
+            class="mt-2"
+            color="indigo"
+            dark
+            dense
+            flat
+          >
+            <v-toolbar-title class="subheading">This is a footer</v-toolbar-title>
+          </v-toolbar>
+        </template>-->
+      </v-data-iterator>
+      </template> 
+    </v-container>
+ 
 </template>
   
 
@@ -96,6 +168,7 @@
     export default {
         data(){
             return {
+        dialog: false,
         show:false,
         search:'',       
         rowsPerPageItems: [4, 8, 12],
@@ -103,7 +176,10 @@
         rowsPerPage: 4
         },
         itemsdata:[],
-        itemsddd: [
+        // variables
+        codigo:'',
+        idanomalia:'',
+        items: [
         {
             name: 'Frozen Yogurt',
             calories: 159,
@@ -152,6 +228,14 @@
                 
             },
             methods:{
+                 editItem (item) {
+                this.idmaquina=item.idmaquina;
+                this.codigo=item.codigo;
+                this.idanomalia=item.idregistroanomalia;
+
+                //this.editedIndex=1;
+                this.dialog = true
+            },
                 listar(){
                     let me=this;
                     axios.get('api/RegistrosAnomalias/ListarTecnico').then(function(response){
