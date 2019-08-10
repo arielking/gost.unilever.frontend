@@ -89,48 +89,34 @@
             md4
             lg3
           >
-            <v-card>
-              <v-card-title><h4>{{ props.item.codigo }}</h4></v-card-title>
-               <v-btn
-                      text
-                      color="blue"
-                      class="mr-2"
-                    @click="editItem(props.item)"
-                    >
-                      Detalles
-                    </v-btn>
-              <v-divider></v-divider>
-              <v-list dense>
-                <v-list-tile>
-                  <v-list-tile-content>Calories:</v-list-tile-content>
-                  <v-list-tile-content class="align-end">{{ props.item.calories }}</v-list-tile-content>
-                </v-list-tile>
-                <v-list-tile>
-                  <v-list-tile-content>Fat:</v-list-tile-content>
-                  <v-list-tile-content class="align-end">{{ props.item.fat }}</v-list-tile-content>
-                </v-list-tile>
-                <v-list-tile>
-                  <v-list-tile-content>Carbs:</v-list-tile-content>
-                  <v-list-tile-content class="align-end">{{ props.item.carbs }}</v-list-tile-content>
-                </v-list-tile>
-                <v-list-tile>
-                  <v-list-tile-content>Protein:</v-list-tile-content>
-                  <v-list-tile-content class="align-end">{{ props.item.protein }}</v-list-tile-content>
-                </v-list-tile>
-                <v-list-tile>
-                  <v-list-tile-content>Sodium:</v-list-tile-content>
-                  <v-list-tile-content class="align-end">{{ props.item.sodium }}</v-list-tile-content>
-                </v-list-tile>
-                <v-list-tile>
-                  <v-list-tile-content>Calcium:</v-list-tile-content>
-                  <v-list-tile-content class="align-end">{{ props.item.calcium }}</v-list-tile-content>
-                </v-list-tile>
-                <v-list-tile>
-                  <v-list-tile-content>Iron:</v-list-tile-content>
-                  <v-list-tile-content class="align-end">{{ props.item.iron }}</v-list-tile-content>
-                </v-list-tile>
-              </v-list>
-            </v-card>
+              <v-card>
+          <v-img
+            class="white--text"
+            height="200px"
+            src="https://www.lostiempos.com/sites/default/files/media_imagen/2019/4/5/756785e2-6ea8-430e-a479-24a7d6d74b74.jpg"
+          >
+            <v-container fill-height fluid>
+              <v-layout fill-height>
+                <v-flex xs12 align-end flexbox>
+                  <span class="subheading font-weight-bold">{{props.item.codigo}}</span>
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </v-img>
+          <v-card-title>
+            <div>
+              <span class="grey--text">Number 10</span><br>
+              <span>Whitehaven Beach</span><br>
+              <span>Whitsunday Island, Whitsunday Islands</span>
+            </div>
+          </v-card-title>
+          <v-card-actions>
+            <v-btn flat color="orange">Share</v-btn>
+            <v-btn flat color="orange"
+                @click="editItem(props.item)"
+            >Explore</v-btn>
+          </v-card-actions>
+        </v-card>
           </v-flex>
         </template>
       </v-data-iterator>
@@ -142,13 +128,14 @@
 
 <script>
     import axios from 'axios'
+import { all } from 'q';
     export default {
         data(){
             return {
         dialog: false,
         show:false,
         search:'',       
-        rowsPerPageItems: [4, 8, 12],
+        rowsPerPageItems: [4, 8, 12,50],
         pagination: {
         rowsPerPage: 4
         },
