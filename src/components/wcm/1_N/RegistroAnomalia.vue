@@ -229,6 +229,7 @@
                         </v-card>
                    
                     </v-dialog>
+                    <!--FORM TABLE-->
                     <v-dialog v-model="adModal" max-width="290">
                         <v-card>
                             <v-card-title class="headline" v-if="adAccion==1">¿Activar Item?</v-card-title>

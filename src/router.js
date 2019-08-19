@@ -13,6 +13,10 @@ import Ingreso from './components/Ingreso.vue'
 import RegistroAnomalia from './components/wcm/1_N/RegistroAnomalia.vue'
 import Tecnico from './components/wcm/1_N/RegistrosAnomalias/Tecnico.vue'
 import TecnicoLista from './components/wcm/1_N/RegistrosAnomalias/TecnicoLista.vue'
+import TecnicoListaPropia from './components/wcm/1_N/RegistrosAnomalias/TecnicoListaPropio.vue'
+import TecnicoListaPropiaConfirmado from './components/wcm/1_N/RegistrosAnomalias/TecnicoListaEsperaconfirmacion.vue'
+import SupervisorLista from './components/wcm/1_N/RegistrosAnomalias/SupervisorLista.vue'
+
 
 
 import store from './store'
@@ -32,7 +36,9 @@ var router = new Router({
         administrador :true,
         almacenero: true,
         vendedor: true,
-        mantenimiento:true
+        mantenimiento:true,
+        operador:true,
+        supervisor:true
       }
     },
     {
@@ -113,7 +119,8 @@ var router = new Router({
       meta :{
         administrador :true,
         almacenero: true,
-        mantenimiento:true
+        mantenimiento:true,
+        operador:true
       }
     },
     {
@@ -123,7 +130,42 @@ var router = new Router({
       meta :{
         administrador :true,
         almacenero: true,
-        mantenimiento:true
+        mantenimiento:true,
+        operador:true
+      }
+    },
+    {
+      path: '/tecnicoListaPropia',
+      name: 'tecnicoListaPropia',
+      component: TecnicoListaPropia,
+      meta :{
+        administrador :true,
+        almacenero: true,
+        mantenimiento:true,
+        operador:true
+      }
+    },
+    {
+      path: '/tecnicoListaPropiaConfirmado',
+      name: 'tecnicoListaPropiaConfirmado',
+      component: TecnicoListaPropiaConfirmado,
+      meta :{
+        administrador :true,
+        almacenero: true,
+        mantenimiento:true,
+        operador:true
+      }
+    },
+    {
+      path: '/supervisorLista',
+      name: 'supervisorLista',
+      component: SupervisorLista,
+      meta :{
+        administrador :true,
+        almacenero: true,
+        mantenimiento:true,
+        operador:true,
+        supervisor:true
       }
     },
     {
@@ -156,6 +198,15 @@ router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.mantenimiento)){
       next()
     }
+  }else if (store.state.usuario && store.state.usuario.rol== 'Operador'){
+    if (to.matched.some(record => record.meta.operador)){
+      next()
+    }
+  }else if (store.state.usuario && store.state.usuario.rol== 'Supervisor'){
+    if (to.matched.some(record => record.meta.supervisor)){
+      next()
+    }
+    
     
     
   } else{

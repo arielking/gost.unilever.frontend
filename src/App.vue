@@ -20,7 +20,7 @@
           </v-list-tile>
         </template>
         <!--MODULO WCM -->
-         <template v-if="esAdministrador || esAlmacenero|| esTecnico">
+         <template v-if="esAdministrador || esAlmacenero|| esTecnico ||esSupervisor ||esOperador">
           <v-list-group>
             <v-list-tile slot="activator">
               <v-list-tile-content>
@@ -39,7 +39,7 @@
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
-            <v-list-tile v-if=" esAdministrador ||esTecnico" :to="{ name: 'tecnico'}">
+            <v-list-tile v-if=" esAdministrador ||esOperador || esTecnico" :to="{ name: 'tecnico'}">
               <v-list-tile-action>
                 <v-icon>table_chart</v-icon>
               </v-list-tile-action>
@@ -50,13 +50,43 @@
               </v-list-tile-content>
             </v-list-tile>
 
-             <v-list-tile v-if=" esAdministrador ||esTecnico" :to="{ name: 'tecnicoLista'}">
+              <v-list-tile v-if=" esAdministrador ||esOperador || esTecnico" :to="{ name: 'tecnicoListaPropia'}">
               <v-list-tile-action>
                 <v-icon>table_chart</v-icon>
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title>
-                  Mis tarjetas WCM
+                  WCM propios 
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            <v-list-tile v-if=" esAdministrador ||esOperador || esTecnico" :to="{ name: 'tecnicoListaPropiaConfirmado'}">
+              <v-list-tile-action>
+                <v-icon>table_chart</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>
+                  WCM resuelto
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+             <v-list-tile v-if=" esAdministrador" :to="{ name: 'tecnicoLista'}">
+              <v-list-tile-action>
+                <v-icon>table_chart</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>
+                  SHE tarjetas WCM
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+             <v-list-tile v-if=" esAdministrador ||esSupervisor " :to="{ name: 'supervisorLista'}">
+              <v-list-tile-action>
+                <v-icon>table_chart</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>
+                  WCM confirmar 
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -237,9 +267,21 @@
     >
       <v-toolbar-title style="width: 300px" class="ml-0 pl-3">
         <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-        <span class="hidden-sm-and-down">Sistema</span>
+        <span class="hidden-sm-and-down">Sistema Unilever</span>
+       
       </v-toolbar-title>
+            <v-spacer></v-spacer>
+
       <v-spacer></v-spacer>
+      <v-flex xs2 sm2 md2 lg2 xl2>
+
+       <span  v-html=" this.usuariosistema"></span>
+        </v-flex>
+       <v-flex xs2 sm2 md2 lg2 xl2>
+      <span  v-html="this.rolsistema"></span>
+      </v-flex>
+      <v-spacer></v-spacer>
+       
       <v-btn @click="salir" v-if="logueado" icon>
         <v-icon>logout</v-icon> Salir
       </v-btn>
@@ -279,6 +321,8 @@ export default {
       drawer: null,
       width:'200',
       fixed: false,
+      usuariosistema:'',
+      rolsistema:'',
       items: [{
         icon: 'bubble_chart',
         title: 'Inspire'
@@ -298,25 +342,43 @@ export default {
     },
     esAdministrador(){
       return this.$store.state.usuario && this.$store.state.usuario.rol =='Administrador';
+    
     },
     esAlmacenero(){
       return this.$store.state.usuario && this.$store.state.usuario.rol =='Almacenero';
+     
     },
     esVendedor(){
       return this.$store.state.usuario && this.$store.state.usuario.rol =='Vendedor';
+     
     },
     esTecnico(){
       return this.$store.state.usuario && this.$store.state.usuario.rol =='Mantenimiento';
+
+    },
+    esOperador(){
+      return this.$store.state.usuario && this.$store.state.usuario.rol =='Operador';
+     
+    }
+    ,
+    esSupervisor(){
+      return this.$store.state.usuario && this.$store.state.usuario.rol =='Supervisor';
+   
     }
     
   },
   created(){
     
     this.$store.dispatch("autoLogin");
+    this.credenciales();
   },
   methods:{
     salir(){
       this.$store.dispatch("salir");
+    },
+    credenciales(){
+      this.usuariosistema=this.$store.state.usuario.nombre;
+      this.rolsistema=this.$store.state.usuario.rol;
     }
   }
 }

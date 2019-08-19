@@ -70,13 +70,13 @@
                     </v-dialog>
                     <v-dialog v-model="adModal" max-width="290">
                         <v-card>
-                            <v-card-title class="headline" v-if="adAccion==1">¿Activar Item?</v-card-title>
-                            <v-card-title class="headline" v-if="adAccion==2">¿Desactivar Item?</v-card-title>
+                            <v-card-title class="headline" v-if="adAccion==1">¿Activar Usuario?</v-card-title>
+                            <v-card-title class="headline" v-if="adAccion==2">¿Desactivar Usuario?</v-card-title>
                             <v-card-text>
                                 Estás a punto de 
                                 <span v-if="adAccion==1">Activar </span>
                                 <span v-if="adAccion==2">Desactivar </span>
-                                el ítem {{ adNombre }}
+                                el usuario {{ adNombre }}
                             </v-card-text>
                             <v-card-actions>
                                 <v-spacer></v-spacer>
@@ -234,7 +234,7 @@
                 });
             },
             editItem (item) {
-               this.id=item.idusuario;
+                this.id=item.idusuario;
                 this.idrol=item.idrol;
                 this.nombre=item.nombre;
                 this.tipo_documento=item.tipo_documento;
@@ -310,6 +310,8 @@
                         'telefono': me.telefono,
                         'email':me.email,
                         'password':me.password
+
+                        
                         
                     },configuracion).then(function(response){
                         me.close();

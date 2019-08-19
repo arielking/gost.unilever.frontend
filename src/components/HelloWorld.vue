@@ -1,6 +1,7 @@
 <template>
   <div class="text-center">
     <v-btn
+    v-if="this.snackbar"
       dark
       color="orange darken-2"
       @click="snackbar = true"

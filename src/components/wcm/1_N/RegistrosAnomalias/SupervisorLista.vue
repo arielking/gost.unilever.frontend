@@ -346,22 +346,33 @@
       {{textsnackbar}}
     </v-snackbar>
       <!--VENTANA CONFIRMACION DE ASIGNACION-->
-       <v-dialog v-model="dialogconfirmar" persistent max-width="290">
-        <template v-slot:activator="{ on }">
-        </template>
+      <v-dialog v-model="dialogconfirmar" persistent max-width="290">
         <v-card>
           <v-card-title class="headline" v-text="this.codigo" ></v-card-title>
-          <!--<v-card-text>.</v-card-text>-->
+          <v-card-text>
+        <v-flex xs12 sm12 md12 lg12 xl2>
+            <v-textarea
+                         clearable
+                            clear-icon="cancel"
+                            label="Ingrese la observacion para la confirmacion:"
+                            value=""
+                            v-model="tarjetaobservaciones"
+                        ></v-textarea>
+                    </v-flex>
+
+          </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="green darken-1" flat @click="confirmarStado">Confirmar</v-btn>
+           
+        <v-spacer></v-spacer>
+            <v-btn   v-if="this.tarjetaobservaciones" color="green darken-1"  @click="confirmarStadoSupervisor">Confirmar</v-btn>
             <v-btn color="green darken-1" flat @click="dialogconfirmar = false">Cancelar</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
         <!--VENTANA DETALLES -->
     <template>
-        <v-dialog v-model="dialog" persistent max-width="600px">
+        <v-dialog v-model="dialog" persistent max-width="700px"  max-height="800px">
        
         <v-card>
           <v-card-title>
@@ -415,19 +426,30 @@
                 <v-flex xs12 sm6>
                   <v-text-field  readonly label="Descripcion :" v-model="this.descripcion" required></v-text-field>
                 </v-flex>
+                 <v-flex xs12 sm6 >
+                  <v-text-field readonly label="Solucion implementada:" v-model="this.sol_implementada" required></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6>
+                  <v-text-field  readonly label="Resuelto por :" v-model="this.usuariotecnico" required></v-text-field>
+                </v-flex>
+                 <v-flex xs12 sm6>
+                  <v-text-field  readonly label="Fecha de ejecución :" v-model="this.ejecucion_ts" required></v-text-field>
+                </v-flex>
+               
+                      
+
               </v-layout>
             </v-container>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat @click="dialog = false">Cerrar</v-btn>
-            <v-btn color="blue darken-1" flat @click="dialog = false">Save</v-btn>
+            <v-btn color="blue darken-1"  @click="dialog = false">Cerrar</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
     </template>
        <v-toolbar flat color="white">
-                <v-toolbar-title>Tarjetas</v-toolbar-title>
+                <v-toolbar-title>Tarjetas Confirmadas:</v-toolbar-title>
                     <v-divider
                     class="mx-2"
                     inset
@@ -464,7 +486,8 @@
               >
           <v-img
             class="white--text"
-            height="200px"
+            height="200"
+           
             src="https://www.lostiempos.com/sites/default/files/media_imagen/2019/4/5/756785e2-6ea8-430e-a479-24a7d6d74b74.jpg"
           >
             <v-container fill-height fluid>
@@ -511,8 +534,18 @@
                 
               </v-list-tile>
               <v-divider ></v-divider>
-                   <div text-truncate  >Fecha emision: {{props.item.emision_ts}}</div>
-                 
+                   <div text-truncate  >Fecha ejecución: {{props.item.ejecucion_ts}}</div>
+                <div text-truncate  >Resuelto por: {{props.item.usuariotecnico}}</div>
+                 <template v-if="props.item.confirmacion_super === false">
+                   <v-list-tile-title class="yellow">
+                      <div text-truncate  >Espera confirmación supervisor</div>
+                  </v-list-tile-title>
+                   </template>
+                   <template v-if="props.item.confirmacion_super === true">
+                   <v-list-tile-title class="green">
+                      <div text-truncate  >Tarjeta confirmada</div>
+                  </v-list-tile-title>
+                   </template>
             </template>
           </v-list>
           </v-flex >
@@ -523,7 +556,7 @@
           <v-card-actions>
             <v-btn  color="green"
             @click="editItemConfirmar(props.item)"
-            >Asignarme</v-btn>
+            >CONFIRMAR</v-btn>
             <v-btn outline color="blue"
                 @click="editItem(props.item)"
             >Detalles</v-btn>
@@ -585,6 +618,10 @@ import { all } from 'q';
         turno:'',
         area:'',
         relacionado:'',
+        usuariotecnico:'',
+        confirmacion_tec:'',
+        sol_implementada:'',
+        ejecucion_ts:'',
         dialogconfirmar:false,
         snackbar:false,
         timeout:2000,
@@ -709,14 +746,19 @@ import { all } from 'q';
                 this.turno=item.turno;
                 this.area=item.area;
                 this.relacionado=item.relacionado;
+                this.usuariotecnico=item.usuariotecnico;
+                this.confirmacion_tec=item.confirmacion_tec;
+                this.sol_implementada=item.sol_implementada;
+                this.ejecucion_ts=item.ejecucion_ts;
+                      
 
 
                 //this.editedIndex=1;
                 this.dialog = true
             },
-                listar(){
+                 listar(){
                     let me=this;
-                    axios.get('api/RegistrosAnomalias/SelectListaTecnico/'+me.$store.state.usuario.idusuario).then(function(response){
+                    axios.get('api/RegistrosAnomalias/SelectListaSupervisor/').then(function(response){
                         //console.log(response);
                         me.itemsdata=response.data;
                     }).catch(function(error){
@@ -724,13 +766,14 @@ import { all } from 'q';
                         
                 });
             },
-             confirmarStado () {
+             confirmarStadoSupervisor () {
               
                
                     let me=this;
-                    axios.put('api/RegistrosAnomalias/AsignarTecnico',{
+                    axios.put('api/RegistrosAnomalias/ConfirmarSupervisor',{
                         'idregistroanomalia':me.idanomalia,
-                        'idtecnico': me.$store.state.usuario.idusuario
+                        'idsupervisor': me.$store.state.usuario.idusuario,
+                        'observaciones':me.tarjetaobservaciones
                         
                     }).then(function(response){
                         me.close();

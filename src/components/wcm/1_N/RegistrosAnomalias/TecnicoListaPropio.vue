@@ -346,15 +346,27 @@
       {{textsnackbar}}
     </v-snackbar>
       <!--VENTANA CONFIRMACION DE ASIGNACION-->
+      
        <v-dialog v-model="dialogconfirmar" persistent max-width="290">
-        <template v-slot:activator="{ on }">
-        </template>
         <v-card>
           <v-card-title class="headline" v-text="this.codigo" ></v-card-title>
-          <!--<v-card-text>.</v-card-text>-->
+          <v-card-text>
+        <v-flex xs12 sm12 md12 lg12 xl2>
+            <v-textarea
+                         clearable
+                            clear-icon="cancel"
+                            label="Ingrese la solución Implementada:"
+                            value=""
+                            v-model="solucionimplentada"
+                        ></v-textarea>
+                    </v-flex>
+
+          </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="green darken-1" flat @click="confirmarStado">Confirmar</v-btn>
+           
+        <v-spacer></v-spacer>
+            <v-btn   v-if="this.solucionimplentada" color="green darken-1"  @click="confirmarSolucion">Confirmar</v-btn>
             <v-btn color="green darken-1" flat @click="dialogconfirmar = false">Cancelar</v-btn>
           </v-card-actions>
         </v-card>
@@ -427,7 +439,7 @@
       </v-dialog>
     </template>
        <v-toolbar flat color="white">
-                <v-toolbar-title>Tarjetas</v-toolbar-title>
+                <v-toolbar-title>Tarjetas Propias:</v-toolbar-title>
                     <v-divider
                     class="mx-2"
                     inset
@@ -521,9 +533,16 @@
             
           </v-card-title>
           <v-card-actions>
-            <v-btn  color="green"
-            @click="editItemConfirmar(props.item)"
-            >Asignarme</v-btn>
+               <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+             <v-btn  color="#304FFE" dark v-on="on"
+             @click="editItemConfirmar(props.item)"
+            >Confimar</v-btn>
+            </template>
+            <span>Aplicar Contramedida</span>
+            </v-tooltip>
+         <v-spacer></v-spacer>
+
             <v-btn outline color="blue"
                 @click="editItem(props.item)"
             >Detalles</v-btn>
@@ -639,7 +658,8 @@ import { all } from 'q';
                 tarjetadescripcion:'',
                 tarjetaidtarjeta:1,
                 //auxiliadres
-             
+                //Confimacion 
+                solucionimplentada:'',
                     
                 verNuevo:0,
                 errorArticulo:null,
@@ -716,7 +736,7 @@ import { all } from 'q';
             },
                 listar(){
                     let me=this;
-                    axios.get('api/RegistrosAnomalias/SelectListaTecnico/'+me.$store.state.usuario.idusuario).then(function(response){
+                    axios.get('api/RegistrosAnomalias/SelectListaTecnicoPropios/'+me.$store.state.usuario.idusuario).then(function(response){
                         //console.log(response);
                         me.itemsdata=response.data;
                     }).catch(function(error){
@@ -743,13 +763,36 @@ import { all } from 'q';
                     });    
                 
             },
+            confirmarSolucion () {
+              
+               
+                    let me=this;
+                    axios.put('api/RegistrosAnomalias/AplicarContramedida',{
+                        'idregistroanomalia':me.idanomalia,
+                        'sol_implementada':me.solucionimplentada,
+                        'idtecnico': me.$store.state.usuario.idusuario
+                        
+                    }).then(function(response){
+                        me.close();
+                        me.listar();
+                        me.limpiar();  
+                                          
+                    }).catch(function(error){
+                        console.log(error);
+                      
+                    });    
+                
+            },
             close(){
               this.dialogconfirmar=false
               this.snackbar=true
               this.textsnackbar='Operacion exitosa'
             },
             limpiar(){
-               // this.idmaquina=0,
+        
+               this.solucionimplentada='',
+               this.idanomalia=''
+               
                
             },
            
