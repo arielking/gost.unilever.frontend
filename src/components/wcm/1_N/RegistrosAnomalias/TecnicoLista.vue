@@ -1,10 +1,10 @@
 <template>
-
+<v-layout align-start>
     
-    <v-container fluid grid-list-md>
+    <v-container fluid grid-list-sm>
       <!--VENTANA DE REGISTROS-->
                        <!-- DIALOG BUSCAR MAQUINA-->
-                    <v-dialog v-model="verMaquinas" max-width="500">
+                     <v-dialog v-model="verMaquinas" max-width="500">
                         <v-card>
                             <v-card-title>
                                 <span class="headline">Seleccione una Maquina</span>
@@ -222,9 +222,9 @@
       <v-container grid-list-sm class="pa-4 white" v-if="verNuevo">
                 <v-layout row wrap>
                      
-                     <!--Atributos del fomulario-->
-                     <v-flex xs12 sm3 md3 lg3 xl4>
-                        <v-text-field v-model="tarjetanombre" label="Nombre" required>
+                       <!--Atributos del fomulario-->
+                     <v-flex xs12 sm4 md4 lg4 xl2>
+                        <v-text-field v-model="tarjetanombre" label="Nombre de la anomalia" required>
                         </v-text-field>
                     </v-flex>
                     <!-- <v-flex  xs12 sm3 md3 lg3 xl2>
@@ -249,7 +249,7 @@
                                <v-date-picker v-model="tarjetafecha" @input="menu2 = false"></v-date-picker>
                             </v-menu>
                     </v-flex>-->
-                     <v-flex xs12 sm3 md3 lg3 xl2>
+                     <v-flex xs12 sm4 md4 lg4 xl2>
                         <v-overflow-btn
                             class="my-0"
                             :items="pasoma"
@@ -259,7 +259,7 @@
                         ></v-overflow-btn>
                       
                     </v-flex>
-                    <v-flex xs12 sm3 md3 lg3 xl2>
+                    <v-flex xs12 sm4 md4 lg4 xl2>
                        <v-select v-model="idarea"
                        
                         :items="areas" label="Area">
@@ -271,18 +271,18 @@
                         <v-radio label="B" value="B"></v-radio>
                         <v-radio label="C" value="C"></v-radio>
                         </v-radio-group>  
-                    </v-flex>
                   
-                   <!--TURNO-->
+                  
+                   <!--TURNO
                     <v-flex xs12 sm4 md4 lg4 xl4>
                         <v-radio-group v-model="tarjetaturno" row label ="Turno"  :mandatory="false">
                         <v-radio label="T1" value="T1"></v-radio>
                         <v-radio label="T2" value="T2"></v-radio>
                         <v-radio label="T3" value="T3"></v-radio>
                         </v-radio-group>
-                    </v-flex>
+                    </v-flex>-->
                      
-                     <v-flex xs12 sm3 md3 lg3 xl2>
+                     
                     </v-flex>
                      <v-flex xs12 sm3 md3 lg3 xl2>
                         <v-text-field  readonly v-model="nombremaquina" label="Maquina">
@@ -303,7 +303,7 @@
                         </v-btn>
                     </v-flex>
                      <v-flex xs12 sm3 md3 lg3 xl2>
-                        <v-text-field  readonly erv-model="nombresuceso" label="Relacionada con:">
+                        <v-text-field  readonly v-model="nombresuceso" label="Relacionada con:">
                         </v-text-field>
                     </v-flex>
                      <v-flex xs12 sm1 md1 lg1 xl2>
@@ -315,11 +315,13 @@
                          <v-textarea
                             clearable
                             clear-icon="cancel"
+                            rows="2"
                             label="Descripción detallada de la anomalía:"
                             value=""
                             v-model="tarjetadescripcion"
                         ></v-textarea>
                     </v-flex>
+                    
                     <v-flex xs12 sm2 md2 lg2 xl2 v-if="errorArticulo">
                         <div class="red--text" v-text="errorArticulo">
                         </div>
@@ -331,7 +333,12 @@
                     </v-flex>
                     <v-flex xs12 sm12 md12 lg12 xl12>
                         <v-btn @click="ocultarNuevo()" color="blue darken-1" flat>Cancelar</v-btn>
-                        <v-btn @click="guardar()" color="success">Guardar</v-btn>
+                        <v-btn 
+                           :loading="loading"
+                           :disabled="loading"
+                          @click="guardar()" color="success">Guardar</v-btn>
+                          
+                            
                     </v-flex>
 		        </v-layout>
             </v-container>
@@ -371,7 +378,7 @@
             <v-container grid-list-md>
               <v-layout wrap>
                 <v-flex xs12 sm6 md4>
-                  <v-text-field label="Nombre :" 
+                  <v-text-field label="Nombre de la tarjeta:" 
                   v-model="this.nombre_anomalia"
                    required
                    readonly
@@ -470,7 +477,15 @@
             <v-container fill-height fluid>
               <v-layout fill-height>
                 <v-flex xs12 align-end flexbox>
-                  <span   class="subheading font-weight-bold">A</span>
+                  <template v-if="props.item.criticidad==='A'">
+               <div class="headline"> <span class="red--text">{{props.item.criticidad}}</span></div>
+               </template>
+                <template v-if="props.item.criticidad==='B'">
+               <div class="headline"> <span class="yellow--text">{{props.item.criticidad}}</span></div>
+               </template>
+                <template v-if="props.item.criticidad==='C'">
+               <div class="headline"> <span class="green--text">{{props.item.criticidad}}</span></div>
+               </template>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -478,15 +493,32 @@
           <v-card-title>
                <v-list-tile-content>
                  <v-flex xs5 sm5 md5>
-                   <template v-if="props.item.idtarjeta === 1">
-                   <v-list-tile-title class="red">
-                      <span  class="subheading font-weight-bold" >{{props.item.codigo}}</span>
-                  </v-list-tile-title>
+                     <template v-if="props.item.idtarjeta === 1">
+                        
+                        <v-chip 
+                        
+                        color="red"
+                        class="ma-2"
+                        text-color="black"
+                        > <v-icon left>build</v-icon>
+                        <div class="subtitle-2">
+                        {{props.item.codigo}} MTTO
+                        </div>
+                        </v-chip>
+                        
+                       
                    </template>
                     <template v-if="props.item.idtarjeta === 2">
-                   <v-list-tile-title class="blue">
-                      <span  class="subheading font-weight-bold" >{{props.item.codigo}}</span>
-                  </v-list-tile-title>
+                    <v-chip
+                        color="primary"
+                         class="ma-2"
+                        text-color="white"
+                        >
+                        <v-avatar left>
+                          <v-icon>account_circle</v-icon>
+                        </v-avatar>
+                        {{props.item.codigo}} OPERADOR
+                        </v-chip>
                    </template>
                  </v-flex>
                   
@@ -511,7 +543,7 @@
                 
               </v-list-tile>
               <v-divider ></v-divider>
-                   <div text-truncate  >Fecha emision: {{props.item.emision_ts}}</div>
+                   <div class="caption">Fecha emision: {{props.item.emision_ts}}</div>
                  
             </template>
           </v-list>
@@ -535,7 +567,7 @@
         </template>
       </v-data-iterator>
     </v-container>
- 
+ </v-layout >
 </template>
   
 
@@ -689,7 +721,7 @@ import { all } from 'q';
                 },
                 ocultarNuevo(){
                     this.verNuevo=0;
-                    //this.limpiar();
+                    this.limpiar();
                 },
                  editItem (item) {
                 this.idmaquina=item.idmaquina;
@@ -749,7 +781,18 @@ import { all } from 'q';
               this.textsnackbar='Operacion exitosa'
             },
             limpiar(){
-               // this.idmaquina=0,
+               this.tarjetanombre= "";
+                this.tarjetapasoma=-1;
+                this.tarjetacriticidad="",
+                this.idarea="",
+                this.nombrearea="";
+                this.idmaquina="";
+                this.nombremaquina="";
+                this.idanomalia="";
+                this.nombreanomalia="";
+                this.idsuceso="";
+                this.nombresuceso="";
+                this.tarjetadescripcion="";
                
             },
            
@@ -899,7 +942,7 @@ import { all } from 'q';
                 },configuracion).then(function(response){
                     me.ocultarNuevo();
                     me.listar();
-                   // me.limpiar(); 
+                    me.limpiar(); 
                    me.mostrarSnacbar(); 
                     
                 }).catch(function(error){

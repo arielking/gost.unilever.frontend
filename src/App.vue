@@ -45,7 +45,7 @@
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title>
-                  Lista Espera WCM
+                  WCM Reportadas
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -56,7 +56,7 @@
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title>
-                  WCM propios 
+                  WCM Por atender 
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -66,7 +66,7 @@
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title>
-                  WCM resuelto
+                  WCM Atendidas
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -86,7 +86,7 @@
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title>
-                  WCM confirmar 
+                  WCM Confirmar 
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -258,6 +258,7 @@
     <v-toolbar
       color="blue darken-3"
       dark
+      dense
       app
       :clipped-left="$vuetify.breakpoint.mdAndUp"
       fixed
@@ -272,11 +273,6 @@
       </v-toolbar-title>
             <v-spacer></v-spacer>
 
-      <v-spacer></v-spacer>
-      <v-flex xs2 sm2 md2 lg2 xl2>
-
-       <span  v-html=" this.usuariosistema"></span>
-        </v-flex>
        <v-flex xs2 sm2 md2 lg2 xl2>
       <span  v-html="this.rolsistema"></span>
       </v-flex>
@@ -337,7 +333,9 @@ export default {
 
     
     logueado(){
+      
       return this.$store.state.usuario;
+      
       
     },
     esAdministrador(){
@@ -375,6 +373,8 @@ export default {
   methods:{
     salir(){
       this.$store.dispatch("salir");
+      this.usuariosistema='';
+      this.rolsistema='';
     },
     credenciales(){
       this.usuariosistema=this.$store.state.usuario.nombre;

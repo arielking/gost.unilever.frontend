@@ -224,7 +224,7 @@
                      
                      <!--Atributos del fomulario-->
                      <v-flex xs12 sm3 md3 lg3 xl4>
-                        <v-text-field v-model="tarjetanombre" label="Nombre" required>
+                        <v-text-field v-model="tarjetanombre" label="Nombre de la tarjeta" required>
                         </v-text-field>
                     </v-flex>
                     <!-- <v-flex  xs12 sm3 md3 lg3 xl2>
@@ -361,9 +361,38 @@
       </v-dialog>
         <!--VENTANA DETALLES -->
     <template>
-        <v-dialog v-model="dialog" persistent max-width="700px"  max-height="800px">
-       
-        <v-card>
+        <v-dialog v-model="dialog"  max-width="700px"  max-height="800px">
+        <v-tabs
+      centered
+      color="cyan"
+      dark
+      icons-and-text
+    >
+      <v-tabs-slider color="yellow"></v-tabs-slider>
+  
+      <v-tab href="#tab-1">
+        Creacion
+        <v-icon>assignment</v-icon>
+      </v-tab>
+  
+      <v-tab href="#tab-2">
+        Ejecucion
+        <v-icon>build</v-icon>
+      </v-tab>
+  
+      <v-tab href="#tab-3" v-if="this.confirmado__supervisor">
+        Cierre
+        <v-icon>assignment_turned_in
+</v-icon>
+      </v-tab>
+  
+      <v-tab-item
+        
+        :value="'tab-1'"
+      >
+        <v-card flat>
+          <v-card-text>
+
           <v-card-title>
             <span class="headline">{{this.codigo}}</span>
           </v-card-title>
@@ -371,7 +400,7 @@
             <v-container grid-list-md>
               <v-layout wrap>
                 <v-flex xs12 sm6 md4>
-                  <v-text-field label="Nombre :" 
+                  <v-text-field label="Nombre de la tarjeta:" 
                   v-model="this.nombre_anomalia"
                    required
                    readonly
@@ -403,42 +432,126 @@
                   <v-flex xs12 sm6 >
                   <v-text-field readonly label="Area:" v-model="this.area" required></v-text-field>
                 </v-flex>
-                  <v-flex xs12 sm6 >
+                  <v-flex xs12 sm6 md4 >
                   <v-text-field readonly label="Maquina:" v-model="this.maquina" required></v-text-field>
                 </v-flex>
-                <v-flex xs12 sm6 >
+                <v-flex xs12 sm6 md4 >
                   <v-text-field readonly label="Anomalia:" v-model="this.anomaliac" required></v-text-field>
                 </v-flex>
-                <v-flex xs12 sm6 >
+                <v-flex xs12 sm6 md4 >
                   <v-text-field readonly label="Relacionada con:" v-model="this.relacionado" required></v-text-field>
                 </v-flex>
-                <v-flex xs12 sm6>
-                  <v-text-field  readonly label="Descripcion :" v-model="this.descripcion" required></v-text-field>
+                <v-flex xs12 sm12 md12>
+                    <v-textarea
+                    outlined
+                    name="input-7-4"
+                    label="Descripcion :"
+                    rounded=true
+                    filled=true
+                    rows="2"
+                    readonly
+                    v-model="this.descripcion"
+                  ></v-textarea>
                 </v-flex>
-                 <v-flex xs12 sm6 >
-                  <v-text-field readonly label="Solucion implementada:" v-model="this.sol_implementada" required></v-text-field>
-                </v-flex>
+     
+              </v-layout>
+            </v-container>
+          </v-card-text>
+
+          </v-card-text>
+        </v-card>
+      </v-tab-item>
+       <v-tab-item
+        
+        :value="'tab-2'"
+      >
+        <v-card flat>
+          <v-card-text>
+          <v-card-title>
+            <span class="headline">{{this.codigo}}</span>
+          </v-card-title>
+          <v-card-text>
+            <v-container grid-list-md>
+              <v-layout wrap>
+            
+               
+                 
                 <v-flex xs12 sm6>
                   <v-text-field  readonly label="Resuelto por :" v-model="this.usuariotecnico" required></v-text-field>
                 </v-flex>
                  <v-flex xs12 sm6>
                   <v-text-field  readonly label="Fecha de ejecución :" v-model="this.ejecucion_ts" required></v-text-field>
                 </v-flex>
-               
-                      
+                <v-flex xs12 sm12 md12>
+                    <v-textarea
+                    outlined
+                    name="input-7-4"
+                    label="Solucion implementada:"
+                    rounded=true
+                    filled=true
+                    rows="2"
+                    readonly
+                    v-model="this.sol_implementada"
+                  ></v-textarea>
+                </v-flex>
 
               </v-layout>
             </v-container>
           </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1"  @click="dialog = false">Cerrar</v-btn>
-          </v-card-actions>
+
+          </v-card-text>
         </v-card>
+      </v-tab-item>
+       <v-tab-item
+        
+        :value="'tab-3'"
+      >
+        <v-card flat>
+          <v-card-text>
+            
+              <v-card-title>
+            <span class="headline">{{this.codigo}}</span>
+          </v-card-title>
+          <v-card-text>
+            <v-container grid-list-md>
+              <v-layout wrap>
+            
+                <v-flex xs12 sm6>
+                  <v-text-field  readonly label="Supervisor que aprobo :" v-model="this.supervisoraprobador" required></v-text-field>
+                </v-flex>
+                
+                 <v-flex xs12 sm6>
+                  <v-text-field  readonly label="Fecha de cierre :" v-model="this.fechacierre" required></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm12 md12>
+                     <v-textarea
+                    outlined
+                    name="input-7-4"
+                    label="Observaciones :"
+                    rounded=true
+                    filled=true
+                    rows="2"
+                    readonly
+                    v-model="this.observaciones"
+                  ></v-textarea>
+                </v-flex>
+
+              </v-layout>
+            </v-container>
+          </v-card-text>
+
+          </v-card-text>
+        </v-card>
+      </v-tab-item>
+    </v-tabs>
+      
+
+          
+          
       </v-dialog>
     </template>
        <v-toolbar flat color="white">
-                <v-toolbar-title>Tarjetas Confirmadas:</v-toolbar-title>
+                <v-toolbar-title>Tarjetas Resueltas:</v-toolbar-title>
                     <v-divider
                     class="mx-2"
                     inset
@@ -447,8 +560,8 @@
                     <v-spacer></v-spacer>
                     <v-text-field class="text-xs-center"  v-model="search" append-icon="search" label="Búsqueda" single-line hide-details></v-text-field>
                     <v-spacer></v-spacer>
-                    <v-btn   v-if="verNuevo==0" @click="mostrarNuevo"  color="primary" dark class="mb-2">Nuevo</v-btn>
-                   
+                    <!--<v-btn   v-if="verNuevo==0" @click="mostrarNuevo"  color="primary" dark class="mb-2">Nuevo</v-btn>
+                   -->
                 </v-toolbar>
                 <v-divider ></v-divider>
       <v-data-iterator
@@ -482,7 +595,15 @@
             <v-container fill-height fluid>
               <v-layout fill-height>
                 <v-flex xs12 align-end flexbox>
-                  <span   class="subheading font-weight-bold">A</span>
+                   <template v-if="props.item.criticidad==='A'">
+               <div class="headline"> <span class="red--text">{{props.item.criticidad}}</span></div>
+               </template>
+                <template v-if="props.item.criticidad==='B'">
+               <div class="headline"> <span class="yellow--text">{{props.item.criticidad}}</span></div>
+               </template>
+                <template v-if="props.item.criticidad==='C'">
+               <div class="headline"> <span class="green--text">{{props.item.criticidad}}</span></div>
+               </template>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -490,19 +611,49 @@
           <v-card-title>
                <v-list-tile-content>
                  <v-flex xs5 sm5 md5>
-                   <template v-if="props.item.idtarjeta === 1">
-                   <v-list-tile-title class="red">
-                      <span  class="subheading font-weight-bold" >{{props.item.codigo}}</span>
-                  </v-list-tile-title>
+                 <template v-if="props.item.idtarjeta === 1">
+                        
+                        <v-chip 
+                        
+                        color="red"
+                        class="ma-2"
+                        text-color="black"
+                        > <v-icon left>build</v-icon>
+                        <div class="subtitle-2">
+                        {{props.item.codigo}} MTTO
+                        </div>
+                        </v-chip>
+                        
+                       
                    </template>
                     <template v-if="props.item.idtarjeta === 2">
-                   <v-list-tile-title class="blue">
-                      <span  class="subheading font-weight-bold" >{{props.item.codigo}}</span>
-                  </v-list-tile-title>
+                    <v-chip
+                        color="primary"
+                         class="ma-2"
+                        text-color="black"
+                        >
+                        <v-avatar left>
+                          <v-icon>account_circle</v-icon>
+                        </v-avatar>
+                        {{props.item.codigo}} OPERADOR
+                        </v-chip>
+                   </template>
+
+                    <template v-if="props.item.idtarjeta === 3">
+                    <v-chip
+                        color="green accent-4"
+                         class="ma-2"
+                         text-color="black"
+                        >
+                        <v-avatar left>
+                          <v-icon>spa</v-icon>
+                        </v-avatar>
+                        {{props.item.codigo}} SH&E
+                        </v-chip>
                    </template>
                  </v-flex>
                   
-                  <v-list-tile-sub-title v-html="props.item.nombre"></v-list-tile-sub-title>
+                  <v-list-tile-sub-title class="font-weight-bold" v-html="props.item.nombre"></v-list-tile-sub-title>
                 </v-list-tile-content>
               
               
@@ -523,37 +674,61 @@
                 
               </v-list-tile>
               <v-divider ></v-divider>
-                   <div text-truncate  >Fecha ejecución: {{props.item.ejecucion_ts}}</div>
-                <div text-truncate  >Resuelto por: {{props.item.usuariotecnico}}</div>
+                   <div class="caption">Ejecución: {{props.item.ejecucion_ts}}</div>
+                <div class="caption">Resuelto por: {{props.item.usuariotecnico}}</div>
+                 <template v-if="props.item.confirmacion_super === true">
+                 <div class="caption">Confirmado por: {{props.item.usuariosupervisor}}</div>
+                  </template>
+                  <template v-if="props.item.confirmacion_super === false">
+                  <v-flex>
+                    <v-flex>
+                      
+                    </v-flex>
+                  </v-flex>
+                  </template>
                  <template v-if="props.item.confirmacion_super === false">
-                   <v-list-tile-title class="yellow">
-                      <div text-truncate  >Espera confirmación supervisor</div>
-                  </v-list-tile-title>
+                  
+                      <v-chip 
+                        
+                        color="yellow"
+                        class="ma-2"
+                        text-color="black"
+                        small
+                        > 
+                        <div class="subtitle-2">
+                         Confirmación supervisor
+                         <v-icon right>hourglass_empty</v-icon>
+                        </div>
+                        </v-chip>
+                     
+                  
                    </template>
                    <template v-if="props.item.confirmacion_super === true">
-                   <v-list-tile-title class="green">
-                      <div text-truncate  >Tarjeta confirmada</div>
-                  </v-list-tile-title>
+                  <v-chip 
+                        
+                        color="green"
+                        class="ma-2"
+                        text-color="black"
+                        small
+                        > 
+                        <div class="subtitle-2">
+                         Confirmación supervisor
+                         <v-icon right>assignment_turned_in</v-icon>
+                        </div>
+                        </v-chip>
                    </template>
             </template>
           </v-list>
           </v-flex >
-              
-                
-            
           </v-card-title>
           <v-card-actions>
-            <!--<v-btn  color="green"
-            @click="editItemConfirmar(props.item)"
-            >Asignarme</v-btn>-->
             <v-btn outline color="blue"
                 @click="editItem(props.item)"
             >Detalles</v-btn>
           </v-card-actions>
         </v-card>
       </v-hover>
-
-          </v-flex>
+      </v-flex>
         </template>
       </v-data-iterator>
     </v-container>
@@ -590,6 +765,8 @@ import { all } from 'q';
         
         itemsdata:[],
         // variables
+         text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+    
         codigo:'',
         idanomalia:'',
         nombre_anomalia:'',
@@ -664,6 +841,10 @@ import { all } from 'q';
                 tarjetaeliminado:false,
                 tarjetadescripcion:'',
                 tarjetaidtarjeta:1,
+                supervisoraprobador:'',
+                fechacierre:'',
+                confirmado__supervisor:false,
+                observaciones:'',
                 //auxiliadres
              
                     
@@ -739,6 +920,10 @@ import { all } from 'q';
                 this.confirmacion_tec=item.confirmacion_tec;
                 this.sol_implementada=item.sol_implementada;
                 this.ejecucion_ts=item.ejecucion_ts;
+                this.observaciones=item.observaciones;
+                this.supervisoraprobador=item.usuariosupervisor;
+                this.fechacierre=item.cierre_ts;
+                this.confirmado__supervisor=item.confirmacion_super;
                       
 
 

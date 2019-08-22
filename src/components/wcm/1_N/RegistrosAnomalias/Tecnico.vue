@@ -3,6 +3,42 @@
     
     <v-container fluid grid-list-md>
       <!--VENTANA DE REGISTROS-->
+     <!--VENTANA DE SELEECION DE TARJETA-->
+      <v-dialog
+          v-model="dialogTarjeta"
+          max-width="220"
+        >
+          <v-card>
+            <v-card-title>
+              Seleccioné el tipo de tarjeta:
+            </v-card-title>
+            <v-card-text>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                 <v-btn @click="tarjetaVerde()" color="#00C853"   v-on="on" large>(SH & E)
+                  <v-icon>spa</v-icon><v-icon>pan_tool</v-icon>
+                </v-btn>
+              </template>
+              <span>POLÍTICA DE SEGURIDAD, SALUD Y MEDIO AMBIENTE</span>
+            </v-tooltip>
+               <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                 <v-btn  color="yellow"   v-on="on" large>INGENIERIA
+                <v-icon>public</v-icon>
+              </v-btn>
+              </template>
+              <span>Ingeniería</span>
+            </v-tooltip>
+            
+               
+            
+
+            </v-card-text>
+            <v-card-actions>
+            
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
                        <!-- DIALOG BUSCAR MAQUINA-->
                     <v-dialog v-model="verMaquinas" max-width="500">
                         <v-card>
@@ -219,39 +255,13 @@
                    
                     </v-dialog>
   
-      <v-container grid-list-sm class="pa-4 white" v-if="verNuevo">
+                <v-container grid-list-sm class="pa-4 white" v-if="verNuevo">
                 <v-layout row wrap>
                      
-        <v-dialog
-          v-model="dialogTarjeta"
-          max-width="250"
-        >
-          <v-card>
-            <v-card-title>
-              Tipos de tarjeta
-            </v-card-title>
-            <v-card-text>
-            
-              <v-select
-                :items="selecttarjeta"
-                label="Seleccione tipo de tarjeta"
-                v-model="tarjetauser"
-              ></v-select>
-            </v-card-text>
-            <v-card-actions>
-              <v-btn
-                color="primary"
-                text
-                @click="dialogTarjeta = false"
-              >
-                Cerrar
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
+        
                      <!--Atributos del fomulario-->
-                     <v-flex xs12 sm3 md3 lg3 xl4>
-                        <v-text-field v-model="tarjetanombre" label="Nombre" required>
+                     <v-flex xs12 sm4 md4 lg4 xl2>
+                        <v-text-field v-model="tarjetanombre" label="Nombre de la anomalia" required>
                         </v-text-field>
                     </v-flex>
                     <!-- <v-flex  xs12 sm3 md3 lg3 xl2>
@@ -276,7 +286,7 @@
                                <v-date-picker v-model="tarjetafecha" @input="menu2 = false"></v-date-picker>
                             </v-menu>
                     </v-flex>-->
-                     <v-flex xs12 sm3 md3 lg3 xl2>
+                     <v-flex xs12 sm4 md4 lg4 xl2>
                         <v-overflow-btn
                             class="my-0"
                             :items="pasoma"
@@ -286,7 +296,7 @@
                         ></v-overflow-btn>
                       
                     </v-flex>
-                    <v-flex xs12 sm3 md3 lg3 xl2>
+                    <v-flex xs12 sm4 md4 lg4 xl2>
                        <v-select v-model="idarea"
                        
                         :items="areas" label="Area">
@@ -298,18 +308,18 @@
                         <v-radio label="B" value="B"></v-radio>
                         <v-radio label="C" value="C"></v-radio>
                         </v-radio-group>  
-                    </v-flex>
                   
-                   <!--TURNO-->
+                  
+                   <!--TURNO
                     <v-flex xs12 sm4 md4 lg4 xl4>
                         <v-radio-group v-model="tarjetaturno" row label ="Turno"  :mandatory="false">
                         <v-radio label="T1" value="T1"></v-radio>
                         <v-radio label="T2" value="T2"></v-radio>
                         <v-radio label="T3" value="T3"></v-radio>
                         </v-radio-group>
-                    </v-flex>
+                    </v-flex>-->
                      
-                     <v-flex xs12 sm3 md3 lg3 xl2>
+                     
                     </v-flex>
                      <v-flex xs12 sm3 md3 lg3 xl2>
                         <v-text-field  readonly v-model="nombremaquina" label="Maquina">
@@ -342,11 +352,13 @@
                          <v-textarea
                             clearable
                             clear-icon="cancel"
+                            rows="2"
                             label="Descripción detallada de la anomalía:"
                             value=""
                             v-model="tarjetadescripcion"
                         ></v-textarea>
                     </v-flex>
+                    
                     <v-flex xs12 sm2 md2 lg2 xl2 v-if="errorArticulo">
                         <div class="red--text" v-text="errorArticulo">
                         </div>
@@ -358,7 +370,12 @@
                     </v-flex>
                     <v-flex xs12 sm12 md12 lg12 xl12>
                         <v-btn @click="ocultarNuevo()" color="blue darken-1" flat>Cancelar</v-btn>
-                        <v-btn @click="guardar()" color="success">Guardar</v-btn>
+                        <v-btn 
+                           :loading="loading"
+                           :disabled="loading"
+                          @click="guardar()" color="success">Guardar</v-btn>
+                          
+                            
                     </v-flex>
 		        </v-layout>
             </v-container>
@@ -367,7 +384,7 @@
       v-model="snackbar"
       :timeout=this.timeout
 
-      color="success"
+      :color="this.color"
     >
     
       {{textsnackbar}}
@@ -408,7 +425,7 @@
 
                   <v-text-field label="Creado por el usuario:" v-model="this.nombre_usuario" readonly></v-text-field>
                 </v-flex>
-                <v-flex xs12 sm6 md4>
+                <v-flex xs12 sm4 md4>
                   <v-text-field
                     label="Fecha de la emision:"
                     
@@ -453,6 +470,8 @@
         </v-card>
       </v-dialog>
     </template>
+
+     <template v-if="this.verNuevo==false">
        <v-toolbar flat color="white">
                 <v-toolbar-title>Lista en espera</v-toolbar-title>
                     <v-divider
@@ -497,7 +516,15 @@
             <v-container fill-height fluid>
               <v-layout fill-height>
                 <v-flex xs12 align-end flexbox>
-                  <span   class="subheading font-weight-bold">A</span>
+                 <template v-if="props.item.criticidad==='A'">
+               <div class="headline"> <span class="red--text">{{props.item.criticidad}}</span></div>
+               </template>
+                <template v-if="props.item.criticidad==='B'">
+               <div class="headline"> <span class="yellow--text">{{props.item.criticidad}}</span></div>
+               </template>
+                <template v-if="props.item.criticidad==='C'">
+               <div class="headline"> <span class="green--text">{{props.item.criticidad}}</span></div>
+               </template>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -505,19 +532,48 @@
           <v-card-title>
                <v-list-tile-content>
                  <v-flex xs5 sm5 md5>
-                   <template v-if="props.item.idtarjeta === 1">
-                   <v-list-tile-title class="red">
-                      <span  class="subheading font-weight-bold" >{{props.item.codigo}}</span>
-                  </v-list-tile-title>
+                  <template v-if="props.item.idtarjeta === 1">
+                        
+                        <v-chip 
+                        
+                        color="red"
+                        class="ma-2"
+                        text-color="black"
+                        > <v-icon left>build</v-icon>
+                        <div class="subtitle-1">
+                        {{props.item.codigo}} MTTO
+                        </div>
+                        </v-chip>
+                        
+                       
                    </template>
                     <template v-if="props.item.idtarjeta === 2">
-                   <v-list-tile-title class="blue">
-                      <span  class="subheading font-weight-bold" >{{props.item.codigo}}</span>
-                  </v-list-tile-title>
+                    <v-chip
+                        color="primary"
+                         class="ma-2"
+                         text-color="black"
+                        >
+                        <v-avatar left>
+                          <v-icon>account_circle</v-icon>
+                        </v-avatar>
+                        {{props.item.codigo}} OPERADOR
+                        </v-chip>
+                   </template>
+                   <template v-if="props.item.idtarjeta === 3">
+                    <v-chip
+                        color="green accent-4"
+                         class="ma-2"
+                         text-color="black"
+                        >
+                        <v-avatar left>
+                          <v-icon>spa</v-icon>
+                        </v-avatar>
+                        {{props.item.codigo}} SH&E
+                        </v-chip>
                    </template>
                  </v-flex>
                   
-                  <v-list-tile-sub-title v-html="props.item.nombre"></v-list-tile-sub-title>
+                  <v-list-tile-sub-title class="font-weight-bold" v-html="props.item.nombre"></v-list-tile-sub-title>
                 </v-list-tile-content>
               
               
@@ -538,7 +594,7 @@
                 
               </v-list-tile>
               <v-divider ></v-divider>
-                   <div text-truncate  >Fecha emision: {{props.item.emision_ts}}</div>
+                 <div class="caption">Emision: {{props.item.emision_ts}}</div>
                  
             </template>
           </v-list>
@@ -561,6 +617,7 @@
           </v-flex>
         </template>
       </v-data-iterator>
+       </template>
     </v-container>
  
 </template>
@@ -666,6 +723,7 @@ import { all } from 'q';
                 tarjetadescripcion:'',
                 tarjetaidtarjeta:1,
                 //auxiliadres
+                loading: false,
                 dialogTarjeta:false,
                  selecttarjeta: [
                 { text: 'TARJETA ROJA' ,value: '1'},
@@ -700,6 +758,17 @@ import { all } from 'q';
                 adId: ''     ,
             }
             },
+             watch: {
+                loader () {
+                  const l = this.loader
+                  this[l] = !this[l]
+
+                  setTimeout(() => (this[l] = false), 3000)
+
+                  this.loader = null
+                },
+              },
+              
             created () {
                 this.listar();
                 this.seleccionautomaticotarjeta();
@@ -713,13 +782,30 @@ import { all } from 'q';
             },
             methods:{
 
+                tarjetaVerde(){
+                this.dialogTarjeta=false;
+                this.snackbar = true;
+                this.color="success";
+                this.textsnackbar='Tarjeta SH&E seleccionada'
+                this.verNuevo=true;
+                this.tarjetauser=3;
+                    
+                },
                 mostrarNuevo(){
-                  this.verNuevo=1;
+
+                   if (!this.tarjetauser){
+                    this.dialogTarjeta=true;
+                  //this.validaMensaje.push("Ingrese una tarjeta.");    
+                  }else{
+                     this.verNuevo=1;
+                  }
+                 
                
                 },
                 ocultarNuevo(){
                     this.verNuevo=0;
-                    //this.limpiar();
+                    this.limpiar();
+                    this.loading=false;
                 },
                  editItem (item) {
                 this.idmaquina=item.idmaquina;
@@ -739,8 +825,6 @@ import { all } from 'q';
                 this.turno=item.turno;
                 this.area=item.area;
                 this.relacionado=item.relacionado;
-
-
                 //this.editedIndex=1;
                 this.dialog = true
             },
@@ -779,7 +863,31 @@ import { all } from 'q';
               this.textsnackbar='Operacion exitosa'
             },
             limpiar(){
-               // this.idmaquina=0,
+               //Control solo para usuaios que no son mantenimiento y operadores
+                let me=this;
+                if (this.$store.state.usuario.rol =='Mantenimiento'){
+                 
+                }else
+                if (this.$store.state.usuario.rol =='Operador'){
+                 
+                }else{
+                   this.tarjetauser="";
+                }
+               
+                this.tarjetanombre= "";
+                this.tarjetapasoma=-1;
+                this.tarjetacriticidad="",
+                this.idarea="",
+                this.nombrearea="";
+                this.idmaquina="";
+                this.nombremaquina="";
+                this.idanomalia="";
+                this.nombreanomalia="";
+                this.idsuceso="";
+                this.nombresuceso="";
+                this.tarjetadescripcion="";
+                
+               
                
             },
            
@@ -855,7 +963,6 @@ import { all } from 'q';
             ocultarAnomalia(){
                 this.verAnomalias=0;
             },
-
              agregarAnomalia(data = []){
                 this.idanomalia=data['idanomalia'];
                 this.nombreanomalia= data['nombre'];
@@ -864,7 +971,6 @@ import { all } from 'q';
                 this.snackbar = true;
                 this.color="success";
                 this.textsnackbar='Anomalia seleccionada' +" "+ this.nombreanomalia
-
             },
         // METODOS DE SUCESOS RELACIONADO 
             listarSuceso(){
@@ -885,7 +991,6 @@ import { all } from 'q';
             ocultarSuceso(){
                 this.verSucesos=0;
             },
-
              agregarSuceso(data = []){
                 this.idsuceso=data['idsuceso'];
                 this.nombresuceso= data['nombre'];
@@ -893,7 +998,6 @@ import { all } from 'q';
                 this.snackbar = true;
                 this.color="success";
                 this.textsnackbar='Relacionado con ' +" "+ this.nombresuceso
-
             },
             ///  FIN DE METODOS SUCESOS
           guardar () {
@@ -903,13 +1007,13 @@ import { all } from 'q';
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};                
                 let me=this;
+                this.loading= true;
                 axios.post('api/RegistrosAnomalias/CrearAnomalias',{
                     'nombre':me.tarjetanombre,
                     //'emision_ts':me.tarjetafecha,
                     'idusuario': this.$store.state.usuario.idusuario,
                     'paso_ma': me.tarjetapasoma,
                     'criticidad':me.tarjetacriticidad,
-                    'turno':me.tarjetaturno,
                     'idarea':me.idarea,
                     'idmaquina':me.idmaquina,
                     'idanomalia':me.idanomalia,
@@ -924,15 +1028,20 @@ import { all } from 'q';
                     'observaciones':me.tarjetaobservaciones,
                     'prog':me.tarjetaprog,
                     'eliminado':me.tarjetaeliminado
-
                     
                 },configuracion).then(function(response){
+                    me.loading=false;
                     me.ocultarNuevo();
                     me.listar();
-                   // me.limpiar(); 
-                   me.mostrarSnacbar(); 
+                    me.limpiar(); 
+                    me.mostrarSnacbar();
+                    
                     
                 }).catch(function(error){
+                    me.snackbar=true
+                    me.color="#C62828";
+                    me.textsnackbar='Error en la operacion intente mas tarde'
+                    me.loading=false;
                     console.log(error);
                 });
             },
@@ -961,19 +1070,18 @@ import { all } from 'q';
              validar(){
                 this.valida=0;
                 this.validaMensaje=[]; 
-
                 if (!this.tarjetanombre){
                     this.validaMensaje.push("Ingrese un nombre.");
                 }
-                if (this.tarjetapasoma < 0 ){
+                if (this.tarjetapasoma < 0  ){
                   this.validaMensaje.push("Seleccioné PASO MA");    
                 }
                  if (!this.tarjetacriticidad){
                   this.validaMensaje.push("Seleccioné criticidad");    
                 }
-                 if (!this.tarjetaturno){
-                  this.validaMensaje.push("Seleccioné un turno");    
-                }
+                 //if (!this.tarjetaturno){
+                 // this.validaMensaje.push("Seleccioné un turno");    
+                //}
                 if (!this.idarea){
                   this.validaMensaje.push("Seleccioné una area.");    
                 }
@@ -990,7 +1098,8 @@ import { all } from 'q';
                   this.validaMensaje.push("Ingrese una descripcion.");    
                 }
                 if (!this.tarjetauser){
-                  this.dialogTarjeta=true;
+                  //this.dialogTarjeta=true;
+                 this.validaMensaje.push("Ingrese una tarjeta.");    
                 }
                 
                 if (this.validaMensaje.length){

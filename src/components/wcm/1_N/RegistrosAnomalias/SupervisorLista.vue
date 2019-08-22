@@ -382,7 +382,7 @@
             <v-container grid-list-md>
               <v-layout wrap>
                 <v-flex xs12 sm6 md4>
-                  <v-text-field label="Nombre :" 
+                  <v-text-field label="Nombre de la tarjeta:" 
                   v-model="this.nombre_anomalia"
                    required
                    readonly
@@ -493,7 +493,15 @@
             <v-container fill-height fluid>
               <v-layout fill-height>
                 <v-flex xs12 align-end flexbox>
-                  <span   class="subheading font-weight-bold">A</span>
+                   <template v-if="props.item.criticidad==='A'">
+               <div class="headline"> <span class="red--text">{{props.item.criticidad}}</span></div>
+               </template>
+                <template v-if="props.item.criticidad==='B'">
+               <div class="headline"> <span class="yellow--text">{{props.item.criticidad}}</span></div>
+               </template>
+                <template v-if="props.item.criticidad==='C'">
+               <div class="headline"> <span class="green--text">{{props.item.criticidad}}</span></div>
+               </template>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -502,14 +510,43 @@
                <v-list-tile-content>
                  <v-flex xs5 sm5 md5>
                    <template v-if="props.item.idtarjeta === 1">
-                   <v-list-tile-title class="red">
-                      <span  class="subheading font-weight-bold" >{{props.item.codigo}}</span>
-                  </v-list-tile-title>
+                        
+                        <v-chip 
+                        
+                        color="red"
+                        class="ma-2"
+                        text-color="black"
+                        > <v-icon left>build</v-icon>
+                        <div class="subtitle-2">
+                        {{props.item.codigo}} MTTO
+                        </div>
+                        </v-chip>
+                        
+                       
                    </template>
                     <template v-if="props.item.idtarjeta === 2">
-                   <v-list-tile-title class="blue">
-                      <span  class="subheading font-weight-bold" >{{props.item.codigo}}</span>
-                  </v-list-tile-title>
+                    <v-chip
+                        color="primary"
+                         class="ma-2"
+                         text-color="black"
+                        >
+                        <v-avatar left>
+                          <v-icon>account_circle</v-icon>
+                        </v-avatar>
+                        {{props.item.codigo}} OPERADOR
+                        </v-chip>
+                   </template>
+                       <template v-if="props.item.idtarjeta === 3">
+                    <v-chip
+                        color="green accent-4"
+                         class="ma-2"
+                         text-color="black"
+                        >
+                        <v-avatar left>
+                          <v-icon>spa</v-icon>
+                        </v-avatar>
+                        {{props.item.codigo}} SH&E
+                        </v-chip>
                    </template>
                  </v-flex>
                   
@@ -534,17 +571,48 @@
                 
               </v-list-tile>
               <v-divider ></v-divider>
-                   <div text-truncate  >Fecha ejecución: {{props.item.ejecucion_ts}}</div>
-                <div text-truncate  >Resuelto por: {{props.item.usuariotecnico}}</div>
+                   <div class="caption">Ejecución: {{props.item.ejecucion_ts}}</div>
+                <div class="caption">Resuelto por: {{props.item.usuariotecnico}}</div>
+                 <template v-if="props.item.confirmacion_super === true">
+                 <div class="caption">Confirmado por: {{props.item.usuariosupervisor}}</div>
+                  </template>
+                  <template v-if="props.item.confirmacion_super === false">
+                  <v-flex>
+                    <v-flex>
+                      
+                    </v-flex>
+                  </v-flex>
+                  </template>
                  <template v-if="props.item.confirmacion_super === false">
-                   <v-list-tile-title class="yellow">
-                      <div text-truncate  >Espera confirmación supervisor</div>
-                  </v-list-tile-title>
+                  
+                      <v-chip 
+                        
+                        color="yellow"
+                        class="ma-2"
+                        text-color="black"
+                        small
+                        > 
+                        <div class="subtitle-2">
+                         Confirmación supervisor
+                         <v-icon right>hourglass_empty</v-icon>
+                        </div>
+                        </v-chip>
+                     
+                  
                    </template>
                    <template v-if="props.item.confirmacion_super === true">
-                   <v-list-tile-title class="green">
-                      <div text-truncate  >Tarjeta confirmada</div>
-                  </v-list-tile-title>
+                  <v-chip 
+                        
+                        color="green"
+                        class="ma-2"
+                        text-color="black"
+                        small
+                        > 
+                        <div class="subtitle-2">
+                         Confirmación supervisor
+                         <v-icon right>assignment_turned_in</v-icon>
+                        </div>
+                        </v-chip>
                    </template>
             </template>
           </v-list>
