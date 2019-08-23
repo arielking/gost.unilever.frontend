@@ -70,13 +70,13 @@
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
-             <v-list-tile v-if=" esAdministrador" :to="{ name: 'tecnicoLista'}">
+             <v-list-tile v-if=" esAdministrador" :to="{ name: 'SheLista'}">
               <v-list-tile-action>
                 <v-icon>table_chart</v-icon>
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title>
-                  SHE tarjetas WCM
+                  WCM SH&E Reportadas
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -315,7 +315,7 @@ export default {
     return {
       clipped: false,
       drawer: null,
-      width:'200',
+      width:'230',
       fixed: false,
       usuariosistema:'',
       rolsistema:'',

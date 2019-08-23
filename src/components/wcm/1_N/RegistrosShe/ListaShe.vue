@@ -15,7 +15,7 @@
             <v-card-text>
             <v-tooltip bottom>
               <template v-slot:activator="{ on }">
-                 <v-btn  color="#00C853"   v-on="on" large>(SH & E)
+                 <v-btn  @click="tarjetaVerdeShe()"  color="#00C853"   v-on="on" large>(SH & E)
                   <v-icon>spa</v-icon><v-icon>pan_tool</v-icon>
                 </v-btn>
               </template>
@@ -247,7 +247,154 @@
                             </v-card-text>
                             <v-card-actions>
                                 <v-spacer></v-spacer>
-                                <v-btn @click="ocultarAnomalia()" color="blue darken" flat>
+                                <v-btn @click="ocultar()" color="blue darken" flat>
+                                    Cancelar
+                                </v-btn>
+                            </v-card-actions>
+                        </v-card>
+                   
+                    </v-dialog>
+
+                    <!--DIALOG FALLAS LISTA-->
+                    <v-dialog v-model="verFalla" max-width="500">
+                        <v-card>
+                            <v-card-title>
+                                <span class="headline">Seleccione una Falla</span>
+
+                                <v-flex xs12 sm1 md1 lg1 xl2>
+                                    <v-tooltip top>
+                                    <template v-slot:activator="{ on }">
+                                     <v-btn @click="listarFalla()" small fab dark color="teal" v-on="on">
+                                        <v-icon dark>cached</v-icon>
+                                    </v-btn>
+                                    </template>
+                                    <span>Actualizar lista fallas</span>
+
+                                    
+                                    </v-tooltip>
+                                </v-flex>
+                            </v-card-title>
+                            <v-card-text>
+                                <v-container grid-list-md>
+                                    <v-layout wrap>
+                                        <v-flex xs12 sm12 md12 lg12 xl12>
+                                           <template>
+                                          
+                                                <v-spacer></v-spacer>
+                                                <v-text-field
+                                                    v-model="buscaranomalia"
+                                                    append-icon="search"
+                                                    label="Search"
+                                                    single-line
+                                                    hide-details
+                                                ></v-text-field>
+                                                <v-data-table
+                                                :headers="cabeceraAnomalias"
+                                                :items="fallasdata"
+                                                :search="buscaranomalia"
+                                                >
+                                                <template slot="items" slot-scope="props">
+                                                        <td class="justify-center layout px-0">
+                                                            <v-icon
+                                                            medium
+                                                            class="mr-2"
+                                                            @click="agregarFalla(props.item)"
+                                                            >
+                                                            add_circle
+                                                            </v-icon>
+                                                        </td>
+                                                        <td>{{ props.item.nombre }}</td>
+                                                         <td>{{ props.item.descripcion }}</td>
+                                                        
+                                                        
+                                                    </template>
+                                                    <template slot="no-data">
+                                                        <h3>No hay anomalias para mostrar.</h3>
+                                                    </template>
+                                                
+                                                </v-data-table>
+                                            
+                                            </template>
+                                        </v-flex>
+                                    </v-layout>
+                                </v-container>
+                            </v-card-text>
+                            <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn @click="ocultarFalla()" color="blue darken" flat>
+                                    Cancelar
+                                </v-btn>
+                            </v-card-actions>
+                        </v-card>
+                   
+                    </v-dialog>
+                        <!--DIALOG CONDICIONES INSEGURAS LISTA-->
+                    <v-dialog v-model="verCondicion" max-width="500">
+                        <v-card>
+                            <v-card-title>
+                                <span class="headline">Seleccione una Condicion Insegura</span>
+
+                                <v-flex xs12 sm1 md1 lg1 xl2>
+                                    <v-tooltip top>
+                                    <template v-slot:activator="{ on }">
+                                     <v-btn @click="listarCondicion()" small fab dark color="teal" v-on="on">
+                                        <v-icon dark>cached</v-icon>
+                                    </v-btn>
+                                    </template>
+                                    <span>Actualizar lista Condiciones</span>
+
+                                    
+                                    </v-tooltip>
+                                </v-flex>
+                            </v-card-title>
+                            <v-card-text>
+                                <v-container grid-list-md>
+                                    <v-layout wrap>
+                                        <v-flex xs12 sm12 md12 lg12 xl12>
+                                           <template>
+                                          
+                                                <v-spacer></v-spacer>
+                                                <v-text-field
+                                                    v-model="buscaranomalia"
+                                                    append-icon="search"
+                                                    label="Search"
+                                                    single-line
+                                                    hide-details
+                                                ></v-text-field>
+                                                <v-data-table
+                                                :headers="cabeceraAnomalias"
+                                                :items="condiciondata"
+                                                :search="buscaranomalia"
+                                                >
+                                                <template slot="items" slot-scope="props">
+                                                        <td class="justify-center layout px-0">
+                                                            <v-icon
+                                                            medium
+                                                            class="mr-2"
+                                                            @click="agregarCondicion(props.item)"
+                                                            >
+                                                            add_circle
+                                                            </v-icon>
+                                                        </td>
+                                                        <td>{{ props.item.nombre }}</td>
+                                                         <td>{{ props.item.descripcion }}</td>
+                                                        
+                                                        
+                                                    </template>
+                                                    <template slot="no-data">
+                                                        <h3>No hay condiciones para mostrar.</h3>
+                                                    </template>
+                                                
+                                                </v-data-table>
+                                            
+                                            </template>
+                                        </v-flex>
+                                    </v-layout>
+                                </v-container>
+                            </v-card-text>
+                            <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn @click="ocultarCondicion()" color="blue darken" flat>
                                     Cancelar
                                 </v-btn>
                             </v-card-actions>
@@ -255,6 +402,7 @@
                    
                     </v-dialog>
   
+              <!--REGISTRO NUEVO TARJETA AMARILLA ROJA AZUL-->
                 <v-container grid-list-sm class="pa-4 white" v-if="verNuevo">
                 <v-layout row wrap>
                      
@@ -379,6 +527,105 @@
                     </v-flex>
 		        </v-layout>
             </v-container>
+
+            <!--CREACION DE TARJETA VERDE SHE-->
+           
+                <v-container grid-list-sm class="pa-4 white" v-if="verNuevoShe">
+                <v-layout row wrap>
+                     
+        
+                     <!--Atributos del fomulario-->
+                     <v-flex xs12 sm4 md4 lg4 xl2>
+                        <v-text-field v-model="tarjetanombre" label="Nombre de la anomalia:" required>
+                        </v-text-field>
+                   
+                       
+                    </v-flex>
+                    <v-flex xs12 sm4 md4 lg4 xl2>
+                       <v-select v-model="idarea"
+                       
+                        :items="areas" label="Area">
+                        </v-select>
+                    </v-flex>   
+                    <v-flex xs12 sm3 md3 lg3 xl2>
+                        <v-text-field  readonly v-model="nombremaquina" label="Maquina:">
+                        </v-text-field>
+                    </v-flex> 
+                       <v-flex xs12 sm1 md1 lg1 xl2>
+                        <v-btn @click="mostrarMaquinas()" small fab dark color="teal">
+                            <v-icon dark>list</v-icon>
+                        </v-btn>
+                    </v-flex>
+                    <v-flex xs12 sm4 md4 lg4 xl4>
+                       <v-radio-group v-model="tarjetaprioridad" row label ="Prioridad:"  :mandatory="false">
+                        <v-radio label="A" value="A"></v-radio>
+                        <v-radio label="B" value="B"></v-radio>
+                        <v-radio label="C" value="C"></v-radio>
+                        </v-radio-group>  
+                    </v-flex>
+                     
+                    <v-flex xs12 sm4 md4 lg4 xl4>
+                       <v-radio-group v-model="she_ma" row  :mandatory="false">
+                        <v-radio label="Seguridad y Salud" value="she"></v-radio>
+                        <v-radio label="Medio ambiente" value="ma"></v-radio>
+                        </v-radio-group>  
+                    </v-flex>
+                      <v-flex xs12 sm4 md4 lg4 xl4>
+                       <v-radio-group v-model="paradaequipo" row   :mandatory="false">
+                        <v-radio label="Trabajo/máquina SI se detieneX" value="true"></v-radio>
+                        <v-radio label="Trabajo/máquina NO se detieneX" value="false"></v-radio>
+                        </v-radio-group>  
+                    </v-flex>
+                  
+                     <v-flex xs12 sm3 md3 lg3 xl2>
+                        <v-text-field  readonly v-model="nombrefalla" label="Falla de objeto:">
+                        </v-text-field>
+                    </v-flex>
+                     <v-flex xs12 sm1 md1 lg1 xl2>
+                        <v-btn @click="mostrarFalla()" small fab dark color="teal">
+                            <v-icon dark>list</v-icon>
+                        </v-btn>
+                    </v-flex>
+                     <v-flex xs12 sm3 md3 lg3 xl2>
+                        <v-text-field  readonly v-model="nombrecondicion" label="Condiciones inseguras:">
+                        </v-text-field>
+                    </v-flex>
+                     <v-flex xs12 sm1 md1 lg1 xl2>
+                        <v-btn @click="mostrarCondicion()" small fab dark color="teal">
+                            <v-icon dark>list</v-icon>
+                        </v-btn>
+                    </v-flex>
+                     <v-flex xs12 sm6 md6 lg6 xl2>
+                         <v-textarea
+                            clearable
+                            clear-icon="cancel"
+                            rows="2"
+                            label="Descripción detallada de la anomalía:"
+                            value=""
+                            v-model="tarjetadescripcion"
+                        ></v-textarea>
+                    </v-flex>
+                    
+                    <v-flex xs12 sm2 md2 lg2 xl2 v-if="errorArticulo">
+                        <div class="red--text" v-text="errorArticulo">
+                        </div>
+                    </v-flex>
+                    
+                    <v-flex xs12 sm12 md12 lg12 xl12>
+                        <div class="red--text" v-for="v in validaMensaje" :key="v" v-text="v">
+                        </div>
+                    </v-flex>
+                    <v-flex xs12 sm12 md12 lg12 xl12>
+                        <v-btn @click="ocultarNuevo()" color="blue darken-1" flat>Cancelar</v-btn>
+                        <v-btn 
+                           :loading="loading"
+                           :disabled="loading"
+                          @click="guardar()" color="success">Guardar</v-btn>
+                          
+                            
+                    </v-flex>
+		        </v-layout>
+            </v-container>
       <!--NOTIFICACIONES-->
     <v-snackbar
       v-model="snackbar"
@@ -405,7 +652,7 @@
       </v-dialog>
         <!--VENTANA DETALLES -->
     <template>
-        <v-dialog v-model="dialog" persistent max-width="600px">
+        <v-dialog v-model="dialog" persistent max-width="700px">
        
         <v-card>
           <v-card-title>
@@ -436,28 +683,47 @@
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm4 md2>
-                  <v-text-field  readonly label="Criticidad:" required v-model="this.criticidad"></v-text-field>
+                  <v-text-field  readonly label="Prioridad:" required v-model="this.prioridad"></v-text-field>
                 </v-flex>
-                <v-flex xs12 sm4 md2>
-                  <v-text-field readonly label="Paso MA:" v-model="this.paso_ma" required></v-text-field>
-                </v-flex>
+               
                  <v-flex xs12 sm4 md2>
                   <v-text-field readonly label="Turno:" v-model="this.turno" required></v-text-field>
                 </v-flex>
-                  <v-flex xs12 sm6 >
+                  <v-flex xs12 sm4 >
                   <v-text-field readonly label="Area:" v-model="this.area" required></v-text-field>
                 </v-flex>
-                  <v-flex xs12 sm6 >
+                 <v-flex xs12 sm4 >
                   <v-text-field readonly label="Maquina:" v-model="this.maquina" required></v-text-field>
                 </v-flex>
-                <v-flex xs12 sm6 >
-                  <v-text-field readonly label="Anomalia:" v-model="this.anomaliac" required></v-text-field>
+                 <template v-if="this.she_ma=='she'">
+                  <v-flex xs12 sm6 >
+                  <v-text-field readonly label="SH&E MA:" value="Seguridad y Salud" required></v-text-field>
                 </v-flex>
+              </template> 
+                <template v-if="this.she_ma=='ma'">
+                  <v-flex xs12 sm6 >
+                  <v-text-field readonly label="SH&E MA:" value="Medio ambiente" required></v-text-field>
+                </v-flex>
+              </template> 
+               <template v-if="this.paro_equipo==1">  
                 <v-flex xs12 sm6 >
-                  <v-text-field readonly label="Relacionada con:" v-model="this.relacionado" required></v-text-field>
+                  <v-text-field readonly label="Trabajo/maquina:" value='DETENIDO' required></v-text-field>
+                </v-flex>
+              </template>
+               <template v-if="this.paro_equipo==0">  
+                <v-flex xs12 sm6 >
+                  <v-text-field readonly label="Trabajo/maquina:" value='NO DETENIDO' required></v-text-field>
+                </v-flex>
+              </template>   
+                <v-flex xs12 sm6 >
+                  <v-text-field readonly label="En mal estado(objetos):" v-model="this.falla" required></v-text-field>
+                </v-flex>
+               
+                   <v-flex xs12 sm6 >
+                  <v-text-field readonly label="Condicion insegura:" v-model="this.condicioninsegura" required></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm6>
-                  <v-text-field  readonly label="Descripcion :" v-model="this.descripcion" required></v-text-field>
+                  <v-text-field  readonly label="Descripcion de la anomalia:" v-model="this.descripcion" required></v-text-field>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -471,7 +737,7 @@
       </v-dialog>
     </template>
 
-     <template v-if="this.verNuevo==false">
+     <template v-if="this.verNuevo==false && this.verNuevoShe==false">
        <v-toolbar flat color="white">
                 <v-toolbar-title>Lista en espera</v-toolbar-title>
                     <v-divider
@@ -532,43 +798,17 @@
           <v-card-title>
                <v-list-tile-content>
                  <v-flex xs5 sm5 md5>
-                  <template v-if="props.item.idtarjeta === 1">
-                        
-                        <v-chip 
-                        
-                        color="red"
-                        class="ma-2"
-                        text-color="black"
-                        > <v-icon left>build</v-icon>
-                        <div class="subtitle-1">
-                        {{props.item.codigo}} MTTO
-                        </div>
-                        </v-chip>
-                        
-                       
-                   </template>
-                    <template v-if="props.item.idtarjeta === 2">
+                 
+                   <template >
                     <v-chip
-                        color="primary"
+                        color="green accent-4"
                          class="ma-2"
                          text-color="black"
                         >
                         <v-avatar left>
-                          <v-icon>account_circle</v-icon>
+                          <v-icon>spa</v-icon>
                         </v-avatar>
-                        {{props.item.codigo}} OPERADOR
-                        </v-chip>
-                   </template>
-                   <template v-if="props.item.idtarjeta === 3">
-                    <v-chip
-                        color="yellow"
-                         class="ma-2"
-                         text-color="black"
-                        >
-                        <v-avatar left>
-                          <v-icon>public</v-icon>
-                        </v-avatar>
-                        {{props.item.codigo}} INGENIERIA
+                        {{props.item.codigo}} SHE
                         </v-chip>
                    </template>
                  </v-flex>
@@ -675,6 +915,7 @@ import { all } from 'q';
         mensajesnack:'',
         tarjetauser:'',
         verNuevo:0,
+        verNuevoShe:0,
        
         errorArticulo:null,
          //variables de maquina
@@ -722,14 +963,31 @@ import { all } from 'q';
                 tarjetaeliminado:false,
                 tarjetadescripcion:'',
                 tarjetaidtarjeta:1,
+                //she
+                prioridad:'',
+                she_ma:'',
+                falla:'',
+                condicioninsegura:'',
+                paro_equipo:false,
+                idregistroshe:'',
+                fallasdata:[],
+                condiciondata:[],
+                verFalla:'',
+                nombrefalla:'',
+                tarjetaprioridad:'',
+                idfalla:'',
+                verCondicion:false,
+                nombrecondicion:'',
+                idcondicion:'',
+                paradaequipo:'',
                 //auxiliadres
+
                 loading: false,
                 dialogTarjeta:false,
                  selecttarjeta: [
                 { text: 'TARJETA ROJA' ,value: '1'},
                 { text: 'TARJETA AZUL ' ,value: '2'}
                ],   
-                verNuevo:0,
                 errorArticulo:null,
                 
                 cabeceraMaquinas: [
@@ -773,8 +1031,11 @@ import { all } from 'q';
                 this.listar();
                 this.seleccionautomaticotarjeta();
                 this.listarMaquina();
-                this.listarAnomalia();
-                this.listarSuceso();
+                //this.listarAnomalia();
+                this.listarFalla();
+                this.listarCondicion();
+               // this.listaSuceso();
+               // this.listarSuceso();
             //let me=this;
             //this.idusuariotarjeta=this.$store.state.usuario.idusuario;
             this.select();
@@ -791,7 +1052,15 @@ import { all } from 'q';
                 this.tarjetauser=3;
                     
                 },
-               
+                  tarjetaVerdeShe(){
+                this.dialogTarjeta=false;
+                this.snackbar = true;
+                this.color="success";
+                this.textsnackbar='Tarjeta de SEGURIDAD, SALUD & MEDIO AMBIENTE seleccionada'
+                this.verNuevoShe=true;
+                this.tarjetauser=4;
+                    
+                },
                 mostrarNuevo(){
 
                    if (!this.tarjetauser){
@@ -805,33 +1074,34 @@ import { all } from 'q';
                 },
                 ocultarNuevo(){
                     this.verNuevo=0;
+                    this.verNuevoShe=0;
                     this.limpiar();
                     this.loading=false;
                 },
                  editItem (item) {
                 this.idmaquina=item.idmaquina;
                 this.codigo=item.codigo;
-                this.idanomalia=item.idregistroanomalia;
                 this.nombre_anomalia=item.nombre;
                 this.emision_ts=item.emision_ts;
                 this.id_usuario=item.id_usuario;
                 this.nombre_usuario=item.usuario,
                 this.maquina=item.maquina;
-                this.anomaliac=item.anomaliac;
-                this.relacionado=item.relacionado;
                 this.tarjeta=item.tarjeta;
                 this.descripcion=item.descripcion;
-                this.paso_ma=item.paso_ma;
-                this.criticidad=item.criticidad;
                 this.turno=item.turno;
                 this.area=item.area;
-                this.relacionado=item.relacionado;
+                this.prioridad=item.prioridad;
+                this.she_ma=item.she_ma;
+                this.condicioninsegura=item.condicioinsegura;
+                this.falla=item.falla;
+                this.paro_equipo=item.paro_equipo;
+                this.idregistroshe=item.idregistroshe;
                 //this.editedIndex=1;
                 this.dialog = true
             },
                 listar(){
                     let me=this;
-                    axios.get('api/RegistrosAnomalias/ListarTecnico').then(function(response){
+                    axios.get('api/RegistrosShes/listar').then(function(response){
                         //console.log(response);
                         me.itemsdata=response.data;
                     }).catch(function(error){
@@ -843,8 +1113,8 @@ import { all } from 'q';
               
                
                     let me=this;
-                    axios.put('api/RegistrosAnomalias/AsignarTecnico',{
-                        'idregistroanomalia':me.idanomalia,
+                    axios.put('api/RegistrosShes/AsignarTecnico',{
+                        'idregistroshe':me.idregistroshe,
                         'idtecnico': me.$store.state.usuario.idusuario
                         
                     }).then(function(response){
@@ -902,7 +1172,7 @@ import { all } from 'q';
             
              editItemConfirmar (item) {
                 
-                this.idanomalia=item.idregistroanomalia;
+                this.idregistroshe=item.idregistroshe;
                 //this.editedIndex=1;
                 this.codigo=item.codigo;
                 this.dialogconfirmar = true;
@@ -957,12 +1227,48 @@ import { all } from 'q';
                     console.log(error);
                 });
             },
+             listarFalla(){
+                let me=this;
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+                axios.get('api/fallas/ListarFallas',configuracion).then(function(response){
+                    //console.log(response);
+                    me.fallasdata=response.data;
+                }).catch(function(error){
+                    console.log(error);
+                });
+            },
+             mostrarFalla(){
+                this.verFalla=1;
+                
+            },
+             ocultarFalla(){
+                this.verFalla=0;
+            },
+             mostrarCondicion(){
+                this.verCondicion=1;
+                
+            },
+             ocultarCondicion(){
+                this.verCondicion=0;
+            },
             mostrarAnomalia(){
                 this.verAnomalias=1;
                 
             },
             ocultarAnomalia(){
                 this.verAnomalias=0;
+            },
+              listarCondicion(){
+                let me=this;
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+                axios.get('api/CondicionesInseguras/ListarCondiciones',configuracion).then(function(response){
+                    //console.log(response);
+                    me.condiciondata=response.data;
+                }).catch(function(error){
+                    console.log(error);
+                });
             },
              agregarAnomalia(data = []){
                 this.idanomalia=data['idanomalia'];
@@ -972,6 +1278,24 @@ import { all } from 'q';
                 this.snackbar = true;
                 this.color="success";
                 this.textsnackbar='Anomalia seleccionada' +" "+ this.nombreanomalia
+            },
+             agregarFalla(data = []){
+                this.idfalla=data['idfalla'];
+                this.nombrefalla= data['nombre'];
+               // this.verAnomalias=0;
+                this.verFalla=0;
+                this.snackbar = true;
+                this.color="success";
+                this.textsnackbar='Anomalia seleccionada' +" "+ this.nombrefalla
+            },
+            agregarCondicion(data = []){
+                this.idcondicion=data['idcondicion'];
+                this.nombrecondicion= data['nombre'];
+               // this.verAnomalias=0;
+                this.verCondicion=0;
+                this.snackbar = true;
+                this.color="success";
+                this.textsnackbar='Anomalia seleccionada' +" "+ this.nombrefalla
             },
         // METODOS DE SUCESOS RELACIONADO 
             listarSuceso(){
@@ -1002,33 +1326,27 @@ import { all } from 'q';
             },
             ///  FIN DE METODOS SUCESOS
           guardar () {
-                if (this.validar()){
-                   return;
-                }
+                //if (this.validar()){
+                //   return;
+                //}
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};                
                 let me=this;
                 this.loading= true;
-                axios.post('api/RegistrosAnomalias/CrearAnomalias',{
+                axios.post('api/RegistrosShes/CrearShe',{
                     'nombre':me.tarjetanombre,
                     //'emision_ts':me.tarjetafecha,
-                    'idusuario': this.$store.state.usuario.idusuario,
-                    'paso_ma': me.tarjetapasoma,
-                    'criticidad':me.tarjetacriticidad,
+                    'idusuario': 2,
+                    'prioridad':me.tarjetaprioridad,
                     'idarea':me.idarea,
                     'idmaquina':me.idmaquina,
-                    'idanomalia':me.idanomalia,
-                    'idsuceso':me.idsuceso,
-                    'idtarjeta':me.tarjetauser,
-                    'descripcion':me.tarjetadescripcion,
-                    'sol_implementada':me.tarjetasol_implementada,
-                    'idtecnico':me.tarjetaidtecnico,
-                    'confirmacion_tec':me.tarjetaconfirmacion_tec,
-                    'idsupervisor':me.tarjetaidsupervisor,
-                    'confirmacion_super':me.tarjetaconfirmacion_super,
-                    'observaciones':me.tarjetaobservaciones,
-                    'prog':me.tarjetaprog,
-                    'eliminado':me.tarjetaeliminado
+                    'she_ma':me.she_ma,
+                    'paro_equipo':me.paradaequipo,
+                    'idfalla':me.idfalla,
+                    'idcondicion':me.idcondicion,
+                    'descripcion':this.tarjetadescripcion,
+                    'idtecnico':2,
+                    'idsupervisor':2,
                     
                 },configuracion).then(function(response){
                     me.loading=false;

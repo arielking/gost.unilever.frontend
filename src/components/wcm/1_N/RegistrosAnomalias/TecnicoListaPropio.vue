@@ -540,16 +540,16 @@
                         {{props.item.codigo}} OPERADOR
                         </v-chip>
                    </template>
-                    <template v-if="props.item.idtarjeta === 3">
+                  <template v-if="props.item.idtarjeta === 3">
                     <v-chip
-                        color="green accent-4"
+                        color="yellow"
                          class="ma-2"
                          text-color="black"
                         >
                         <v-avatar left>
-                          <v-icon>spa</v-icon>
+                          <v-icon>public</v-icon>
                         </v-avatar>
-                        {{props.item.codigo}} SH&E
+                        {{props.item.codigo}} INGENIERIA
                         </v-chip>
                    </template>
                  </v-flex>

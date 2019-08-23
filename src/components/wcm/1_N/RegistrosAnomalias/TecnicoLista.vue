@@ -520,6 +520,18 @@
                         {{props.item.codigo}} OPERADOR
                         </v-chip>
                    </template>
+                    <template v-if="props.item.idtarjeta === 3">
+                    <v-chip
+                        color="yellow"
+                         class="ma-2"
+                         text-color="black"
+                        >
+                        <v-avatar left>
+                          <v-icon>public</v-icon>
+                        </v-avatar>
+                        {{props.item.codigo}} INGENIERIA
+                        </v-chip>
+                   </template>
                  </v-flex>
                   
                   <v-list-tile-sub-title v-html="props.item.nombre"></v-list-tile-sub-title>
