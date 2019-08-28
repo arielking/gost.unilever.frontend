@@ -432,6 +432,196 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+   
+   
+   <!--TABS DE VISUALIZACION DE DATOS-->
+  <v-tabs
+      centered
+      color="cyan"
+      dark
+      icons-and-text
+    >
+      <v-tabs-slider color="yellow"></v-tabs-slider>
+  
+      <v-tab href="#tab-1">
+        Creacion
+        <v-icon>assignment</v-icon>
+      </v-tab>
+  
+      <v-tab href="#tab-2">
+        Ejecucion
+        <v-icon>build</v-icon>
+      </v-tab>
+  
+      <v-tab href="#tab-3" v-if="this.confirmado__supervisor">
+        Cierre
+        <v-icon>assignment_turned_in
+</v-icon>
+      </v-tab>
+  
+      <v-tab-item
+        
+        :value="'tab-1'"
+      >
+        <v-card flat>
+          <v-card-text>
+
+          <v-card-title>
+            <span class="headline">{{this.codigo}}</span>
+          </v-card-title>
+          <v-card-text>
+            <v-container grid-list-md>
+              <v-layout wrap>
+                <v-flex xs12 sm6 md4>
+                  <v-text-field label="Nombre de la tarjeta:" 
+                  v-model="this.nombre_anomalia"
+                   required
+                   readonly
+                   ></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6 md4>
+
+                  <v-text-field label="Creado por el usuario:" v-model="this.nombre_usuario" readonly></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6 md4>
+                  <v-text-field
+                    label="Fecha de la emision:"
+                    
+                    persistent-hint
+                    v-model="this.emision_ts"
+                    required
+                    readonly
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm4 md2>
+                  <v-text-field  readonly label="Criticidad:" required v-model="this.criticidad"></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm4 md2>
+                  <v-text-field readonly label="Paso MA:" v-model="this.paso_ma" required></v-text-field>
+                </v-flex>
+                 <v-flex xs12 sm4 md2>
+                  <v-text-field readonly label="Turno:" v-model="this.turno" required></v-text-field>
+                </v-flex>
+                  <v-flex xs12 sm6 >
+                  <v-text-field readonly label="Area:" v-model="this.area" required></v-text-field>
+                </v-flex>
+                  <v-flex xs12 sm6 md4 >
+                  <v-text-field readonly label="Maquina:" v-model="this.maquina" required></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6 md4 >
+                  <v-text-field readonly label="Anomalia:" v-model="this.anomaliac" required></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6 md4 >
+                  <v-text-field readonly label="Relacionada con:" v-model="this.relacionado" required></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm12 md12>
+                    <v-textarea
+                    outlined
+                    name="input-7-4"
+                    label="Descripcion :"
+                    rounded=true
+                    filled=true
+                    rows="2"
+                    readonly
+                    v-model="this.descripcion"
+                  ></v-textarea>
+                </v-flex>
+     
+              </v-layout>
+            </v-container>
+          </v-card-text>
+
+          </v-card-text>
+        </v-card>
+      </v-tab-item>
+       <v-tab-item
+        
+        :value="'tab-2'"
+      >
+        <v-card flat>
+          <v-card-text>
+          <v-card-title>
+            <span class="headline">{{this.codigo}}</span>
+          </v-card-title>
+          <v-card-text>
+            <v-container grid-list-md>
+              <v-layout wrap>
+            
+               
+                 
+                <v-flex xs12 sm6>
+                  <v-text-field  readonly label="Resuelto por :" v-model="this.usuariotecnico" required></v-text-field>
+                </v-flex>
+                 <v-flex xs12 sm6>
+                  <v-text-field  readonly label="Fecha de ejecución :" v-model="this.ejecucion_ts" required></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm12 md12>
+                    <v-textarea
+                    outlined
+                    name="input-7-4"
+                    label="Solucion implementada:"
+                    rounded=true
+                    filled=true
+                    rows="2"
+                    readonly
+                    v-model="this.sol_implementada"
+                  ></v-textarea>
+                </v-flex>
+
+              </v-layout>
+            </v-container>
+          </v-card-text>
+
+          </v-card-text>
+        </v-card>
+      </v-tab-item>
+       <v-tab-item
+        
+        :value="'tab-3'"
+      >
+        <v-card flat>
+          <v-card-text>
+            
+              <v-card-title>
+            <span class="headline">{{this.codigo}}</span>
+          </v-card-title>
+          <v-card-text>
+            <v-container grid-list-md>
+              <v-layout wrap>
+            
+                <v-flex xs12 sm6>
+                  <v-text-field  readonly label="Supervisor que aprobo :" v-model="this.supervisoraprobador" required></v-text-field>
+                </v-flex>
+                
+                 <v-flex xs12 sm6>
+                  <v-text-field  readonly label="Fecha de cierre :" v-model="this.fechacierre" required></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm12 md12>
+                     <v-textarea
+                    outlined
+                    name="input-7-4"
+                    label="Observaciones :"
+                    rounded=true
+                    filled=true
+                    rows="2"
+                    readonly
+                    v-model="this.observaciones"
+                  ></v-textarea>
+                </v-flex>
+
+              </v-layout>
+            </v-container>
+          </v-card-text>
+
+          </v-card-text>
+        </v-card>
+      </v-tab-item>
+    </v-tabs>
+
+<!--datos listar-->
+   
+   
+   
     </template>
        <v-toolbar flat color="white">
                 <v-toolbar-title>Tarjetas</v-toolbar-title>
@@ -472,8 +662,7 @@
           <v-img
             class="white--text"
             height="200px"
-            src="https://www.lostiempos.com/sites/default/files/media_imagen/2019/4/5/756785e2-6ea8-430e-a479-24a7d6d74b74.jpg"
-          >
+               :src="require('../../../../assets/planta-shampo.png')"          >
             <v-container fill-height fluid>
               <v-layout fill-height>
                 <v-flex xs12 align-end flexbox>

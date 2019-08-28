@@ -29,26 +29,30 @@
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile >
+
+            <v-list-tile  :to="{ name: 'tarjetaroja'}">
+              <v-list-tile-action>
+                <v-icon>table_chart</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>
+                 WCM ingresar
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+
+
             <v-list-tile v-if="esAdministrador " :to="{ name: 'registroanomalia'}">
               <v-list-tile-action>
                 <v-icon>table_chart</v-icon>
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title>
-                  Tarjetas Reportadas
+                  Lista de ingresos
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
-            <v-list-tile v-if=" esAdministrador ||esOperador || esTecnico" :to="{ name: 'tecnico'}">
-              <v-list-tile-action>
-                <v-icon>table_chart</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title>
-                  WCM Reportadas
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
+          
 
               <v-list-tile v-if=" esAdministrador ||esOperador || esTecnico" :to="{ name: 'tecnicoListaPropia'}">
               <v-list-tile-action>
@@ -56,7 +60,7 @@
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title>
-                  WCM Por atender 
+                  WCM recibir
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -66,7 +70,7 @@
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title>
-                  WCM Atendidas
+                  WCM hechas
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>

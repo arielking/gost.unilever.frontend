@@ -1,46 +1,153 @@
 <template>
-
-    
-    <v-container fluid grid-list-md>
+<v-layout align-start>
+    <v-container fluid grid-list-sm>
       <!--VENTANA DE REGISTROS-->
-     <!--VENTANA DE SELEECION DE TARJETA-->
-      <v-dialog
-          v-model="dialogTarjeta"
-          max-width="220"
-        >
-          <v-card>
-            <v-card-title>
-              Seleccioné el tipo de tarjeta:
-            </v-card-title>
-            <v-card-text>
-            <v-tooltip bottom>
-              <template v-slot:activator="{ on }">
-                 <v-btn  color="#00C853"   :to="{ name: 'SheLista'}" v-on="on" large>(SH & E)
-                  <v-icon>spa</v-icon><v-icon>pan_tool</v-icon>
-                </v-btn>
-              </template>
-              <span>POLÍTICA DE SEGURIDAD, SALUD Y MEDIO AMBIENTE</span>
-            </v-tooltip>
-               <v-tooltip bottom>
-              <template v-slot:activator="{ on }">
-                 <v-btn  @click="tarjetaAmarillaIngenieria()" color="yellow"   v-on="on" large>INGENIERIA
-                <v-icon>public</v-icon>
-              </v-btn>
-              </template>
-              <span>Ingeniería</span>
-            </v-tooltip>
-            
-               
-            
 
-            </v-card-text>
-            <v-card-actions>
-            
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
+    <template v-if="this.verMenuTarjetas==true">
+    
+    <v-container grid-list-md>
+         <v-flex xs12 sm12 md12 lg12 xl2>
+             <v-chip
+            class="ma-2"
+            color="deep-purple accent-4"
+            outlined
+            text-color="white"
+        >
+            <v-icon left>build</v-icon>
+            Seleccioné el tipo de ingreso
+                   
+        </v-chip>
+           
+    </v-flex>
+         <v-layout wrap>
+   
+      <v-flex xs12 sm3 md3 lg3 xl2>
+           
+        <v-card 
+        color="#B71C1C"
+        >
+       
+          <v-img
+          height="200px"
+             :src="require('../../../../assets/mantenimiento.png')" 
+            aspect-ratio="2.75"
+          >
+           <template >
+               <v-avatar>
+                <img  :src="require('../../../../assets/Roja.png')" alt="avatar">
+                </v-avatar>
+            </template>
+          
+          </v-img>
+  
+          <v-card-title primary-title>
+            <div>
+              <h3 class="headline mb-0">MANTENIMIENTO</h3>
+             
+            </div>
+          </v-card-title>
+  
+          <v-card-actions>
+            <v-btn  @click="mostrarNuevo('1')" flat color="#CFD8DC">Ingresar</v-btn>
+            <v-btn   @click="listar('1')" flat color="#CFD8DC">Visualizar</v-btn>
+          </v-card-actions>
+        </v-card>
+    </v-flex>
+
+     <v-flex xs12 sm3 md3 lg3 xl2>
+        <v-card 
+        color="#283593"
+        >
+          <v-img
+          height="200px"
+             :src="require('../../../../assets/operador.png')"             
+             aspect-ratio="2.75"
+          >
+          <template >
+               <v-avatar>
+                <img  :src="require('../../../../assets/Azul.png')" alt="avatar">
+                </v-avatar>
+            </template>
+          </v-img>
+  
+          <v-card-title primary-title>
+            <div>
+              <h3 class="headline mb-0">OPERADOR</h3>
+            </div>
+          </v-card-title>
+  
+          <v-card-actions>
+            <v-btn @click="mostrarNuevo('2')" flat color="#CFD8DC">Ingresar</v-btn>
+            <v-btn @click="listar('2')" flat color="#CFD8DC">Visualizar</v-btn>
+          </v-card-actions>
+        </v-card>
+    </v-flex>
+
+    <v-flex xs12 sm3 md3 lg3 xl2>
+        <v-card 
+        color="#FDD835"
+        >
+          <v-img
+          height="200px"
+             :src="require('../../../../assets/ingenieria.png')" 
+            aspect-ratio="2.75"
+          >
+          <template >
+               <v-avatar>
+                <img  :src="require('../../../../assets/Amarilla.png')" alt="avatar">
+                </v-avatar>
+            </template>
+          </v-img>
+  
+          <v-card-title primary-title>
+            <div>
+              <h3 class="headline mb-0">INGENIERIA</h3>
+            </div>
+          </v-card-title>
+  
+          <v-card-actions>
+            <v-btn @click="mostrarNuevo('3')" flat color="#D84315">Ingresar</v-btn>
+            <v-btn @click="listar('3')" flat color="#D84315">Visualizar</v-btn>
+          </v-card-actions>
+        </v-card>
+    </v-flex>
+    <v-flex xs12 sm3 md3 lg3 xl2>
+        <v-card 
+        color="#388E3C"
+        >
+          <v-img
+          height="200px"
+                    :src="require('../../../../assets/seguridad.png')"                    
+                     aspect-ratio="2.75"
+          >
+          <template >
+               <v-avatar>
+                <img  :src="require('../../../../assets/Verde.png')" alt="avatar">
+                </v-avatar>
+            </template>
+          </v-img>
+  
+          <v-card-title primary-title>
+            <div>
+              <h3 class="headline mb-0">SH&E</h3>
+            </div>
+          </v-card-title>
+  
+          <v-card-actions>
+            <v-btn flat color="orange">Ingresar</v-btn>
+            <v-btn flat color="orange">Visualizar</v-btn>
+          </v-card-actions>
+        </v-card>
+    </v-flex>
+
+       </v-layout>
+      </v-container>
+ </template>
+
+
+
                        <!-- DIALOG BUSCAR MAQUINA-->
-                    <v-dialog v-model="verMaquinas" max-width="500">
+     <v-dialog v-model="verMaquinas" max-width="500">
                         <v-card>
                             <v-card-title>
                                 <span class="headline">Seleccione una Maquina</span>
@@ -255,7 +362,8 @@
                    
                     </v-dialog>
   
-                <v-container grid-list-sm class="pa-4 white" v-if="verNuevo">
+    
+   <v-container grid-list-sm class="pa-4 white" v-if="verNuevo">
                 <v-layout row wrap>
                      
         
@@ -308,17 +416,7 @@
                         <v-radio label="B" value="B"></v-radio>
                         <v-radio label="C" value="C"></v-radio>
                         </v-radio-group>  
-                  
-                  
-                   <!--TURNO
-                    <v-flex xs12 sm4 md4 lg4 xl4>
-                        <v-radio-group v-model="tarjetaturno" row label ="Turno"  :mandatory="false">
-                        <v-radio label="T1" value="T1"></v-radio>
-                        <v-radio label="T2" value="T2"></v-radio>
-                        <v-radio label="T3" value="T3"></v-radio>
-                        </v-radio-group>
-                    </v-flex>-->
-                     
+               
                      
                     </v-flex>
                      <v-flex xs12 sm3 md3 lg3 xl2>
@@ -379,26 +477,40 @@
                     </v-flex>
 		        </v-layout>
             </v-container>
+
+
       <!--NOTIFICACIONES-->
     <v-snackbar
       v-model="snackbar"
       :timeout=this.timeout
 
-      :color="this.color"
+      color="success"
     >
     
       {{textsnackbar}}
     </v-snackbar>
       <!--VENTANA CONFIRMACION DE ASIGNACION-->
+      
        <v-dialog v-model="dialogconfirmar" persistent max-width="290">
-        <template v-slot:activator="{ on }">
-        </template>
         <v-card>
           <v-card-title class="headline" v-text="this.codigo" ></v-card-title>
-          <!--<v-card-text>.</v-card-text>-->
+          <v-card-text>
+        <v-flex xs12 sm12 md12 lg12 xl2>
+            <v-textarea
+                         clearable
+                            clear-icon="cancel"
+                            label="Ingrese la solución Implementada:"
+                            value=""
+                            v-model="solucionimplentada"
+                        ></v-textarea>
+                    </v-flex>
+
+          </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="green darken-1" flat @click="confirmarStado">Confirmar</v-btn>
+           
+        <v-spacer></v-spacer>
+            <v-btn   v-if="this.solucionimplentada" color="green darken-1"  @click="confirmarSolucion">Confirmar</v-btn>
             <v-btn color="green darken-1" flat @click="dialogconfirmar = false">Cancelar</v-btn>
           </v-card-actions>
         </v-card>
@@ -415,7 +527,7 @@
             <v-container grid-list-md>
               <v-layout wrap>
                 <v-flex xs12 sm6 md4>
-                  <v-text-field label="Nombre :" 
+                  <v-text-field label="Nombre tarjeta:" 
                   v-model="this.nombre_anomalia"
                    required
                    readonly
@@ -425,7 +537,7 @@
 
                   <v-text-field label="Creado por el usuario:" v-model="this.nombre_usuario" readonly></v-text-field>
                 </v-flex>
-                <v-flex xs12 sm4 md4>
+                <v-flex xs12 sm6 md4>
                   <v-text-field
                     label="Fecha de la emision:"
                     
@@ -457,7 +569,16 @@
                   <v-text-field readonly label="Relacionada con:" v-model="this.relacionado" required></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm6>
-                  <v-text-field  readonly label="Descripcion :" v-model="this.descripcion" required></v-text-field>
+                     <v-textarea
+                    outlined
+                    name="input-7-4"
+                    label="Descripcion :"
+                    rounded=true
+                    filled=true
+                    rows="4"
+                    readonly
+                   v-model="this.descripcion"
+                  ></v-textarea>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -465,20 +586,41 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" flat @click="dialog = false">Cerrar</v-btn>
-           
+            <v-btn color="blue darken-1" flat @click="dialog = false">Save</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
+      
     </template>
 
-<!--TABS DE VISUALIZACION DE DATOS-->
-
-
-<!--datos listar-->
-
-     <template v-if="this.verNuevo==false">
+     <template v-if="this.verListaTarjetas==true">
        <v-toolbar flat color="white">
-                <v-toolbar-title>Lista en espera3</v-toolbar-title>
+            <div class="text-center" v-if="this.idtarjeta==1">
+            <v-avatar>
+                <img  :src="require('../../../../assets/Roja.png')" alt="avatar">
+            </v-avatar>
+            </div>
+
+             <div class="text-center" v-if="this.idtarjeta==2">
+            <v-avatar>
+                <img  :src="require('../../../../assets/Azul.png')" alt="avatar">
+            </v-avatar>
+            </div>
+
+             <div class="text-center" v-if="this.idtarjeta==3">
+            <v-avatar>
+                <img  :src="require('../../../../assets/Amarilla.png')" alt="avatar">
+            </v-avatar>
+            </div>
+
+              <div class="text-center" v-if="this.idtarjeta==4">
+            <v-avatar>
+                <img  :src="require('../../../../assets/Verde.png')" alt="avatar">
+            </v-avatar>
+            </div>
+
+            
+                <v-toolbar-title>Lista de ingreso</v-toolbar-title>
                     <v-divider
                     class="mx-2"
                     inset
@@ -487,8 +629,9 @@
                     <v-spacer></v-spacer>
                     <v-text-field class="text-xs-center"  v-model="search" append-icon="search" label="Búsqueda" single-line hide-details></v-text-field>
                     <v-spacer></v-spacer>
-                    <v-btn   v-if="verNuevo==0" @click="mostrarNuevo"  color="primary" dark class="mb-2">Nuevo</v-btn>
-                   
+                    <v-btn   v-if="verNuevo==0" @click="verNuevo='true'"  color="primary" dark class="mb-2">Nuevo</v-btn>
+                     <v-btn   v-if="verNuevo==0" @click="VerMenuTarjetasLista()"  color="primary" dark class="mb-2">Cancelar</v-btn>
+
                 </v-toolbar>
                 <v-divider ></v-divider>
       <v-data-iterator
@@ -612,7 +755,7 @@
           <v-card-actions>
             <v-btn  color="green"
             @click="editItemConfirmar(props.item)"
-            >Asignarme</v-btn>
+            >RESOLVER</v-btn>
             <v-btn outline color="blue"
                 @click="editItem(props.item)"
             >Detalles</v-btn>
@@ -625,7 +768,7 @@
       </v-data-iterator>
        </template>
     </v-container>
- 
+ </v-layout>
 </template>
   
 
@@ -668,7 +811,7 @@ import { all } from 'q';
         anomaliac:'',
         relacionado:'',
         tarjeta:'',
-        idtarjeta:'',
+        idtarjeta:0,
         descripcion:'',
         paso_ma:'',
         criticidad:'',
@@ -729,12 +872,12 @@ import { all } from 'q';
                 tarjetadescripcion:'',
                 tarjetaidtarjeta:1,
                 //auxiliadres
-                loading: false,
-                dialogTarjeta:false,
-                 selecttarjeta: [
-                { text: 'TARJETA ROJA' ,value: '1'},
-                { text: 'TARJETA AZUL ' ,value: '2'}
-               ],   
+                loading:false,
+                verMenuTarjetas:true,
+                verListaTarjetas:false,
+                //Confimacion 
+                solucionimplentada:'',
+                    
                 verNuevo:0,
                 errorArticulo:null,
                 
@@ -776,43 +919,29 @@ import { all } from 'q';
               },
               
             created () {
-                this.listar();
-                this.seleccionautomaticotarjeta();
+               // this.listar();
+                //this.seleccionautomaticotarjeta();
                 this.listarMaquina();
                 this.listarAnomalia();
                 this.listarSuceso();
             //let me=this;
             //this.idusuariotarjeta=this.$store.state.usuario.idusuario;
-            this.select();
+                this.select();
                 
             },
             methods:{
 
-            tarjetaAmarillaIngenieria(){
-                this.dialogTarjeta=false;
-                this.snackbar = true;
-                this.color="success";
-                this.textsnackbar='Tarjeta de ingenieria seleccionada'
-                this.verNuevo=true;
-                this.tarjetauser=3;
-                    
-                },
-               
-                mostrarNuevo(){
-
-                   if (!this.tarjetauser){
-                    this.dialogTarjeta=true;
-                  //this.validaMensaje.push("Ingrese una tarjeta.");    
-                  }else{
-                     this.verNuevo=1;
-                  }
-                 
+                mostrarNuevo(nrotarjeta){
+                  this.verNuevo=1;
+                  this.idtarjeta=nrotarjeta;
+                  this.verMenuTarjetas=false;
                
                 },
                 ocultarNuevo(){
+                    this.verMenuTarjetas=true;
                     this.verNuevo=0;
                     this.limpiar();
-                    this.loading=false;
+                    
                 },
                  editItem (item) {
                 this.idmaquina=item.idmaquina;
@@ -832,19 +961,30 @@ import { all } from 'q';
                 this.turno=item.turno;
                 this.area=item.area;
                 this.relacionado=item.relacionado;
+
+
                 //this.editedIndex=1;
                 this.dialog = true
             },
-                listar(){
+                listar(tarjeta){
                     let me=this;
-                    axios.get('api/RegistrosAnomalias/ListarTecnico').then(function(response){
+                    this.idtarjeta=tarjeta
+                    axios.get('api/RegistrosAnomalias/ListarTipoTarjeta/'+me.idtarjeta).then(function(response){
                         //console.log(response);
                         me.itemsdata=response.data;
+                        me.verMenuTarjetas=false;
+                        me.verListaTarjetas=true;
                     }).catch(function(error){
                         console.log(error);
                         
                 });
             },
+            VerMenuTarjetasLista(){
+               this.verMenuTarjetas=true;
+               //this.verNuevo=true; 
+               this.verListaTarjetas=false;    
+            },
+
              confirmarStado () {
               
                
@@ -864,23 +1004,34 @@ import { all } from 'q';
                     });    
                 
             },
+            confirmarSolucion () {
+              
+               
+                    let me=this;
+                    axios.put('api/RegistrosAnomalias/AplicarContramedida',{
+                        'idregistroanomalia':me.idanomalia,
+                        'sol_implementada':me.solucionimplentada,
+                        'idtecnico': me.$store.state.usuario.idusuario
+                        
+                    }).then(function(response){
+                        me.close();
+                        me.listar(me.idtarjeta);
+                        me.limpiar();
+                        //me.verListaTarjetas=true;  
+                                          
+                    }).catch(function(error){
+                        console.log(error);
+                      
+                    });    
+                
+            },
             close(){
               this.dialogconfirmar=false
               this.snackbar=true
               this.textsnackbar='Operacion exitosa'
             },
             limpiar(){
-               //Control solo para usuaios que no son mantenimiento y operadores
-                let me=this;
-                if (this.$store.state.usuario.rol =='Mantenimiento'){
-                 
-                }else
-                if (this.$store.state.usuario.rol =='Operador'){
-                 
-                }else{
-                   this.tarjetauser="";
-                }
-               
+        
                 this.tarjetanombre= "";
                 this.tarjetapasoma=-1;
                 this.tarjetacriticidad="",
@@ -970,6 +1121,7 @@ import { all } from 'q';
             ocultarAnomalia(){
                 this.verAnomalias=0;
             },
+
              agregarAnomalia(data = []){
                 this.idanomalia=data['idanomalia'];
                 this.nombreanomalia= data['nombre'];
@@ -978,6 +1130,7 @@ import { all } from 'q';
                 this.snackbar = true;
                 this.color="success";
                 this.textsnackbar='Anomalia seleccionada' +" "+ this.nombreanomalia
+
             },
         // METODOS DE SUCESOS RELACIONADO 
             listarSuceso(){
@@ -998,6 +1151,7 @@ import { all } from 'q';
             ocultarSuceso(){
                 this.verSucesos=0;
             },
+
              agregarSuceso(data = []){
                 this.idsuceso=data['idsuceso'];
                 this.nombresuceso= data['nombre'];
@@ -1005,9 +1159,10 @@ import { all } from 'q';
                 this.snackbar = true;
                 this.color="success";
                 this.textsnackbar='Relacionado con ' +" "+ this.nombresuceso
+
             },
             ///  FIN DE METODOS SUCESOS
-          guardar () {
+         guardar () {
                 if (this.validar()){
                    return;
                 }
@@ -1025,7 +1180,7 @@ import { all } from 'q';
                     'idmaquina':me.idmaquina,
                     'idanomalia':me.idanomalia,
                     'idsuceso':me.idsuceso,
-                    'idtarjeta':me.tarjetauser,
+                    'idtarjeta':me.idtarjeta,
                     'descripcion':me.tarjetadescripcion,
                     'sol_implementada':me.tarjetasol_implementada,
                     'idtecnico':me.tarjetaidtecnico,
@@ -1039,9 +1194,10 @@ import { all } from 'q';
                 },configuracion).then(function(response){
                     me.loading=false;
                     me.ocultarNuevo();
-                    me.listar();
+                    me.listar(me.idtarjeta);
                     me.limpiar(); 
                     me.mostrarSnacbar();
+                    me.verListaTarjetas=true;
                     
                     
                 }).catch(function(error){
@@ -1049,6 +1205,7 @@ import { all } from 'q';
                     me.color="#C62828";
                     me.textsnackbar='Error en la operacion intente mas tarde'
                     me.loading=false;
+                    me.verListaTarjetas=true;
                     console.log(error);
                 });
             },
@@ -1077,10 +1234,11 @@ import { all } from 'q';
              validar(){
                 this.valida=0;
                 this.validaMensaje=[]; 
+
                 if (!this.tarjetanombre){
                     this.validaMensaje.push("Ingrese un nombre.");
                 }
-                if (this.tarjetapasoma < 0  ){
+                if (this.tarjetapasoma < 0 ){
                   this.validaMensaje.push("Seleccioné PASO MA");    
                 }
                  if (!this.tarjetacriticidad){
@@ -1103,10 +1261,6 @@ import { all } from 'q';
                 }
                 if (!this.tarjetadescripcion){
                   this.validaMensaje.push("Ingrese una descripcion.");    
-                }
-                if (!this.tarjetauser){
-                  //this.dialogTarjeta=true;
-                 this.validaMensaje.push("Ingrese una tarjeta.");    
                 }
                 
                 if (this.validaMensaje.length){

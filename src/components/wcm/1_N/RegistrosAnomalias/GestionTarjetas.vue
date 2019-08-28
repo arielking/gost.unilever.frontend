@@ -15,7 +15,7 @@
             <v-card-text>
             <v-tooltip bottom>
               <template v-slot:activator="{ on }">
-                 <v-btn  color="#00C853"   :to="{ name: 'SheLista'}" v-on="on" large>(SH & E)
+                 <v-btn  color="#00C853"   v-on="on" large>(SH & E)
                   <v-icon>spa</v-icon><v-icon>pan_tool</v-icon>
                 </v-btn>
               </template>
@@ -471,11 +471,6 @@
       </v-dialog>
     </template>
 
-<!--TABS DE VISUALIZACION DE DATOS-->
-
-
-<!--datos listar-->
-
      <template v-if="this.verNuevo==false">
        <v-toolbar flat color="white">
                 <v-toolbar-title>Lista en espera3</v-toolbar-title>
@@ -788,7 +783,7 @@ import { all } from 'q';
             },
             methods:{
 
-            tarjetaAmarillaIngenieria(){
+                tarjetaAmarillaIngenieria(){
                 this.dialogTarjeta=false;
                 this.snackbar = true;
                 this.color="success";

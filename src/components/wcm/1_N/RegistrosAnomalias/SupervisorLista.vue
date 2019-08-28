@@ -488,8 +488,7 @@
             class="white--text"
             height="200"
            
-            src="https://www.lostiempos.com/sites/default/files/media_imagen/2019/4/5/756785e2-6ea8-430e-a479-24a7d6d74b74.jpg"
-          >
+              :src="require('../../../../assets/planta-shampo.png')"          >
             <v-container fill-height fluid>
               <v-layout fill-height>
                 <v-flex xs12 align-end flexbox>

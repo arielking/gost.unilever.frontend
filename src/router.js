@@ -17,6 +17,8 @@ import TecnicoListaPropia from './components/wcm/1_N/RegistrosAnomalias/TecnicoL
 import TecnicoListaPropiaConfirmado from './components/wcm/1_N/RegistrosAnomalias/TecnicoListaEsperaconfirmacion.vue'
 import SupervisorLista from './components/wcm/1_N/RegistrosAnomalias/SupervisorLista.vue'
 import SheLista from './components/wcm/1_N/RegistrosShe/ListaShe.vue'
+import TarjetaRoja from './components/wcm/1_N/RegistrosAnomalias/Tarjeta_roja.vue'
+
 
 
 
@@ -173,6 +175,17 @@ var router = new Router({
       path: '/SheLista',
       name: 'SheLista',
       component: SheLista,
+      meta :{
+        administrador :true,
+        mantenimiento:true,
+        operador:true,
+        supervisor:true
+      }
+    },
+    {
+      path: '/tarjetaroja',
+      name: 'tarjetaroja',
+      component: TarjetaRoja,
       meta :{
         administrador :true,
         mantenimiento:true,

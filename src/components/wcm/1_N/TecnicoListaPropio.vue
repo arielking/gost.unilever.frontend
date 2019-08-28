@@ -1,46 +1,9 @@
 <template>
-
-    
-    <v-container fluid grid-list-md>
+<v-layout align-start>
+    <v-container fluid grid-list-sm>
       <!--VENTANA DE REGISTROS-->
-     <!--VENTANA DE SELEECION DE TARJETA-->
-      <v-dialog
-          v-model="dialogTarjeta"
-          max-width="220"
-        >
-          <v-card>
-            <v-card-title>
-              Seleccioné el tipo de tarjeta:
-            </v-card-title>
-            <v-card-text>
-            <v-tooltip bottom>
-              <template v-slot:activator="{ on }">
-                 <v-btn  color="#00C853"   :to="{ name: 'SheLista'}" v-on="on" large>(SH & E)
-                  <v-icon>spa</v-icon><v-icon>pan_tool</v-icon>
-                </v-btn>
-              </template>
-              <span>POLÍTICA DE SEGURIDAD, SALUD Y MEDIO AMBIENTE</span>
-            </v-tooltip>
-               <v-tooltip bottom>
-              <template v-slot:activator="{ on }">
-                 <v-btn  @click="tarjetaAmarillaIngenieria()" color="yellow"   v-on="on" large>INGENIERIA
-                <v-icon>public</v-icon>
-              </v-btn>
-              </template>
-              <span>Ingeniería</span>
-            </v-tooltip>
-            
-               
-            
-
-            </v-card-text>
-            <v-card-actions>
-            
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
                        <!-- DIALOG BUSCAR MAQUINA-->
-                    <v-dialog v-model="verMaquinas" max-width="500">
+     <v-dialog v-model="verMaquinas" max-width="500">
                         <v-card>
                             <v-card-title>
                                 <span class="headline">Seleccione una Maquina</span>
@@ -255,10 +218,9 @@
                    
                     </v-dialog>
   
-                <v-container grid-list-sm class="pa-4 white" v-if="verNuevo">
+      <v-container grid-list-sm class="pa-4 white" v-if="verNuevo">
                 <v-layout row wrap>
                      
-        
                      <!--Atributos del fomulario-->
                      <v-flex xs12 sm4 md4 lg4 xl2>
                         <v-text-field v-model="tarjetanombre" label="Nombre de la anomalia" required>
@@ -384,21 +346,33 @@
       v-model="snackbar"
       :timeout=this.timeout
 
-      :color="this.color"
+      color="success"
     >
     
       {{textsnackbar}}
     </v-snackbar>
       <!--VENTANA CONFIRMACION DE ASIGNACION-->
+      
        <v-dialog v-model="dialogconfirmar" persistent max-width="290">
-        <template v-slot:activator="{ on }">
-        </template>
         <v-card>
           <v-card-title class="headline" v-text="this.codigo" ></v-card-title>
-          <!--<v-card-text>.</v-card-text>-->
+          <v-card-text>
+        <v-flex xs12 sm12 md12 lg12 xl2>
+            <v-textarea
+                         clearable
+                            clear-icon="cancel"
+                            label="Ingrese la solución Implementada:"
+                            value=""
+                            v-model="solucionimplentada"
+                        ></v-textarea>
+                    </v-flex>
+
+          </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="green darken-1" flat @click="confirmarStado">Confirmar</v-btn>
+           
+        <v-spacer></v-spacer>
+            <v-btn   v-if="this.solucionimplentada" color="green darken-1"  @click="confirmarSolucion">Confirmar</v-btn>
             <v-btn color="green darken-1" flat @click="dialogconfirmar = false">Cancelar</v-btn>
           </v-card-actions>
         </v-card>
@@ -415,7 +389,7 @@
             <v-container grid-list-md>
               <v-layout wrap>
                 <v-flex xs12 sm6 md4>
-                  <v-text-field label="Nombre :" 
+                  <v-text-field label="Nombre tarjeta:" 
                   v-model="this.nombre_anomalia"
                    required
                    readonly
@@ -425,7 +399,7 @@
 
                   <v-text-field label="Creado por el usuario:" v-model="this.nombre_usuario" readonly></v-text-field>
                 </v-flex>
-                <v-flex xs12 sm4 md4>
+                <v-flex xs12 sm6 md4>
                   <v-text-field
                     label="Fecha de la emision:"
                     
@@ -457,7 +431,16 @@
                   <v-text-field readonly label="Relacionada con:" v-model="this.relacionado" required></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm6>
-                  <v-text-field  readonly label="Descripcion :" v-model="this.descripcion" required></v-text-field>
+                     <v-textarea
+                    outlined
+                    name="input-7-4"
+                    label="Descripcion :"
+                    rounded=true
+                    filled=true
+                    rows="4"
+                    readonly
+                   v-model="this.descripcion"
+                  ></v-textarea>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -465,20 +448,13 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" flat @click="dialog = false">Cerrar</v-btn>
-           
+            <v-btn color="blue darken-1" flat @click="dialog = false">Save</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
     </template>
-
-<!--TABS DE VISUALIZACION DE DATOS-->
-
-
-<!--datos listar-->
-
-     <template v-if="this.verNuevo==false">
        <v-toolbar flat color="white">
-                <v-toolbar-title>Lista en espera3</v-toolbar-title>
+                <v-toolbar-title>Tarjetas Propias:</v-toolbar-title>
                     <v-divider
                     class="mx-2"
                     inset
@@ -487,8 +463,8 @@
                     <v-spacer></v-spacer>
                     <v-text-field class="text-xs-center"  v-model="search" append-icon="search" label="Búsqueda" single-line hide-details></v-text-field>
                     <v-spacer></v-spacer>
-                    <v-btn   v-if="verNuevo==0" @click="mostrarNuevo"  color="primary" dark class="mb-2">Nuevo</v-btn>
-                   
+                    <!--<v-btn   v-if="verNuevo==0" @click="mostrarNuevo"  color="primary" dark class="mb-2">Nuevo</v-btn>
+                   -->
                 </v-toolbar>
                 <v-divider ></v-divider>
       <v-data-iterator
@@ -516,13 +492,11 @@
           <v-img
             class="white--text"
             height="200px"
-            
-             :src="require('../../../../assets/planta-shampo.png')"
-          >
+                :src="require('../../../../assets/planta-shampo.png')"          >
             <v-container fill-height fluid>
               <v-layout fill-height>
                 <v-flex xs12 align-end flexbox>
-                 <template v-if="props.item.criticidad==='A'">
+               <template v-if="props.item.criticidad==='A'">
                <div class="headline"> <span class="red--text">{{props.item.criticidad}}</span></div>
                </template>
                 <template v-if="props.item.criticidad==='B'">
@@ -538,7 +512,7 @@
           <v-card-title>
                <v-list-tile-content>
                  <v-flex xs5 sm5 md5>
-                  <template v-if="props.item.idtarjeta === 1">
+                     <template v-if="props.item.idtarjeta === 1">
                         
                         <v-chip 
                         
@@ -557,7 +531,7 @@
                     <v-chip
                         color="primary"
                          class="ma-2"
-                         text-color="black"
+                        text-color="black"
                         >
                         <v-avatar left>
                           <v-icon>account_circle</v-icon>
@@ -565,7 +539,7 @@
                         {{props.item.codigo}} OPERADOR
                         </v-chip>
                    </template>
-                   <template v-if="props.item.idtarjeta === 3">
+                  <template v-if="props.item.idtarjeta === 3">
                     <v-chip
                         color="yellow"
                          class="ma-2"
@@ -600,7 +574,7 @@
                 
               </v-list-tile>
               <v-divider ></v-divider>
-                 <div class="caption">Emision: {{props.item.emision_ts}}</div>
+                  <div class="caption">Emision: {{props.item.emision_ts}}</div>
                  
             </template>
           </v-list>
@@ -610,9 +584,17 @@
             
           </v-card-title>
           <v-card-actions>
-            <v-btn  color="green"
-            @click="editItemConfirmar(props.item)"
-            >Asignarme</v-btn>
+               <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+             <v-btn  color="#304FFE" dark v-on="on"
+             @click="editItemConfirmar(props.item)"
+            >Confimar</v-btn>
+            </template>
+            <span>Aplicar Contramedida</span>
+            </v-tooltip>
+         <v-spacer></v-spacer>
+
+
             <v-btn outline color="blue"
                 @click="editItem(props.item)"
             >Detalles</v-btn>
@@ -623,9 +605,8 @@
           </v-flex>
         </template>
       </v-data-iterator>
-       </template>
     </v-container>
- 
+ </v-layout>
 </template>
   
 
@@ -729,12 +710,10 @@ import { all } from 'q';
                 tarjetadescripcion:'',
                 tarjetaidtarjeta:1,
                 //auxiliadres
-                loading: false,
-                dialogTarjeta:false,
-                 selecttarjeta: [
-                { text: 'TARJETA ROJA' ,value: '1'},
-                { text: 'TARJETA AZUL ' ,value: '2'}
-               ],   
+                loading:false,
+                //Confimacion 
+                solucionimplentada:'',
+                    
                 verNuevo:0,
                 errorArticulo:null,
                 
@@ -788,31 +767,13 @@ import { all } from 'q';
             },
             methods:{
 
-            tarjetaAmarillaIngenieria(){
-                this.dialogTarjeta=false;
-                this.snackbar = true;
-                this.color="success";
-                this.textsnackbar='Tarjeta de ingenieria seleccionada'
-                this.verNuevo=true;
-                this.tarjetauser=3;
-                    
-                },
-               
                 mostrarNuevo(){
-
-                   if (!this.tarjetauser){
-                    this.dialogTarjeta=true;
-                  //this.validaMensaje.push("Ingrese una tarjeta.");    
-                  }else{
-                     this.verNuevo=1;
-                  }
-                 
+                  this.verNuevo=1;
                
                 },
                 ocultarNuevo(){
                     this.verNuevo=0;
-                    this.limpiar();
-                    this.loading=false;
+                    //this.limpiar();
                 },
                  editItem (item) {
                 this.idmaquina=item.idmaquina;
@@ -832,12 +793,14 @@ import { all } from 'q';
                 this.turno=item.turno;
                 this.area=item.area;
                 this.relacionado=item.relacionado;
+
+
                 //this.editedIndex=1;
                 this.dialog = true
             },
                 listar(){
                     let me=this;
-                    axios.get('api/RegistrosAnomalias/ListarTecnico').then(function(response){
+                    axios.get('api/RegistrosAnomalias/SelectListaTecnicoPropios/'+me.$store.state.usuario.idusuario).then(function(response){
                         //console.log(response);
                         me.itemsdata=response.data;
                     }).catch(function(error){
@@ -864,36 +827,35 @@ import { all } from 'q';
                     });    
                 
             },
+            confirmarSolucion () {
+              
+               
+                    let me=this;
+                    axios.put('api/RegistrosAnomalias/AplicarContramedida',{
+                        'idregistroanomalia':me.idanomalia,
+                        'sol_implementada':me.solucionimplentada,
+                        'idtecnico': me.$store.state.usuario.idusuario
+                        
+                    }).then(function(response){
+                        me.close();
+                        me.listar();
+                        me.limpiar();  
+                                          
+                    }).catch(function(error){
+                        console.log(error);
+                      
+                    });    
+                
+            },
             close(){
               this.dialogconfirmar=false
               this.snackbar=true
               this.textsnackbar='Operacion exitosa'
             },
             limpiar(){
-               //Control solo para usuaios que no son mantenimiento y operadores
-                let me=this;
-                if (this.$store.state.usuario.rol =='Mantenimiento'){
-                 
-                }else
-                if (this.$store.state.usuario.rol =='Operador'){
-                 
-                }else{
-                   this.tarjetauser="";
-                }
-               
-                this.tarjetanombre= "";
-                this.tarjetapasoma=-1;
-                this.tarjetacriticidad="",
-                this.idarea="",
-                this.nombrearea="";
-                this.idmaquina="";
-                this.nombremaquina="";
-                this.idanomalia="";
-                this.nombreanomalia="";
-                this.idsuceso="";
-                this.nombresuceso="";
-                this.tarjetadescripcion="";
-                
+        
+               this.solucionimplentada='',
+               this.idanomalia=''
                
                
             },
@@ -970,6 +932,7 @@ import { all } from 'q';
             ocultarAnomalia(){
                 this.verAnomalias=0;
             },
+
              agregarAnomalia(data = []){
                 this.idanomalia=data['idanomalia'];
                 this.nombreanomalia= data['nombre'];
@@ -978,6 +941,7 @@ import { all } from 'q';
                 this.snackbar = true;
                 this.color="success";
                 this.textsnackbar='Anomalia seleccionada' +" "+ this.nombreanomalia
+
             },
         // METODOS DE SUCESOS RELACIONADO 
             listarSuceso(){
@@ -998,6 +962,7 @@ import { all } from 'q';
             ocultarSuceso(){
                 this.verSucesos=0;
             },
+
              agregarSuceso(data = []){
                 this.idsuceso=data['idsuceso'];
                 this.nombresuceso= data['nombre'];
@@ -1005,6 +970,7 @@ import { all } from 'q';
                 this.snackbar = true;
                 this.color="success";
                 this.textsnackbar='Relacionado con ' +" "+ this.nombresuceso
+
             },
             ///  FIN DE METODOS SUCESOS
           guardar () {
@@ -1021,6 +987,7 @@ import { all } from 'q';
                     'idusuario': this.$store.state.usuario.idusuario,
                     'paso_ma': me.tarjetapasoma,
                     'criticidad':me.tarjetacriticidad,
+                    'turno':me.tarjetaturno,
                     'idarea':me.idarea,
                     'idmaquina':me.idmaquina,
                     'idanomalia':me.idanomalia,
@@ -1035,20 +1002,16 @@ import { all } from 'q';
                     'observaciones':me.tarjetaobservaciones,
                     'prog':me.tarjetaprog,
                     'eliminado':me.tarjetaeliminado
+
                     
                 },configuracion).then(function(response){
-                    me.loading=false;
+                     me.loading=false;
                     me.ocultarNuevo();
                     me.listar();
-                    me.limpiar(); 
-                    me.mostrarSnacbar();
-                    
+                   // me.limpiar(); 
+                   me.mostrarSnacbar(); 
                     
                 }).catch(function(error){
-                    me.snackbar=true
-                    me.color="#C62828";
-                    me.textsnackbar='Error en la operacion intente mas tarde'
-                    me.loading=false;
                     console.log(error);
                 });
             },
@@ -1077,10 +1040,11 @@ import { all } from 'q';
              validar(){
                 this.valida=0;
                 this.validaMensaje=[]; 
+
                 if (!this.tarjetanombre){
                     this.validaMensaje.push("Ingrese un nombre.");
                 }
-                if (this.tarjetapasoma < 0  ){
+                if (this.tarjetapasoma < 0 ){
                   this.validaMensaje.push("Seleccioné PASO MA");    
                 }
                  if (!this.tarjetacriticidad){
@@ -1103,10 +1067,6 @@ import { all } from 'q';
                 }
                 if (!this.tarjetadescripcion){
                   this.validaMensaje.push("Ingrese una descripcion.");    
-                }
-                if (!this.tarjetauser){
-                  //this.dialogTarjeta=true;
-                 this.validaMensaje.push("Ingrese una tarjeta.");    
                 }
                 
                 if (this.validaMensaje.length){
