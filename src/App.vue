@@ -8,6 +8,8 @@
       :width="width"
       v-if="logueado"
     >
+
+    
       <v-list dense>
         <template v-if="esAdministrador || esAlmacenero || esVendedor">
           <v-list-tile :to="{name:'home'}">
@@ -20,8 +22,12 @@
           </v-list-tile>
         </template>
         <!--MODULO WCM -->
+
+
          <template v-if="esAdministrador || esAlmacenero|| esTecnico ||esSupervisor ||esOperador">
-          <v-list-group>
+          <v-list-group
+          prepend-icon="menu"
+            >
             <v-list-tile slot="activator">
               <v-list-tile-content>
                 <v-list-tile-title>
@@ -29,10 +35,10 @@
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile >
-
-            <v-list-tile  :to="{ name: 'tarjetaroja'}">
+            <!--INICIO DEL FOR-->
+             <v-list-tile  :to="{ name: 'tarjetas'}">
               <v-list-tile-action>
-                <v-icon>table_chart</v-icon>
+                <v-icon>add_circle</v-icon>
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title>
@@ -41,62 +47,93 @@
               </v-list-tile-content>
             </v-list-tile>
 
-
-            <v-list-tile v-if="esAdministrador " :to="{ name: 'registroanomalia'}">
-              <v-list-tile-action>
-                <v-icon>table_chart</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title>
-                  Lista de ingresos
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
+        <!--FOR IMPLEMENT-->
+        <v-list-group
+            sub-group
+            no-action
+          >
           
-
-              <v-list-tile v-if=" esAdministrador ||esOperador || esTecnico" :to="{ name: 'tecnicoListaPropia'}">
+            <template v-slot:activator>
+              <v-list-tile>
+                <v-list-tile-title>WCM ROJA</v-list-tile-title>
+              </v-list-tile>
+            </template>
+            <v-list-tile
+              v-for="(crud, i) in data_rojo"
+              :key="i"
+             :to="{name:crud[0]}"
+            >
+              <v-list-tile-title v-text="crud[1]"></v-list-tile-title>
               <v-list-tile-action>
-                <v-icon>table_chart</v-icon>
+                <v-icon v-text="crud[2]"></v-icon>
               </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title>
-                  WCM recibir
-                </v-list-tile-title>
-              </v-list-tile-content>
             </v-list-tile>
-            <v-list-tile v-if=" esAdministrador ||esOperador || esTecnico" :to="{ name: 'tecnicoListaPropiaConfirmado'}">
-              <v-list-tile-action>
-                <v-icon>table_chart</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title>
-                  WCM hechas
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-             <v-list-tile v-if=" esAdministrador" :to="{ name: 'SheLista'}">
-              <v-list-tile-action>
-                <v-icon>table_chart</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title>
-                  WCM SH&E Reportadas
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-             <v-list-tile v-if=" esAdministrador ||esSupervisor " :to="{ name: 'supervisorLista'}">
-              <v-list-tile-action>
-                <v-icon>table_chart</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title>
-                  WCM Confirmar 
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-
           </v-list-group>
+
+          <v-list-group
+            sub-group
+            no-action
+          >
+          
+            <template v-slot:activator>
+              <v-list-tile>
+                <v-list-tile-title>WCM AZUL</v-list-tile-title>
+              </v-list-tile>
+            </template>
+            <v-list-tile
+              v-for="(crud, i) in data_rojo"
+              :key="i"
+             :to="{name:crud[0]}"
+            >
+              <v-list-tile-title v-text="crud[1]"></v-list-tile-title>
+              <v-list-tile-action>
+                <v-icon v-text="crud[2]"></v-icon>
+              </v-list-tile-action>
+            </v-list-tile>
+          </v-list-group>
+
+          <v-list-group
+            sub-group
+            no-action
+          >
+          
+            <template v-slot:activator>
+              <v-list-tile>
+                <v-list-tile-title>WCM AMARILLA</v-list-tile-title>
+              </v-list-tile>
+            </template>
+            <v-list-tile
+              v-for="(crud, i) in data_rojo"
+              :key="i"
+             :to="{name:crud[0]}"
+            >
+              <v-list-tile-title v-text="crud[1]"></v-list-tile-title>
+              <v-list-tile-action>
+                <v-icon v-text="crud[2]"></v-icon>
+              </v-list-tile-action>
+            </v-list-tile>
+          </v-list-group>
+  
+         
+        </v-list-group>
+        
+
+          <!--CIERRO FOR TARJETAS-->
+
+
+
+           
+            
+
+
+
+
+
+           
+         
+
         </template>
+         <!--
         <template v-if="esAdministrador || esAlmacenero">
           <v-list-group>
             <v-list-tile slot="activator">
@@ -256,7 +293,15 @@
             </v-list-tile>
 
           </v-list-group>
+        
+        
+        
+        
+        
+        
         </template>
+-->
+       
       </v-list>
     </v-navigation-drawer>
     <v-toolbar
@@ -317,6 +362,19 @@ export default {
   name: 'App',
   data () {
     return {
+       data_rojo: [
+      ['tarjetaroja' ,'Ingresar', 'post_add'],
+      ['tarjetarojaatender' ,'Atender', 'assignment'],
+      ['tarjetarojarecibir' ,'Recibir', 'assignment_ind'],
+      ['tarjetarojacerrar' ,'Cerrar', 'assignment_turned_in'],
+      ['tarjetas' ,'Visualizar', 'pageview'],
+    ],
+    cruds: [
+      ['Create', 'add'],
+      ['Read', 'insert_drive_file'],
+      ['Update', 'update'],
+      ['Delete', 'delete']
+    ],
       clipped: false,
       drawer: null,
       width:'230',

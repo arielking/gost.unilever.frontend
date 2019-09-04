@@ -17,7 +17,15 @@ import TecnicoListaPropia from './components/wcm/1_N/RegistrosAnomalias/TecnicoL
 import TecnicoListaPropiaConfirmado from './components/wcm/1_N/RegistrosAnomalias/TecnicoListaEsperaconfirmacion.vue'
 import SupervisorLista from './components/wcm/1_N/RegistrosAnomalias/SupervisorLista.vue'
 import SheLista from './components/wcm/1_N/RegistrosShe/ListaShe.vue'
-import TarjetaRoja from './components/wcm/1_N/RegistrosAnomalias/Tarjeta_roja.vue'
+import Tarjetas from './components/wcm/1_N/RegistrosAnomalias/ListaInicialTarjetas.vue'
+import TarjetaRoja from './components/wcm/1_N/RegistrosAnomalias/ListRojas.vue'
+import TarjetaRojaAtender from './components/wcm/1_N/RegistrosAnomalias/ListRojasAtender.vue'
+import TarjetaRojaRecibir from './components/wcm/1_N/RegistrosAnomalias/ListRojasRecibir.vue'
+import TarjetaRojaCerrar from './components/wcm/1_N/RegistrosAnomalias/ListRojasCerrar.vue'
+
+
+
+
 
 
 
@@ -183,9 +191,53 @@ var router = new Router({
       }
     },
     {
+      path: '/tarjetas',
+      name: 'tarjetas',
+      component: Tarjetas,
+      meta :{
+        administrador :true,
+        mantenimiento:true,
+        operador:true,
+        supervisor:true
+      }
+    },
+    {
       path: '/tarjetaroja',
       name: 'tarjetaroja',
       component: TarjetaRoja,
+      meta :{
+        administrador :true,
+        mantenimiento:true,
+        operador:true,
+        supervisor:true
+      }
+    },
+    {
+      path: '/tarjetarojaatender',
+      name: 'tarjetarojaatender',
+      component: TarjetaRojaAtender,
+      meta :{
+        administrador :true,
+        mantenimiento:true,
+        operador:true,
+        supervisor:true
+      }
+    },
+    {
+      path: '/tarjetarojarecibir',
+      name: 'tarjetarojarecibir',
+      component: TarjetaRojaRecibir,
+      meta :{
+        administrador :true,
+        mantenimiento:true,
+        operador:true,
+        supervisor:true
+      }
+    },
+    {
+      path: '/tarjetarojacerrar',
+      name: 'tarjetarojacerrar',
+      component: TarjetaRojaCerrar,
       meta :{
         administrador :true,
         mantenimiento:true,
